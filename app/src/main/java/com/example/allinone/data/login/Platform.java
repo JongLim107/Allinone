@@ -20,35 +20,35 @@ public class Platform {
         this.mAddress = address;
     }
 
-    public String getmAccount() {
+    public String getAccount() {
         return mAccount;
     }
 
-    public void setmAccount(String mAccount) {
+    public void setAccount(String mAccount) {
         this.mAccount = mAccount;
     }
 
-    public String getmPassword() {
+    public String getPassword() {
         return mPassword;
     }
 
-    public void setmPassword(String mPassword) {
+    public void setPassword(String mPassword) {
         this.mPassword = mPassword;
     }
 
-    public String getmAddress() {
+    public String getAddress() {
         return mAddress;
     }
 
-    public void setmAddress(String mAddress) {
+    public void setAddress(String mAddress) {
         this.mAddress = mAddress;
     }
 
-    public String getmTitle() {
+    public String getTitle() {
         return mTitle;
     }
 
-    public void setmTitle(String mTitle) {
+    public void setTitle(String mTitle) {
         this.mTitle = mTitle;
     }
 }

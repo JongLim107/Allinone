@@ -1,8 +1,25 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="activity_horizontal_margin">32dp</dimen>
+    <dimen name="activity_vertical_margin">18dp</dimen>
+    <dimen name="view_padding">6dp</dimen>
+    <dimen name="side_padding">10dp</dimen>
+
     <dimen name="nav_header_vertical_spacing">8dp</dimen>
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="button_height">44dp</dimen>
+
+    <!-- 登陆界面的 dimension -->
+
+    <!--所有的带图标显示的EditText的属性-->
+    <dimen name="edittext_margin_left_icon">10dp</dimen>
+
+    <!--所有的item间距和item圆角半径值-->
+    <dimen name="item_margin">3dp</dimen>
+    <dimen name="item_radius">3dp</dimen>
+
+    <dimen name="spacing_medium">8dp</dimen>
+
+
 </resources>

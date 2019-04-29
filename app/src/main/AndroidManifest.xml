@@ -39,7 +39,7 @@
         </activity>
 
         <activity
-            android:name=".ip_camera.login.LoginActivity"/>
+            android:name=".ipcamera.login.LoginActivity" android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
