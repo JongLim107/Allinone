@@ -1,4 +1,4 @@
-package com.example.allinone.ipcamera.platform;
+package com.example.allinone.ipcamera.devices;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +10,7 @@ import me.goldze.mvvmhabit.base.BaseFragment;
 /**
  * Created by Jong Lim on 30/4/19.
  */
-public class CameraListFragment extends BaseFragment {
+public class SnapshotFragment extends BaseFragment {
 
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container,

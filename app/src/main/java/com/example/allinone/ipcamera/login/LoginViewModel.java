@@ -6,7 +6,7 @@ import android.view.View;
 
 import com.example.allinone.data.login.LoginRepository;
 import com.example.allinone.entity.PlatformEntity;
-import com.example.allinone.ipcamera.platform.PlatformsActivity;
+import com.example.allinone.ipcamera.devices.ViewPagerActivity;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
@@ -99,7 +99,7 @@ public class LoginViewModel extends BaseViewModel<LoginRepository> {
                         //保存账号密码
                         model.saveUserName(title.get());
                         model.savePassword(password.get());
-                        startActivity(PlatformsActivity.class);
+                        startActivity(ViewPagerActivity.class);
                         //关闭页面
                         finish();
                     }

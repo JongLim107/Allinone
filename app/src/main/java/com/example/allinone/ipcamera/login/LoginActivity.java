@@ -43,9 +43,9 @@ public final class LoginActivity extends BaseActivity<ActivityLoginBinding, Logi
     public void initData() {
         super.initData();
         List<PlatformEntity> platformList = new ArrayList<>();
-        platformList.add(new PlatformEntity("Jong Lim", "2010LinZhong", "新加坡祖屋2号机", "123" ));
-        platformList.add(new PlatformEntity("Lin Zhong", "2010LinZhong", "Nanning Longgang", "123"));
-        platformList.add(new PlatformEntity("Shenzhen University", "2010LinZhong", "Ex Company 2nd Level", "123"));
+        platformList.add(new PlatformEntity("qzlt", "qzlt1234", "衢州联通", "221.12.141.170" ));
+        platformList.add(new PlatformEntity("Lin Zhong", "2010LinZhong", "Nanning Longgang", "221.12.141.170"));
+        platformList.add(new PlatformEntity("Shenzhen University", "2010LinZhong", "Ex Company 2nd Level", "221.12.141.170"));
         PlatformAdapter dataAdapter = new PlatformAdapter(this, viewModel, platformList);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         binding.platSpinner.setAdapter(dataAdapter);

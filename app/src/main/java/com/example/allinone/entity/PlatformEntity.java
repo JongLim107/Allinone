@@ -7,14 +7,14 @@ public class PlatformEntity {
     private String mAccount;
     private String mPassword;
     private String mAddress;
-    private int mPort;
     private String mTitle;
+    private int mPort;
 
     public PlatformEntity(String account, String pwd, String title, String address ) {
-        new PlatformEntity(account, pwd, title, address, 9100);
+        this(account, pwd, title, address, 9100);
     }
 
-    public PlatformEntity(String account, String pwd, String title, String address, int mPort) {
+   public PlatformEntity(String account, String pwd, String title, String address, int mPort) {
         this.mAccount = account;
         this.mPassword = pwd;
         this.mTitle = title;

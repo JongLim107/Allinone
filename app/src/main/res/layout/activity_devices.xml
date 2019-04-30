@@ -1,18 +1,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:binding="http://schemas.android.com/tools">
+    xmlns:binding="http://schemas.android.com/apk/res-auto">
 
     <data>
 
-        <import type="android.view.View" />
-
-        <variable
-            name="adapter"
-            type="com.example.allinone.ipcamera.platform.PlatformsActivity" />
-
         <variable
             name="viewModel"
-            type="com.example.allinone.ipcamera.platform.PlatformsViewModel" />
+            type="com.example.allinone.ipcamera.devices.ViewPagerViewModel" />
+
     </data>
 
     <LinearLayout
@@ -25,23 +19,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:animateLayoutChanges="true"
-            app:title="IP Camera"
-            app:titleMarginStart="8dp" />
+            binding:title="IP Camera"
+            binding:titleMarginStart="8dp" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:layout_gravity="center_horizontal"
-            app:setUpWithViewpager="@{viewPager}"
-            app:tabMode="scrollable" />
+            binding:tabMode="scrollable" />
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            app:adapter="@{viewModel.pagerAdapter}"/>
+            binding:adapter="@{viewModel.adapter}"
+            binding:items="@{viewModel.items}"
+            binding:itemBinding="@{viewModel.itemBinding}"
+            binding:onPageSelectedCommand="@{viewModel.onPageSelectedCommand}"
+            binding:pageTitles="@{viewModel.pageTitles}" />
 
     </LinearLayout>
 

@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.example.allinone.databinding.ItemPlatformBinding;
 import com.example.allinone.entity.PlatformEntity;
-import com.example.allinone.databinding.PlatformItemBinding;
 
 import java.util.List;
 
@@ -51,10 +51,10 @@ public class PlatformAdapter extends ArrayAdapter<PlatformEntity> {
     }
 
     public View initView(int position, View view, ViewGroup viewGroup) {
-        PlatformItemBinding binding;
+        ItemPlatformBinding binding;
         if (view == null) {
             LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-            binding = PlatformItemBinding.inflate(inflater, viewGroup, false);
+            binding = ItemPlatformBinding.inflate(inflater, viewGroup, false);
         } else {
             binding = DataBindingUtil.getBinding(view);
         }

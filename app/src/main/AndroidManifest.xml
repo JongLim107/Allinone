@@ -42,7 +42,7 @@
             android:name=".ipcamera.login.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ipcamera.platform.PlatformsActivity"
+            android:name=".ipcamera.devices.ViewPagerActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
