@@ -3,15 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <import type="android.view.View.OnClickListener" />
 
         <variable
             name="platform"
-            type="com.example.allinone.data.login.Platform" />
-
-        <variable
-            name="listener"
             type="com.example.allinone.data.login.Platform" />
     </data>
 
@@ -23,8 +18,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/item_margin"
-            android:layout_marginLeft="@dimen/side_padding">
+            android:layout_marginLeft="@dimen/side_padding"
+            android:layout_marginTop="@dimen/item_margin">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -36,14 +31,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/textColor"
+                android:text="@{platform.title}"
                 tools:text="qzlt" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/item_margin"
-            android:layout_marginLeft="@dimen/side_padding">
+            android:layout_marginLeft="@dimen/side_padding"
+            android:layout_marginBottom="@dimen/item_margin">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -55,6 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/textColor"
+                android:text="@{platform.address}"
                 tools:text="221.12.141.170" />
         </LinearLayout>
 

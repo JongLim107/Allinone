@@ -28,13 +28,6 @@ public class LoginViewModel extends BaseViewModel<LoginRepository> {
 
     private final ObservableInt clearBtnVisibility = new ObservableInt();
 
-    public BindingCommand onSelectPlatformClick = new BindingCommand(new BindingAction() {
-        @Override
-        public void call() {
-            uc.platform.setValue(null);
-        }
-    });
-
     public BindingCommand<Boolean> onFocusChangeCommand = new BindingCommand<>(new BindingConsumer<Boolean>() {
         @Override
         public void call(Boolean hasFocus) {
@@ -74,7 +67,6 @@ public class LoginViewModel extends BaseViewModel<LoginRepository> {
 
     public LoginViewModel(@NonNull Application application, LoginRepository model) {
         super(application, model);
-        uc.platform.setValue(new Platform());
     }
 
     /**
@@ -121,7 +113,6 @@ public class LoginViewModel extends BaseViewModel<LoginRepository> {
     public class UIChangeObservable {
         //密码开关观察者
         SingleLiveEvent<Boolean> pwdSwitchEvent = new SingleLiveEvent<>();
-        SingleLiveEvent<Platform> platform = new SingleLiveEvent<>();
     }
 
 }

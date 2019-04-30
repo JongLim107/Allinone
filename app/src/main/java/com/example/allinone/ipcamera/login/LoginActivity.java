@@ -3,7 +3,8 @@ package com.example.allinone.ipcamera.login;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.widget.ArrayAdapter;
+import android.view.View;
+import android.widget.AdapterView;
 
 import com.example.allinone.BR;
 import com.example.allinone.R;
@@ -18,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import me.goldze.mvvmhabit.base.BaseActivity;
+import me.goldze.mvvmhabit.utils.ToastUtils;
 
 public final class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewModel> {
 
@@ -34,20 +36,33 @@ public final class LoginActivity extends BaseActivity<ActivityLoginBinding, Logi
     @Override
     public LoginViewModel initViewModel() {
         AppViewModelFactory factory = AppViewModelFactory.getInstance(getApplication());
-        return ViewModelProviders.of(this, factory).get(LoginViewModel.class);
+        return ViewModelProviders.of(this, factory)
+                .get(LoginViewModel.class);
     }
 
     @Override
     public void initData() {
+        super.initData();
         List<Platform> platformList = new ArrayList<>();
         platformList.add(new Platform("Jong", "123", "My Room", "123"));
         platformList.add(new Platform("Lin", "123", "My House", "123"));
         platformList.add(new Platform("Guangxi", "123", "My HOME", "123"));
-        ArrayAdapter<Platform> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
-                platformList);
-        dataAdapter.setDropDownViewResource(R.layout.platform_item);
+        PlatformAdapter dataAdapter = new PlatformAdapter(this, viewModel, platformList);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         binding.platSpinner.setAdapter(dataAdapter);
-        super.initData();
+        binding.platSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Platform platform = (Platform) parent.getItemAtPosition(position);
+                viewModel.onSelectPlatform(platform);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                viewModel.onSelectPlatform(new Platform());
+            }
+        });
+        binding.platSpinner.showContextMenu();
     }
 
     @Override
@@ -60,13 +75,6 @@ public final class LoginActivity extends BaseActivity<ActivityLoginBinding, Logi
                 } else {
                     binding.password.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 }
-            }
-        });
-
-        viewModel.uc.platform.observe(this, new Observer<Platform>() {
-            @Override
-            public void onChanged(Platform platform) {
-                viewModel.onSelectPlatform(platform);
             }
         });
     }

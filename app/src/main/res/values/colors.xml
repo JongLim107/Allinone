@@ -4,7 +4,7 @@
     <color name="colorPrimaryCent">#30C0B0</color>
     <color name="colorPrimaryDark">#10A7A0</color>
     <color name="colorAccent">#E07040</color>
-    <color name="textColor">#202020</color>
+    <color name="textColor">#404040</color>
     <color name="textColorHint">#A0A0A0</color>
     <color name="textColorVice">#6C6C6C</color>
     <color name="viewLineColor">#E0E0E0</color>
@@ -15,19 +15,11 @@
     <color name="blackAlpha">#70202020</color>
 
     <color name="grey">#808080</color>
-    <color name="grey_alpha">#60808080</color>
-    <color name="grey_deep">#666666</color>
-    <color name="grey_deep_pro_alpha">#50666666</color>
-    <color name="grey_light">#C0C0C0</color>
-    <color name="grey_light_alpha">#60C0C0C0</color>
-    <color name="grey_light_pro">#F8F8F8</color>
-
-    <color name="plan">#4EB1F2</color>
-    <color name="main">#42b0d2</color>
-    <color name="blue">#345DA4</color>
-    <color name="blue_light_alpha">#5580B9EF</color>
+    <color name="greyAlpha">#60808080</color>
+    <color name="greyDeep">#666666</color>
+    <color name="greyLight">#C0C0C0</color>
+    <color name="greyLightAlpha">#60C0C0C0</color>
 
     <color name="brown">#3EC3C8</color>
-
-    <color name="common_red">#F05F4C</color>
+    <color name="orange">#F05F4C</color>
 </resources>
