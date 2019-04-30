@@ -1,23 +1,25 @@
-package com.example.allinone.data.login;
+package com.example.allinone.entity;
 
 /**
  * Created by Jong Lim on 21/4/19.
  */
-public class Platform {
+public class PlatformEntity {
     private String mAccount;
     private String mPassword;
     private String mAddress;
+    private int mPort;
     private String mTitle;
 
-    public Platform() {
-        new Platform("", "", "", "");
+    public PlatformEntity(String account, String pwd, String title, String address ) {
+        new PlatformEntity(account, pwd, title, address, 9100);
     }
 
-    public Platform(String account, String pwd, String title, String address) {
+    public PlatformEntity(String account, String pwd, String title, String address, int mPort) {
         this.mAccount = account;
         this.mPassword = pwd;
         this.mTitle = title;
         this.mAddress = address;
+        this.mPort = mPort;
     }
 
     public String getAccount() {

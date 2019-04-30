@@ -1,6 +1,6 @@
 package com.example.allinone.data.source.local;
 
-import com.example.allinone.data.source.LocalDataSource;
+import com.example.allinone.data.source.ILocalDataSource;
 
 import me.goldze.mvvmhabit.utils.SPUtils;
 
@@ -8,7 +8,7 @@ import me.goldze.mvvmhabit.utils.SPUtils;
 /**
  * Created by Jong Lim on 23/4/19.
  */
-public class LocalDataSourceImpl implements LocalDataSource {
+public class LocalDataSourceImpl implements ILocalDataSource {
     private volatile static LocalDataSourceImpl INSTANCE = null;
 
     public static LocalDataSourceImpl getInstance() {

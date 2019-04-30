@@ -3,7 +3,7 @@ package com.example.allinone.data.source;
 /**
  * Created by Jong Lim on 19/4/19.
  */
-public interface LocalDataSource {
+public interface ILocalDataSource {
     /**
      * 保存用户名
      */

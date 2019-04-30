@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.example.allinone.data.login.Platform;
+import com.example.allinone.entity.PlatformEntity;
 import com.example.allinone.databinding.PlatformItemBinding;
 
 import java.util.List;
@@ -20,13 +20,13 @@ import androidx.lifecycle.LifecycleOwner;
 /**
  * Created by Jong Lim on 29/4/19.
  */
-public class PlatformAdapter extends ArrayAdapter<Platform> {
+public class PlatformAdapter extends ArrayAdapter<PlatformEntity> {
 
-    private List<Platform> mPlatforms;
+    private List<PlatformEntity> mPlatforms;
 
     private LifecycleOwner mLifecycleOwner;
 
-    public PlatformAdapter(@NonNull Context context, LoginViewModel viewModel, @NonNull List<Platform> platforms) {
+    public PlatformAdapter(@NonNull Context context, LoginViewModel viewModel, @NonNull List<PlatformEntity> platforms) {
         super(context, 0, platforms);
         mLifecycleOwner = (LifecycleOwner) context;
         setList(platforms);
@@ -45,7 +45,7 @@ public class PlatformAdapter extends ArrayAdapter<Platform> {
 
     public View initDropDownView(int position, View view, ViewGroup viewGroup) {
         TextView tv = new TextView(viewGroup.getContext());
-        Platform platform = mPlatforms.get(position);
+        PlatformEntity platform = mPlatforms.get(position);
         tv.setText(platform.getTitle());
         return tv;
     }
@@ -66,7 +66,7 @@ public class PlatformAdapter extends ArrayAdapter<Platform> {
         return binding.getRoot();
     }
 
-    private void setList(List<Platform> tasks) {
+    private void setList(List<PlatformEntity> tasks) {
         mPlatforms = tasks;
         notifyDataSetChanged();
     }

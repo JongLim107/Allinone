@@ -9,7 +9,7 @@ import android.widget.AdapterView;
 import com.example.allinone.BR;
 import com.example.allinone.R;
 import com.example.allinone.app.AppViewModelFactory;
-import com.example.allinone.data.login.Platform;
+import com.example.allinone.entity.PlatformEntity;
 import com.example.allinone.databinding.ActivityLoginBinding;
 
 import java.util.ArrayList;
@@ -19,7 +19,6 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import me.goldze.mvvmhabit.base.BaseActivity;
-import me.goldze.mvvmhabit.utils.ToastUtils;
 
 public final class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewModel> {
 
@@ -43,23 +42,23 @@ public final class LoginActivity extends BaseActivity<ActivityLoginBinding, Logi
     @Override
     public void initData() {
         super.initData();
-        List<Platform> platformList = new ArrayList<>();
-        platformList.add(new Platform("Jong", "123", "My Room", "123"));
-        platformList.add(new Platform("Lin", "123", "My House", "123"));
-        platformList.add(new Platform("Guangxi", "123", "My HOME", "123"));
+        List<PlatformEntity> platformList = new ArrayList<>();
+        platformList.add(new PlatformEntity("Jong Lim", "2010LinZhong", "新加坡祖屋2号机", "123" ));
+        platformList.add(new PlatformEntity("Lin Zhong", "2010LinZhong", "Nanning Longgang", "123"));
+        platformList.add(new PlatformEntity("Shenzhen University", "2010LinZhong", "Ex Company 2nd Level", "123"));
         PlatformAdapter dataAdapter = new PlatformAdapter(this, viewModel, platformList);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         binding.platSpinner.setAdapter(dataAdapter);
         binding.platSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Platform platform = (Platform) parent.getItemAtPosition(position);
+                PlatformEntity platform = (PlatformEntity) parent.getItemAtPosition(position);
                 viewModel.onSelectPlatform(platform);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                viewModel.onSelectPlatform(new Platform());
+
             }
         });
         binding.platSpinner.showContextMenu();

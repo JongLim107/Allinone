@@ -7,7 +7,7 @@
 
         <variable
             name="platform"
-            type="com.example.allinone.data.login.Platform" />
+            type="com.example.allinone.entity.PlatformEntity" />
     </data>
 
     <LinearLayout

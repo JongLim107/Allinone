@@ -5,7 +5,8 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.example.allinone.data.login.LoginRepository;
-import com.example.allinone.data.login.Platform;
+import com.example.allinone.entity.PlatformEntity;
+import com.example.allinone.ipcamera.platform.PlatformsActivity;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
@@ -83,20 +84,22 @@ public class LoginViewModel extends BaseViewModel<LoginRepository> {
         }
 
         //RaJava模拟登录
-        addSubscribe(model.login().compose(RxUtils.schedulersTransformer()) //线程调度
+        addSubscribe(model.login()
+                .compose(RxUtils.schedulersTransformer()) //线程调度
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(Disposable disposable) throws Exception {
                         showDialog();
                     }
-                }).subscribe(new Consumer<Object>() {
+                })
+                .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) throws Exception {
                         dismissDialog();
                         //保存账号密码
                         model.saveUserName(title.get());
                         model.savePassword(password.get());
-                        // tartActivity(DemoActivity.class);
+                        startActivity(PlatformsActivity.class);
                         //关闭页面
                         finish();
                     }
@@ -104,7 +107,7 @@ public class LoginViewModel extends BaseViewModel<LoginRepository> {
 
     }
 
-    public void onSelectPlatform(@NonNull Platform plat) {
+    public void onSelectPlatform(@NonNull PlatformEntity plat) {
         title.set(plat.getTitle());
         account.set(plat.getAccount());
         password.set(plat.getPassword());
