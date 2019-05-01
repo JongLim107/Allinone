@@ -1,4 +1,4 @@
-package com.example.allinone.ipcamera.login;
+package com.example.allinone.ui.ipcamera.login;
 
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
@@ -9,8 +9,9 @@ import android.widget.AdapterView;
 import com.example.allinone.BR;
 import com.example.allinone.R;
 import com.example.allinone.app.AppViewModelFactory;
-import com.example.allinone.entity.PlatformEntity;
 import com.example.allinone.databinding.ActivityLoginBinding;
+import com.example.allinone.entity.PlatformEntity;
+import com.example.allinone.ui.ipcamera.devices.ViewPagerActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import me.goldze.mvvmhabit.base.BaseActivity;
 
-public final class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewModel> {
+public final class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewModel> implements LoginNavigator {
 
     @Override
     public int initContentView(Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public final class LoginActivity extends BaseActivity<ActivityLoginBinding, Logi
         platformList.add(new PlatformEntity("qzlt", "qzlt1234", "衢州联通", "221.12.141.170" ));
         platformList.add(new PlatformEntity("Lin Zhong", "2010LinZhong", "Nanning Longgang", "221.12.141.170"));
         platformList.add(new PlatformEntity("Shenzhen University", "2010LinZhong", "Ex Company 2nd Level", "221.12.141.170"));
-        PlatformAdapter dataAdapter = new PlatformAdapter(this, viewModel, platformList);
+        PlatformSpinnerAdapter dataAdapter = new PlatformSpinnerAdapter(this, viewModel, platformList);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         binding.platSpinner.setAdapter(dataAdapter);
         binding.platSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -61,11 +62,11 @@ public final class LoginActivity extends BaseActivity<ActivityLoginBinding, Logi
 
             }
         });
-        binding.platSpinner.showContextMenu();
     }
 
     @Override
     public void initViewObservable() {
+        viewModel.setNavigator(this);
         viewModel.uc.pwdSwitchEvent.observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
@@ -76,5 +77,16 @@ public final class LoginActivity extends BaseActivity<ActivityLoginBinding, Logi
                 }
             }
         });
+    }
+
+    @Override
+    public void openDevicesActivity() {
+        startActivity(ViewPagerActivity.class);
+        finish();
+    }
+
+    @Override
+    public void openPlatformsActivity() {
+
     }
 }

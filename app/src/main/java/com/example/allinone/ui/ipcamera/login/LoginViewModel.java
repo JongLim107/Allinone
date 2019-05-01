@@ -1,4 +1,4 @@
-package com.example.allinone.ipcamera.login;
+package com.example.allinone.ui.ipcamera.login;
 
 import android.app.Application;
 import android.text.TextUtils;
@@ -6,7 +6,6 @@ import android.view.View;
 
 import com.example.allinone.data.login.LoginRepository;
 import com.example.allinone.entity.PlatformEntity;
-import com.example.allinone.ipcamera.devices.ViewPagerActivity;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
@@ -21,11 +20,11 @@ import me.goldze.mvvmhabit.bus.event.SingleLiveEvent;
 import me.goldze.mvvmhabit.utils.RxUtils;
 import me.goldze.mvvmhabit.utils.ToastUtils;
 
-public class LoginViewModel extends BaseViewModel<LoginRepository> {
+public class LoginViewModel extends BaseViewModel<LoginRepository, LoginNavigator> {
     public final ObservableField<String> title = new ObservableField<>();
     public final ObservableField<String> account = new ObservableField<>();
     public final ObservableField<String> password = new ObservableField<>();
-    public final UIChangeObservable uc = new UIChangeObservable(); //封装一个界面发生改变的观察者
+    public final UIChangeObservable uc = new UIChangeObservable();
 
     private final ObservableInt clearBtnVisibility = new ObservableInt();
 
@@ -88,20 +87,18 @@ public class LoginViewModel extends BaseViewModel<LoginRepository> {
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
-                    public void accept(Disposable disposable) throws Exception {
-                        showDialog();
+                    public void accept(Disposable disposable) {
+                        showDialog("正在登陆，请稍后...");
                     }
                 })
                 .subscribe(new Consumer<Object>() {
                     @Override
-                    public void accept(Object o) throws Exception {
+                    public void accept(Object o) {
                         dismissDialog();
                         //保存账号密码
                         model.saveUserName(title.get());
                         model.savePassword(password.get());
-                        startActivity(ViewPagerActivity.class);
-                        //关闭页面
-                        finish();
+                        getNavigator().openDevicesActivity();
                     }
                 }));
 

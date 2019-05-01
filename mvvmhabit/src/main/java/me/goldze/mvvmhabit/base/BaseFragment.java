@@ -12,17 +12,14 @@ import com.trello.rxlifecycle2.components.support.RxFragment;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.Map;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
-import me.goldze.mvvmhabit.base.BaseViewModel.ParameterField;
 import me.goldze.mvvmhabit.bus.Messenger;
 import me.goldze.mvvmhabit.utils.MaterialDialogUtils;
 
@@ -59,7 +56,7 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
         //解除Messenger注册
         Messenger.getDefault().unregister(viewModel);
         //解除ViewModel生命周期感应
-        getLifecycle().removeObserver((LifecycleObserver) viewModel);
+        getLifecycle().removeObserver(viewModel);
         if (viewModel != null) {
             viewModel.removeRxBus();
         }
@@ -102,7 +99,7 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
         }
         binding.setVariable(viewModelId, viewModel);
         //让ViewModel拥有View的生命周期感应
-        getLifecycle().addObserver((LifecycleObserver) viewModel);
+        getLifecycle().addObserver(viewModel);
         //注入RxLifecycle生命周期
         viewModel.injectLifecycleProvider(this);
     }
@@ -124,38 +121,6 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
             @Override
             public void onChanged(@Nullable Void v) {
                 dismissDialog();
-            }
-        });
-        //跳入新页面
-        viewModel.getUC().getStartActivityEvent().observe(this, new Observer<Map<String, Object>>() {
-            @Override
-            public void onChanged(@Nullable Map<String, Object> params) {
-                Class<?> clz = (Class<?>) params.get(ParameterField.CLASS);
-                Bundle bundle = (Bundle) params.get(ParameterField.BUNDLE);
-                startActivity(clz, bundle);
-            }
-        });
-        //跳入ContainerActivity
-        viewModel.getUC().getStartContainerActivityEvent().observe(this, new Observer<Map<String, Object>>() {
-            @Override
-            public void onChanged(@Nullable Map<String, Object> params) {
-                String canonicalName = (String) params.get(ParameterField.CANONICAL_NAME);
-                Bundle bundle = (Bundle) params.get(ParameterField.BUNDLE);
-                startContainerActivity(canonicalName, bundle);
-            }
-        });
-        //关闭界面
-        viewModel.getUC().getFinishEvent().observe(this, new Observer<Void>() {
-            @Override
-            public void onChanged(@Nullable Void v) {
-                getActivity().finish();
-            }
-        });
-        //关闭上一层
-        viewModel.getUC().getOnBackPressedEvent().observe(this, new Observer<Void>() {
-            @Override
-            public void onChanged(@Nullable Void v) {
-                getActivity().onBackPressed();
             }
         });
     }

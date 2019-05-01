@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.allinone.ipcamera.login.LoginViewModel" />
+            type="com.example.allinone.ui.ipcamera.login.LoginViewModel" />
     </data>
 
     <RelativeLayout

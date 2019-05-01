@@ -1,4 +1,4 @@
-package com.example.allinone.ipcamera.devices;
+package com.example.allinone.ui.ipcamera.devices;
 
 import androidx.annotation.NonNull;
 import me.goldze.mvvmhabit.base.ItemViewModel;

@@ -1,4 +1,4 @@
-package com.example.allinone.ipcamera.login;
+package com.example.allinone.ui.ipcamera.login;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -20,13 +20,13 @@ import androidx.lifecycle.LifecycleOwner;
 /**
  * Created by Jong Lim on 29/4/19.
  */
-public class PlatformAdapter extends ArrayAdapter<PlatformEntity> {
+public class PlatformSpinnerAdapter extends ArrayAdapter<PlatformEntity> {
 
     private List<PlatformEntity> mPlatforms;
 
     private LifecycleOwner mLifecycleOwner;
 
-    public PlatformAdapter(@NonNull Context context, LoginViewModel viewModel, @NonNull List<PlatformEntity> platforms) {
+    public PlatformSpinnerAdapter(@NonNull Context context, LoginViewModel viewModel, @NonNull List<PlatformEntity> platforms) {
         super(context, 0, platforms);
         mLifecycleOwner = (LifecycleOwner) context;
         setList(platforms);

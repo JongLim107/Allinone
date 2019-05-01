@@ -1,16 +1,16 @@
-package com.example.allinone.ipcamera.devices;
-
-import androidx.annotation.Nullable;
-import me.goldze.mvvmhabit.base.BaseFragment;
+package com.example.allinone.ui.ipcamera.devices;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
+import me.goldze.mvvmhabit.base.BaseFragment;
+
 /**
  * Created by Jong Lim on 30/4/19.
  */
-public class VideoListFragment extends BaseFragment {
+public class SnapshotFragment extends BaseFragment {
 
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container,

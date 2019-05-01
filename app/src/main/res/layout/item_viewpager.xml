@@ -5,7 +5,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.allinone.ipcamera.devices.ViewPagerItemViewModel" />
+            type="com.example.allinone.ui.ipcamera.devices.ViewPagerItemViewModel" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

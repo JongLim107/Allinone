@@ -5,7 +5,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.example.allinone.data.login.LoginRepository;
-import com.example.allinone.ipcamera.login.LoginViewModel;
+import com.example.allinone.ui.ipcamera.login.LoginViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;

@@ -39,10 +39,10 @@
         </activity>
 
         <activity
-            android:name=".ipcamera.login.LoginActivity"
+            android:name=".ui.ipcamera.login.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ipcamera.devices.ViewPagerActivity"
+            android:name=".ui.ipcamera.devices.ViewPagerActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

@@ -5,7 +5,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.allinone.ipcamera.devices.ViewPagerViewModel" />
+            type="com.example.allinone.ui.ipcamera.devices.ViewPagerViewModel" />
 
     </data>
 
@@ -14,13 +14,10 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:animateLayoutChanges="true"
-            binding:title="IP Camera"
-            binding:titleMarginStart="8dp" />
+        <include
+            android:id="@+id/include"
+            layout="@layout/layout_toolbar"
+            binding:toolbarViewModel="@{viewModel}" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
@@ -35,8 +32,8 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             binding:adapter="@{viewModel.adapter}"
-            binding:items="@{viewModel.items}"
             binding:itemBinding="@{viewModel.itemBinding}"
+            binding:items="@{viewModel.items}"
             binding:onPageSelectedCommand="@{viewModel.onPageSelectedCommand}"
             binding:pageTitles="@{viewModel.pageTitles}" />
 

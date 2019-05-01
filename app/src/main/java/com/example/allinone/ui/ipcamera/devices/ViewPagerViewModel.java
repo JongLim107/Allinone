@@ -1,14 +1,14 @@
-package com.example.allinone.ipcamera.devices;
+package com.example.allinone.ui.ipcamera.devices;
 
 import android.app.Application;
 
 import com.example.allinone.BR;
 import com.example.allinone.R;
+import com.example.allinone.base.ToolbarViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableArrayList;
 import androidx.databinding.ObservableList;
-import me.goldze.mvvmhabit.base.BaseViewModel;
 import me.goldze.mvvmhabit.binding.command.BindingCommand;
 import me.goldze.mvvmhabit.binding.command.BindingConsumer;
 import me.goldze.mvvmhabit.bus.event.SingleLiveEvent;
@@ -19,7 +19,7 @@ import me.tatarka.bindingcollectionadapter2.ItemBinding;
  * Created by Jong Lim on 30/4/19.
  */
 
-public class ViewPagerViewModel extends BaseViewModel {
+public class ViewPagerViewModel extends ToolbarViewModel {
 
     private final String[] TITLES = new String[]{
             "Camera", "Snapshot Record", "Video Record",
@@ -27,6 +27,7 @@ public class ViewPagerViewModel extends BaseViewModel {
     };
 
     public SingleLiveEvent<String> itemClickEvent = new SingleLiveEvent<>();
+
     public BindingViewPagerAdapter adapter = new BindingViewPagerAdapter();
 
     //给ViewPager添加ObservableList
@@ -35,6 +36,13 @@ public class ViewPagerViewModel extends BaseViewModel {
     //给ViewPager添加ItemBinding
     public ItemBinding<ViewPagerItemViewModel> itemBinding = ItemBinding.of(BR.viewModel, R.layout.item_viewpager);
 
+    //ViewPager切换监听
+    public BindingCommand<Integer> onPageSelectedCommand = new BindingCommand<>(new BindingConsumer<Integer>() {
+        @Override
+        public void call(Integer index) {
+        }
+    });
+
     //给ViewPager添加PageTitle
     public final BindingViewPagerAdapter.PageTitles<ViewPagerItemViewModel> pageTitles = new BindingViewPagerAdapter.PageTitles<ViewPagerItemViewModel>() {
         @Override
@@ -42,14 +50,6 @@ public class ViewPagerViewModel extends BaseViewModel {
             return TITLES[position];
         }
     };
-
-    //ViewPager切换监听
-    public BindingCommand<Integer> onPageSelectedCommand = new BindingCommand<>(new BindingConsumer<Integer>() {
-        @Override
-        public void call(Integer index) {
-//            ToastUtils.showShort("ViewPager切换：" + index);
-        }
-    });
 
     public ViewPagerViewModel(@NonNull Application application) {
         super(application);

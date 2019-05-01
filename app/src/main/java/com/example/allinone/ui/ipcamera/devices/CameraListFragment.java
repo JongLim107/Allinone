@@ -1,4 +1,4 @@
-package com.example.allinone.ipcamera.devices;
+package com.example.allinone.ui.ipcamera.devices;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
