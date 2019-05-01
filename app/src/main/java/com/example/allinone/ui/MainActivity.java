@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.allinone.R;
+import com.example.allinone.ui.ipcamera.devices.ViewPagerActivity;
 import com.example.allinone.ui.ipcamera.login.LoginActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -87,10 +88,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
-            Intent i = new Intent(this, LoginActivity.class);
-            startActivity(i);
+            startActivity(new Intent(this, LoginActivity.class));
+
         } else if (id == R.id.nav_gallery) {
+            startActivity(new Intent(this, ViewPagerActivity.class));
 
         } else if (id == R.id.nav_slideshow) {
 

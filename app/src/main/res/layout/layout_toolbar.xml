@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:binding="http://schemas.android.com/apk/res-auto">
+    xmlns:binding="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -12,8 +13,8 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@color/white"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
         binding:contentInsetStart="0dp">
 
         <RelativeLayout
@@ -27,8 +28,9 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:background="?selectableItemBackground"
-                android:padding="16dp"
+                android:padding="18dp"
                 android:src="@mipmap/ic_back"
+                android:tint="@color/white"
                 binding:onClickCommand="@{toolbarViewModel.leftIconOnClick}" />
 
             <TextView
@@ -40,9 +42,10 @@
                 android:ellipsize="end"
                 android:gravity="center"
                 android:maxEms="12"
-                android:singleLine="true"
+                android:maxLines="2"
                 android:text="@{toolbarViewModel.titleText}"
-                android:textColor="@color/textColor"
+                android:textColor="@color/white"
+                tools:text="This is a test title and it will be long long long long long long title"
                 android:textSize="18sp"
                 binding:onClickCommand="@{toolbarViewModel.titleOnClick}" />
 
@@ -71,6 +74,7 @@
                 android:gravity="center"
                 android:padding="12dp"
                 android:src="@mipmap/toolbar_more"
+                android:tint="@color/white"
                 android:visibility="@{toolbarViewModel.rightIconVisibleObservable}"
                 binding:onClickCommand="@{toolbarViewModel.rightIconOnClick}" />
 

@@ -31,6 +31,9 @@ public class ViewPagerActivity extends BaseActivity<ActivityDevicesBinding, View
 
     @Override
     public void initData() {
+        viewModel.setNavigator(this);
+        viewModel.setTitleText("Platform Device");
+
         // 使用 TabLayout 和 ViewPager 相关联
         binding.tabs.setupWithViewPager(binding.viewPager);
         binding.viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(binding.tabs));
@@ -39,7 +42,6 @@ public class ViewPagerActivity extends BaseActivity<ActivityDevicesBinding, View
 
     @Override
     public void initViewObservable() {
-        viewModel.setNavigator(this);
         viewModel.itemClickEvent.observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String text) {
