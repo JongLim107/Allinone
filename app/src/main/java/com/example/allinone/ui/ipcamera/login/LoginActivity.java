@@ -11,7 +11,7 @@ import com.example.allinone.R;
 import com.example.allinone.app.AppViewModelFactory;
 import com.example.allinone.databinding.ActivityLoginBinding;
 import com.example.allinone.entity.PlatformEntity;
-import com.example.allinone.ui.ipcamera.devices.ViewPagerActivity;
+import com.example.allinone.ui.ipcamera.devices.DevicesFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +81,7 @@ public final class LoginActivity extends BaseActivity<ActivityLoginBinding, Logi
 
     @Override
     public void openDevicesActivity() {
-        startActivity(ViewPagerActivity.class);
+        startContainerActivity(DevicesFragment.class.getCanonicalName());
         finish();
     }
 

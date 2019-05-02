@@ -41,9 +41,6 @@
         <activity
             android:name=".ui.ipcamera.login.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.ipcamera.devices.ViewPagerActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

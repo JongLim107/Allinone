@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 import com.example.allinone.BR;
 import com.example.allinone.R;
-import com.example.allinone.databinding.FragmentBasePagerBinding;
+import com.example.allinone.databinding.FragmentPagerBinding;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.List;
@@ -19,7 +19,7 @@ import me.goldze.mvvmhabit.base.BaseViewModel;
 /**
  * Created by JongLim on 1/5/2019.
  */
-public abstract class BasePagerFragment extends BaseFragment<FragmentBasePagerBinding, BaseViewModel> {
+public abstract class BasePagerFragment extends BaseFragment<FragmentPagerBinding, BaseViewModel> {
 
     private List<Fragment> mFragments;
     private List<String> titlePager;
@@ -30,7 +30,7 @@ public abstract class BasePagerFragment extends BaseFragment<FragmentBasePagerBi
 
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return R.layout.fragment_base_pager;
+        return R.layout.fragment_pager;
     }
 
     @Override
