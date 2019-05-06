@@ -1,17 +1,29 @@
 package com.example.allinone.entity;
 
+import com.example.allinone.R;
+
 /**
  * Created by Jong Lim on 30/4/19.
  */
 public class CameraEntity {
     private String id;
     private String name;
-    private boolean status; // 0 == off-line,  1 == on-line
+    private boolean online; // off/on line
+    private boolean checked;
 
-    public CameraEntity(String id, String name, boolean status) {
+    public CameraEntity(String id, String name, boolean online) {
         this.id = id;
         this.name = name;
-        this.status = status;
+        this.online = online;
+        this.checked = false;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 
     public String getId() {
@@ -30,12 +42,15 @@ public class CameraEntity {
         this.name = name;
     }
 
-    public boolean getStatus() {
-        return status;
+    public boolean isOnline() {
+        return online;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setOnline(boolean online) {
+        this.online = online;
     }
 
+    public int getIcon(){
+        return online ? R.mipmap.ic_camera : R.mipmap.ic_camera_off;
+    }
 }

@@ -7,9 +7,6 @@
             name="viewModel"
             type="com.example.allinone.ui.ipcamera.devices.alarms.AlarmListViewModel" />
 
-        <variable
-            name="entity"
-            type="com.example.allinone.entity.AlarmEntity" />
     </data>
 
     <ScrollView

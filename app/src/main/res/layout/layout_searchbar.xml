@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:background="@drawable/sel_wh2tr_br_frame"
+        android:closeIcon="@mipmap/ic_close_w"
+        android:commitIcon="@mipmap/ic_search"
+        android:focusable="false"
+        android:imeOptions="actionSearch"
+        android:inputType="textCapWords"
+        android:padding="@dimen/view_padding"
+        android:searchHintIcon="@mipmap/ic_search"
+        android:searchIcon="@mipmap/ic_search"
+        tools:queryHint="Search Camera" />
+
+</layout>

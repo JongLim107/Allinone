@@ -1,5 +1,6 @@
 package com.example.allinone.ui.ipcamera.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -11,7 +12,7 @@ import com.example.allinone.R;
 import com.example.allinone.app.AppViewModelFactory;
 import com.example.allinone.databinding.ActivityLoginBinding;
 import com.example.allinone.entity.PlatformEntity;
-import com.example.allinone.ui.ipcamera.devices.DevicesFragment;
+import com.example.allinone.ui.ipcamera.devices.DevicesActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +82,7 @@ public final class LoginActivity extends BaseActivity<ActivityLoginBinding, Logi
 
     @Override
     public void openDevicesActivity() {
-        startContainerActivity(DevicesFragment.class.getCanonicalName());
+        startActivity(new Intent(this, DevicesActivity.class));
         finish();
     }
 

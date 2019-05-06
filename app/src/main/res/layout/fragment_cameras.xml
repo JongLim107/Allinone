@@ -1,69 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="com.example.allinone.ui.ipcamera.devices.cameras.CameraListViewModel" />
     </data>
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/llCamera"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/actionbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchView"
+                android:layout_width="0dp"
+                android:layout_height="42dp"
+                android:layout_weight="3"
+                android:closeIcon="@mipmap/ic_close_w"
+                android:focusable="false"
+                android:imeOptions="actionSearch"
+                android:inputType="textCapWords"
+                android:padding="@dimen/view_padding"
+                android:queryHint="Search Camera"
+                android:searchHintIcon="@mipmap/ic_search"
+                android:searchIcon="@mipmap/ic_search"
+                app:iconifiedByDefault="true" />
+
+            <Button
+                android:id="@+id/btnPlay"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/view_padding"
+                android:background="@drawable/sel_btn_background"
+                android:text="Play Now"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:onClickCommand="@{viewModel.onStartPlay}"/>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/vline"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/viewLineColor" />
+
+        <com.example.allinone.base.MyExpandableListView
+            android:id="@+id/elvCamera"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:text="Camera list"
-            android:textSize="24sp" />
+            android:background="@color/white"
+            android:divider="@null"
+            android:drawSelectorOnTop="false"
+            android:groupIndicator="@null"
+            android:scrollbars="vertical"
+            android:scrollingCache="true" />
 
-        <!--<TableLayout-->
-        <!--android:id="@+id/widget_layout_info"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="vertical"-->
-        <!--android:stretchColumns="*">-->
-
-        <!--<TableRow-->
-        <!--android:id="@+id/tableTitle"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_margin="1dp"-->
-        <!--android:divider="@color/colorPrimary">-->
-
-        <!--<TextView-->
-        <!--android:layout_width="30dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@{entity.ck_num}"-->
-        <!--android:textSize="15sp"-->
-        <!--android:textStyle="bold"-->
-        <!--tools:text="01" />-->
-
-        <!--<TextView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:text="@{entity.ck_time}"-->
-        <!--android:textSize="15sp"-->
-        <!--android:textStyle="bold"-->
-        <!--tools:text="19:00:00" />-->
-
-        <!--<TextView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:text="@{entity.ck_dev}"-->
-        <!--android:textSize="15sp"-->
-        <!--android:textStyle="bold"-->
-        <!--tools:text="1001001" />-->
-
-        <!--<TextView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:text="@{entity.ck_value}"-->
-        <!--android:textSize="15sp"-->
-        <!--android:textStyle="bold"-->
-        <!--tools:text="35℃" />-->
-        <!--</TableRow>-->
-        <!--</TableLayout>-->
-
-    </ScrollView>
+    </LinearLayout>
 
 </layout>

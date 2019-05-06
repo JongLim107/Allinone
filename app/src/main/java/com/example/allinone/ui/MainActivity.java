@@ -9,7 +9,7 @@ import android.view.View;
 import com.example.allinone.BR;
 import com.example.allinone.R;
 import com.example.allinone.databinding.ActivityMainBinding;
-import com.example.allinone.ui.ipcamera.devices.DevicesFragment;
+import com.example.allinone.ui.ipcamera.devices.DevicesActivity;
 import com.example.allinone.ui.ipcamera.login.LoginActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -93,7 +93,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
             startActivity(new Intent(this, LoginActivity.class));
 
         } else if (id == R.id.nav_gallery) {
-            startContainerActivity(DevicesFragment.class.getCanonicalName());
+            startActivity(new Intent(this, DevicesActivity.class));
 
         } else if (id == R.id.nav_slideshow) {
 

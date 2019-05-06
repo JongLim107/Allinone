@@ -1,6 +1,12 @@
 package com.example.allinone.ui.ipcamera.devices;
 
-import com.example.allinone.base.BasePagerFragment;
+import android.os.Bundle;
+
+import com.example.allinone.BR;
+import com.example.allinone.R;
+import com.example.allinone.base.BaseFragmentPagerAdapter;
+import com.example.allinone.base.ToolbarViewModel;
+import com.example.allinone.databinding.ActivityDevicesBinding;
 import com.example.allinone.ui.ipcamera.devices.alarms.AlarmListFragment;
 import com.example.allinone.ui.ipcamera.devices.cameras.CameraListFragment;
 
@@ -8,25 +14,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.fragment.app.Fragment;
+import me.goldze.mvvmhabit.base.BaseActivity;
 import me.goldze.mvvmhabit.base.IToolbarNavigator;
 
 /**
  * Created by Jong Lim on 30/4/19.
  */
-public class DevicesFragment extends BasePagerFragment implements IToolbarNavigator, DevicesNavigator {
+public class DevicesActivity extends BaseActivity<ActivityDevicesBinding, ToolbarViewModel> implements
+        IToolbarNavigator, DevicesNavigator {
 
-    @Override
     protected List<Fragment> pagerFragment() {
         List<Fragment> list = new ArrayList<>();
-        list.add(new AlarmListFragment());
         list.add(new CameraListFragment());
         list.add(new Fragment());
         list.add(new Fragment());
+        list.add(new AlarmListFragment());
         list.add(new Fragment());
         return list;
     }
 
-    @Override
     protected List<String> pagerTitleString() {
         List<String> list = new ArrayList<>();
         String[] TITLES = {"Switch In", "Switch Out"};
@@ -34,20 +40,35 @@ public class DevicesFragment extends BasePagerFragment implements IToolbarNaviga
         list.add("Snapshot Record");
         list.add("Video Record");
         list.add("Remote Alarm");
-        list.add("Camera");
+        list.add("Switch In");
         return list;
     }
 
     @Override
+    public int initContentView(Bundle savedInstanceState) {
+        return R.layout.activity_devices;
+    }
+
+    @Override
+    public int initVariableId() {
+        return BR.viewModel;
+    }
+
+    @Override
     public void initData() {
-        super.initData();
-//        viewModel.setNavigator(this);
-//        viewModel.setTitleText("Platform Device");
+        //设置Adapter
+        BaseFragmentPagerAdapter pagerAdapter = new BaseFragmentPagerAdapter(getSupportFragmentManager(),
+                pagerFragment(), pagerTitleString());
+        binding.viewPager.setAdapter(pagerAdapter);
+        binding.tabs.setupWithViewPager(binding.viewPager);
+
+        viewModel.setNavigator(this);
+        viewModel.setTitleText("Devices List");
     }
 
     @Override
     public void onLeftClick() {
-        getActivity().onBackPressed();
+        onBackPressed();
     }
 
     @Override

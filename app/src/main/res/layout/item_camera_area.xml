@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="com.example.allinone.entity.AreaEntity" />
+
+        <import type="com.example.allinone.entity.AreaEntity.Checked" />
+
+        <variable
+            name="area"
+            type="AreaEntity" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/cbCheck"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_margin="@dimen/view_padding"
+            android:background="@{area.checkedAll == Checked.some ? @drawable/bg_checkbox : null}"
+            android:checked="@{area.checkedAll == Checked.all}" />
+
+        <TextView
+            android:id="@+id/tvArea"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxLines="2"
+            android:text="@{area.name}"
+            android:textColor="@color/textColor"
+            android:textSize="18dp"
+            tools:text="Area title" />
+
+        <ImageView
+            android:id="@+id/ivArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/view_padding"
+            android:rotation="@{area.expanded ? 180 : 0}"
+            android:src="@mipmap/arrow_down" />
+    </LinearLayout>
+</layout>
