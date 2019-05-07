@@ -1,12 +1,10 @@
 package com.example.allinone.ui.ipcamera.devices.cameras;
 
-import android.graphics.Point;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.AbsListView.LayoutParams;
+import android.widget.ExpandableListView;
 
 import com.example.allinone.BR;
 import com.example.allinone.R;
@@ -56,57 +54,37 @@ public class CameraListFragment extends BaseFragment<FragmentCamerasBinding, Cam
                 return false;
             }
         });
-    }
-
-
-    @Override
-    public void setArguments(Bundle args) {
-        super.setArguments(args);
+        binding.elvCamera.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int gPos, int cPos, long id) {
+                ToastUtils.showShort("You click on child index " + cPos);
+                return false;
+            }
+        });
     }
 
     @Override
     public void initData() {
         initList();
-        LayoutParams listItemLP = new LayoutParams(LayoutParams.MATCH_PARENT, getItemHeight());
         View header = getLayoutInflater().inflate(R.layout.item_camera_area, binding.elvCamera, false);
-        binding.elvCamera.setHeaderView(header, listItemLP);
-        binding.elvCamera.setAdapter(new DevicesListAdapter(areas, listItemLP));
-        //        binding.elvCamera.setOnChildClickListener(this);
+        binding.elvCamera.setHeaderView(header);
+        binding.elvCamera.setAdapter(new DevicesListAdapter(areas));
     }
-
 
     private void initList() {
         //crate the group member info
         for (int i = 0; i < 20; i++) {
             final double d = Math.random();
-            final int num_children = (int)(d*50);
+            final int num_children = (int) (d * 50);
             List<CameraEntity> cameras = new ArrayList<>();
             if (num_children > 0) {
                 for (int j = 0; j < num_children; j++) {
                     boolean online = num_children % 2 == 0;
-                    cameras.add(new CameraEntity(null, "Camera " + num_children, online));
+                    cameras.add(new CameraEntity(null, "Camera " + j, online));
                 }
             }
             areas.add(new AreaEntity(null, "Area [" + num_children + "]", cameras));
         }
     }
 
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    /**
-     * get the List item LayoutParams
-     * fix for mutiple android devices
-     * note: can't move above
-     */
-    private int getItemHeight() {
-        WindowManager wm = getActivity().getWindowManager();
-        Point mPoint = new Point();
-        wm.getDefaultDisplay()
-                .getSize(mPoint);
-        return mPoint.y > 900 ? mPoint.y / 14 : mPoint.y / 10;
-    }
 }

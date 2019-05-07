@@ -4,7 +4,6 @@ import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseExpandableListAdapter;
 
 import com.example.allinone.base.MyExpandableListView;
@@ -14,24 +13,17 @@ import com.example.allinone.entity.AreaEntity;
 import com.example.allinone.entity.CameraEntity;
 
 import java.util.List;
-import java.util.Objects;
-
-import androidx.databinding.DataBindingUtil;
 
 /**
  * Created by Jong Lim on 4/5/19.
  */
 public class DevicesListAdapter extends BaseExpandableListAdapter implements MyExpandableListView.HeaderAdapter {
 
-    private static final String TAG = "ExpListAdt";
-
     private SparseIntArray groupStatusMap = new SparseIntArray();
     private List<AreaEntity> areas;
-    private LayoutParams itemLP;
 
-    public DevicesListAdapter(List<AreaEntity> groupArray, LayoutParams itemLP) {
+    public DevicesListAdapter(List<AreaEntity> groupArray) {
         this.areas = groupArray;
-        this.itemLP = itemLP;
     }
 
     @Override
@@ -82,41 +74,46 @@ public class DevicesListAdapter extends BaseExpandableListAdapter implements MyE
 
     @Override
     public boolean hasStableIds() {
-        return false; // Verify
+        return true; // Verify
     }
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         ItemCameraAreaBinding binding;
-        if (convertView == null) {
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            binding = ItemCameraAreaBinding.inflate(inflater, parent, false);
+        if (convertView == null || convertView.getTag() == null) {
+            binding = ItemCameraAreaBinding.inflate(LayoutInflater.from(parent.getContext()));
+            convertView = binding.getRoot();
+            convertView.setTag(binding);
         } else {  // Recycling view
-            convertView.setLayoutParams(itemLP);
-            binding = DataBindingUtil.getBinding(convertView);
+            if (convertView.getTag() instanceof ItemCameraAreaBinding) {
+                binding = (ItemCameraAreaBinding) convertView.getTag();
+            } else {
+                return null;
+            }
         }
 
-        Objects.requireNonNull(binding)
-                .setArea(areas.get(groupPosition));
+        binding.setArea(areas.get(groupPosition));
         binding.executePendingBindings();
         return binding.getRoot();
     }
 
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView,
-            ViewGroup parent) {
+    public View getChildView(int gPos, int cPos, boolean isLastChild, View convertView, ViewGroup parent) {
         ItemCameraDevBinding binding;
-        if (convertView == null) {
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            binding = ItemCameraDevBinding.inflate(inflater, parent, false);
+        if (convertView == null || convertView.getTag() == null) {
+            binding = ItemCameraDevBinding.inflate(LayoutInflater.from(parent.getContext()));
+            convertView = binding.getRoot();
+            convertView.setTag(binding);
         } else {  // Recycling view
-            convertView.setLayoutParams(itemLP);
-            binding = DataBindingUtil.getBinding(convertView);
+            if (convertView.getTag() instanceof ItemCameraDevBinding) {
+                binding = (ItemCameraDevBinding) convertView.getTag();
+            } else {
+                return null;
+            }
         }
 
-        Objects.requireNonNull(binding)
-                .setCamera(getChild(groupPosition, childPosition));
-        return binding.getRoot();
+        binding.setCamera(getChild(gPos, cPos));
+        return convertView;
     }
 
     @Override
@@ -145,10 +142,10 @@ public class DevicesListAdapter extends BaseExpandableListAdapter implements MyE
      */
     @Override
     public void configureHeader(View view, int groupPosition, int childPosition, int alpha) {
-        view.setLayoutParams(itemLP);
-        ItemCameraAreaBinding binding = DataBindingUtil.getBinding(view);
-        Objects.requireNonNull(binding)
-                .setArea(getGroup(groupPosition));
+        //        ItemCameraAreaBinding binding = DataBindingUtil.getBinding(view);
+        //        if (binding != null) {
+        //            binding.setArea(getGroup(groupPosition));
+        //        }
     }
 
     /**

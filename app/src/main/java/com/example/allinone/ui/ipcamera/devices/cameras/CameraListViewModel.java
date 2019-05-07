@@ -20,7 +20,7 @@ public class CameraListViewModel extends BaseViewModel<BaseModel, DevicesNavigat
 
     private final int MAX_OPEN_COUNT = 16;
 
-    private int[] selectedCameras;
+    private int[] selectedCameras = new int[0];
     public BindingCommand onStartPlay = new BindingCommand(new BindingAction() {
         @Override
         public void call() {

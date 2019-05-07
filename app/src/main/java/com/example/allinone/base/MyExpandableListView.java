@@ -12,6 +12,8 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnGroupClickListener;
 
+import me.goldze.mvvmhabit.utils.ToastUtils;
+
 /**
  * Created by Jong Lim on 4/5/19.
  */
@@ -20,20 +22,14 @@ public class MyExpandableListView extends ExpandableListView implements OnScroll
 
     // 用于在列表头显示的 View
     private View mHeaderView;
-
+    private int mHeaderViewWidth;
+    private int mHeaderViewHeight;
     // 列表头item 是否可见
     private boolean mHeaderViewVisible;
-
-    private int mHeaderViewWidth;
-
-    private int mHeaderViewHeight;
-
     private HeaderAdapter mHeaderAdapter;
 
     private float mTouchDownX;
-
     private float mTouchDownY;
-
     private int mOldStatus = -1;
 
     /**
@@ -51,9 +47,8 @@ public class MyExpandableListView extends ExpandableListView implements OnScroll
         super(context, attrs, defStyleAttr);
     }
 
-    public void setHeaderView(View view, AbsListView.LayoutParams mListItemLP) {
+    public void setHeaderView(View view) {
         mHeaderView = view;
-        view.setLayoutParams(mListItemLP);
         if (mHeaderView != null) {
             setFadingEdgeLength(0);
         }
@@ -94,9 +89,9 @@ public class MyExpandableListView extends ExpandableListView implements OnScroll
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        final long flatPostion = getExpandableListPosition(getFirstVisiblePosition());
-        final int groupPos = ExpandableListView.getPackedPositionGroup(flatPostion);
-        final int childPos = ExpandableListView.getPackedPositionChild(flatPostion);
+        final long flatPos = getExpandableListPosition(getFirstVisiblePosition());
+        final int groupPos = ExpandableListView.getPackedPositionGroup(flatPos);
+        final int childPos = ExpandableListView.getPackedPositionChild(flatPos);
         if (mHeaderAdapter != null) {
             int status = mHeaderAdapter.getHeaderStatus(groupPos, childPos);
             if (mHeaderView != null && status != mOldStatus) {
@@ -104,22 +99,26 @@ public class MyExpandableListView extends ExpandableListView implements OnScroll
                 mHeaderView.layout(0, 0, mHeaderViewWidth, mHeaderViewHeight);
             }
         }
-        Log.v("MyEXPListView", "onLayout()");
+        // Log.v("MyEXPListView", "onLayout()");
         configureHeaderView(groupPos, childPos);
-    }
-
-    @Override
-    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        final long flatPos = getExpandableListPosition(firstVisibleItem);
-        int groupPosition = ExpandableListView.getPackedPositionGroup(flatPos);
-        int childPosition = ExpandableListView.getPackedPositionChild(flatPos);
-
-        configureHeaderView(groupPosition, childPosition);
     }
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
 
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        final long flatPos = getExpandableListPosition(getFirstVisiblePosition());
+        final int groupPos = ExpandableListView.getPackedPositionGroup(flatPos);
+        final int childPos = ExpandableListView.getPackedPositionChild(flatPos);
+        configureHeaderView(groupPos, childPos);
+    }
+
+    @Override
+    public boolean performClick() {
+        return super.performClick();
     }
 
     /**
@@ -128,10 +127,11 @@ public class MyExpandableListView extends ExpandableListView implements OnScroll
      */
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        //Log.v("MyEXPListView", "onTouchEvent()");
+        Log.v("MyEXPListView", "onTouchEvent()");
         if (mHeaderViewVisible) {
             switch (ev.getAction()) {
                 case MotionEvent.ACTION_DOWN:
+                    performClick();
                     mTouchDownX = ev.getX();
                     mTouchDownY = ev.getY();
                     if (mTouchDownX <= mHeaderViewWidth - 60 && mTouchDownY <= mHeaderViewHeight) {
@@ -152,6 +152,8 @@ public class MyExpandableListView extends ExpandableListView implements OnScroll
                     }
                     break;
             }
+        } else {
+            performClick();
         }
         return super.onTouchEvent(ev);
     }
@@ -162,6 +164,7 @@ public class MyExpandableListView extends ExpandableListView implements OnScroll
     @Override
     public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
         Log.v("MyEXPListView", "onGroupClick(" + groupPosition + ")");
+        ToastUtils.showShort("You click on group index " + groupPosition);
         if (mHeaderAdapter.getGroupClickStatus(groupPosition) == 0) {
             mHeaderAdapter.setGroupClickStatus(groupPosition, 1);
             parent.expandGroup(groupPosition);

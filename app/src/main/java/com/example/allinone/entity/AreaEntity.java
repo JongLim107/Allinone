@@ -2,22 +2,23 @@ package com.example.allinone.entity;
 
 import java.util.List;
 
+import androidx.databinding.ObservableBoolean;
+
 /**
  * Created by Jong Lim on 30/4/19.
  */
 public class AreaEntity {
     private String id;
     private String name;
-    private boolean expanded;
     private Checked checkedAll;
     private List<CameraEntity> cameras;
+    private ObservableBoolean expanded = new ObservableBoolean(false);
 
     public AreaEntity(String id, String name, List<CameraEntity> cameras) {
         this.id = id;
         this.name = name;
         this.cameras = cameras;
         this.checkedAll = Checked.none;
-        this.expanded = false;
     }
 
     public int getCameraLen() {
@@ -48,14 +49,6 @@ public class AreaEntity {
         this.cameras = cameras;
     }
 
-    public boolean isExpanded() {
-        return expanded;
-    }
-
-    public void setExpanded(boolean expanded) {
-        this.expanded = expanded;
-    }
-
     public Checked getCheckedAll() {
         return checkedAll;
     }
@@ -64,8 +57,23 @@ public class AreaEntity {
         this.checkedAll = checkedAll;
     }
 
+    public boolean isExpanded() {
+        return this.expanded.get();
+    }
+
+    public void setExpanded(boolean expanded) {
+        this.expanded.set(expanded);
+    }
+
+    public boolean toggle() {
+        setExpanded(!isExpanded());
+        return false;
+    }
+
     public enum Checked {
-        none, some, all
+        none,
+        some,
+        all
     }
 
 }
