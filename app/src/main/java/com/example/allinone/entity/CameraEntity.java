@@ -10,12 +10,14 @@ public class CameraEntity {
     private String name;
     private boolean online; // off/on line
     private boolean checked;
+    private int checkIcon;
 
     public CameraEntity(String id, String name, boolean online) {
         this.id = id;
         this.name = name;
         this.online = online;
         this.checked = false;
+        this.checkIcon = R.drawable.ic_check_na;
     }
 
     public boolean isChecked() {
@@ -46,11 +48,11 @@ public class CameraEntity {
         return online;
     }
 
-    public void setOnline(boolean online) {
-        this.online = online;
+    public int getIcon() {
+        return online ? R.mipmap.ic_camera : R.mipmap.ic_camera_off;
     }
 
-    public int getIcon(){
-        return online ? R.mipmap.ic_camera : R.mipmap.ic_camera_off;
+    public int getCheckIcon() {
+        return checked ? R.drawable.ic_check_all : R.drawable.ic_check_na;
     }
 }

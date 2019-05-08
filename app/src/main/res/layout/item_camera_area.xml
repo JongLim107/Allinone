@@ -1,51 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
-        <import type="com.example.allinone.entity.AreaEntity"/>
-
-        <import type="com.example.allinone.entity.AreaEntity.Checked"/>
-
         <variable
-            name="area"
-            type="AreaEntity"/>
+            name="model"
+            type="com.example.allinone.entity.AreaEntity" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:background="@drawable/under_line"
-        android:gravity="center"
-        android:onClick="@{()->area.toggle()}"
+        android:layout_height="48dp"
+        android:background="@drawable/bg_under_line"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <CheckBox
-            android:id="@+id/cbCheck"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_margin="@dimen/view_padding"
-            android:background="@{area.checkedAll == Checked.some ? @drawable/bg_checkbox : null}"
-            android:checked="@{area.checkedAll == Checked.all}"/>
+        <ImageView
+            android:id="@+id/iv_right"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:padding="@dimen/side_padding"
+            android:rotation="@{model.expanded ? 180 : 270}"
+            android:src="@mipmap/arrow_down"
+            tools:rotation="270" />
 
         <TextView
-            android:id="@+id/tvArea"
+            android:id="@+id/area_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:maxLines="2"
-            android:text="@{area.name}"
+            android:text="@{model.name}"
             android:textColor="@color/textColor"
-            android:textSize="18dp"
-            tools:text="Area title"/>
+            android:textSize="20sp"
+            tools:text="Area title" />
 
-        <ImageView
-            android:id="@+id/ivArrow"
+        <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/view_padding"
-            android:rotation="@{area.expanded ? 180 : 0}"
-            android:src="@mipmap/arrow_down"/>
+            android:layout_height="match_parent"
+            android:padding="@dimen/side_padding">
+
+            <ImageView
+                android:id="@+id/iv_left"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                app:imageResource="@{model.checkIcon}"/>
+                <!--android:src="@drawable/ic_check_all" -->
+        </FrameLayout>
+
     </LinearLayout>
+
+
 </layout>

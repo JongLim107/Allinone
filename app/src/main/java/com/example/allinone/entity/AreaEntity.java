@@ -1,8 +1,8 @@
 package com.example.allinone.entity;
 
-import java.util.List;
+import com.example.allinone.R;
 
-import androidx.databinding.ObservableBoolean;
+import java.util.List;
 
 /**
  * Created by Jong Lim on 30/4/19.
@@ -10,18 +10,21 @@ import androidx.databinding.ObservableBoolean;
 public class AreaEntity {
     private String id;
     private String name;
-    private Checked checkedAll;
+    private boolean expanded;
+    private Checked checked;
+    private int checkIcon;
     private List<CameraEntity> cameras;
-    private ObservableBoolean expanded = new ObservableBoolean(false);
 
     public AreaEntity(String id, String name, List<CameraEntity> cameras) {
         this.id = id;
         this.name = name;
         this.cameras = cameras;
-        this.checkedAll = Checked.none;
+        this.expanded = false;
+        this.checked = Checked.none;
+        this.checkIcon = R.drawable.ic_check_na;
     }
 
-    public int getCameraLen() {
+    public int childSize() {
         return this.cameras.size();
     }
 
@@ -45,35 +48,34 @@ public class AreaEntity {
         return cameras;
     }
 
-    public void setCameras(List<CameraEntity> cameras) {
-        this.cameras = cameras;
-    }
-
-    public Checked getCheckedAll() {
-        return checkedAll;
-    }
-
-    public void setCheckedAll(Checked checkedAll) {
-        this.checkedAll = checkedAll;
-    }
-
     public boolean isExpanded() {
-        return this.expanded.get();
+        return expanded;
     }
 
     public void setExpanded(boolean expanded) {
-        this.expanded.set(expanded);
+        this.expanded = expanded;
     }
 
-    public boolean toggle() {
-        setExpanded(!isExpanded());
-        return false;
+    public int getCheckIcon() {
+        switch (checked) {
+            case some:
+                checkIcon = R.drawable.ic_check_bg;
+                break;
+            case all:
+                checkIcon = R.drawable.ic_check_all;
+                break;
+            default:
+                checkIcon = R.drawable.ic_check_na;
+        }
+        return checkIcon;
+    }
+
+    public void setChecked(Checked checked) {
+        this.checked = checked;
     }
 
     public enum Checked {
-        none,
-        some,
-        all
+        none, some, all
     }
 
 }

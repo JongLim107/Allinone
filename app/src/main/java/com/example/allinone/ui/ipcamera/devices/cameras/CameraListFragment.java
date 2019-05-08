@@ -9,12 +9,9 @@ import android.widget.ExpandableListView;
 import com.example.allinone.BR;
 import com.example.allinone.R;
 import com.example.allinone.databinding.FragmentCamerasBinding;
-import com.example.allinone.entity.AreaEntity;
+import com.example.allinone.databinding.ItemCameraAreaBinding;
+import com.example.allinone.databinding.ItemCameraDevBinding;
 import com.example.allinone.entity.CameraEntity;
-import com.example.allinone.ui.ipcamera.devices.DevicesListAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
@@ -26,7 +23,7 @@ import me.goldze.mvvmhabit.utils.ToastUtils;
  */
 public class CameraListFragment extends BaseFragment<FragmentCamerasBinding, CameraListViewModel> {
 
-    private List<AreaEntity> areas = new ArrayList<>();
+    private CamerasListAdapter adapter;
 
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -40,9 +37,20 @@ public class CameraListFragment extends BaseFragment<FragmentCamerasBinding, Cam
     }
 
     @Override
+    public void initData() {
+        adapter = new CamerasListAdapter(getContext(), viewModel.areas);
+        binding.areasList.setAdapter(adapter);
+
+        ItemCameraAreaBinding ibinding = ItemCameraAreaBinding.inflate(getLayoutInflater(), binding.areasList, false);
+        View headerView = ibinding.getRoot();
+        headerView.setTag(ibinding);
+        binding.areasList.setHeaderView(headerView);
+    }
+
+    @Override
     public void initViewObservable() {
         super.initViewObservable();
-        binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        binding.searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -54,37 +62,21 @@ public class CameraListFragment extends BaseFragment<FragmentCamerasBinding, Cam
                 return false;
             }
         });
-        binding.elvCamera.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
+        binding.areasList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int gPos, int cPos, long id) {
-                ToastUtils.showShort("You click on child index " + cPos);
-                return false;
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition,
+                    long id) {
+                CameraEntity cam = adapter.getChild(groupPosition, childPosition);
+                if (cam.isOnline()) {
+                    ItemCameraDevBinding binding = (ItemCameraDevBinding) v.getTag();
+                    cam.setChecked(!cam.isChecked());
+                    binding.setModel(cam);
+                } else {
+                    ToastUtils.showShort("Camera is offline, please retry later.");
+                }
+                return true;
             }
         });
     }
-
-    @Override
-    public void initData() {
-        initList();
-        View header = getLayoutInflater().inflate(R.layout.item_camera_area, binding.elvCamera, false);
-        binding.elvCamera.setHeaderView(header);
-        binding.elvCamera.setAdapter(new DevicesListAdapter(areas));
-    }
-
-    private void initList() {
-        //crate the group member info
-        for (int i = 0; i < 20; i++) {
-            final double d = Math.random();
-            final int num_children = (int) (d * 50);
-            List<CameraEntity> cameras = new ArrayList<>();
-            if (num_children > 0) {
-                for (int j = 0; j < num_children; j++) {
-                    boolean online = num_children % 2 == 0;
-                    cameras.add(new CameraEntity(null, "Camera " + j, online));
-                }
-            }
-            areas.add(new AreaEntity(null, "Area [" + num_children + "]", cameras));
-        }
-    }
-
 }

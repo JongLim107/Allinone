@@ -26,8 +26,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     //support
     implementation rootProject.ext.support["appcompat"]
     implementation rootProject.ext.support["constraintlayout"]
@@ -35,20 +34,20 @@ dependencies {
     implementation rootProject.ext.support["support-v4"]
     implementation rootProject.ext.support["test-runner"]
     implementation rootProject.ext.support["test-espresso"]
-
     //下拉刷新,上拉加载
     implementation 'com.lcodecorex:tkrefreshlayout:1.0.7'
-
     //底部tabBar
     implementation('me.majiajie:pager-bottom-tab-strip:2.2.5') {
         exclude group: 'com.android.support'
     }
-
     //MVVMHabit
     implementation project(':mvvmhabit')
     //implementation 'com.github.goldze:MVVMHabit:3.1.1'
-
     //内存泄漏测试
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.2'
     debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.2'
+    // Test
+    testImplementation 'org.mockito:mockito-all:2.0.2-beta'
+    testImplementation 'org.mockito:mockito-core:2.27.0'
+    testImplementation 'org.hamcrest:hamcrest:2.1'
 }

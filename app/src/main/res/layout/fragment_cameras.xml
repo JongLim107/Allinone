@@ -10,54 +10,47 @@
     </data>
 
     <LinearLayout
-        android:id="@+id/llCamera"
+        android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/actionbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.SearchView
-                android:id="@+id/searchView"
+                android:id="@+id/search_bar"
                 android:layout_width="0dp"
                 android:layout_height="42dp"
-                android:layout_weight="3"
+                android:layout_weight="1"
+                android:background="@drawable/under_line"
                 android:closeIcon="@mipmap/ic_close_w"
                 android:focusable="false"
                 android:imeOptions="actionSearch"
                 android:inputType="textCapWords"
-                android:padding="@dimen/view_padding"
                 android:queryHint="Search Camera"
                 android:searchHintIcon="@mipmap/ic_search"
                 android:searchIcon="@mipmap/ic_search"
                 app:iconifiedByDefault="true" />
 
             <Button
-                android:id="@+id/btnPlay"
+                android:id="@+id/play_button"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="46dp"
                 android:layout_marginRight="@dimen/view_padding"
                 android:background="@drawable/sel_btn_background"
                 android:text="Play Now"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="16sp"
-                app:onClickCommand="@{viewModel.onStartPlay}"/>
+                app:onClickCommand="@{viewModel.onStartPlay}" />
         </LinearLayout>
 
-        <View
-            android:id="@+id/vline"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/viewLineColor" />
-
-        <com.example.allinone.base.MyExpandableListView
-            android:id="@+id/elvCamera"
+        <com.example.allinone.base.StickyExpandableListView
+            android:id="@+id/areas_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
@@ -65,7 +58,7 @@
             android:drawSelectorOnTop="false"
             android:groupIndicator="@null"
             android:scrollbars="vertical"
-            android:scrollingCache="true" />
+            android:scrollingCache="true"/>
 
     </LinearLayout>
 

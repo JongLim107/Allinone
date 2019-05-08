@@ -7,6 +7,7 @@ import com.example.allinone.R;
 import com.example.allinone.base.BaseFragmentPagerAdapter;
 import com.example.allinone.base.ToolbarViewModel;
 import com.example.allinone.databinding.ActivityDevicesBinding;
+import com.example.allinone.entity.AreaEntity;
 import com.example.allinone.ui.ipcamera.devices.alarms.AlarmListFragment;
 import com.example.allinone.ui.ipcamera.devices.cameras.CameraListFragment;
 
@@ -87,11 +88,6 @@ public class DevicesActivity extends BaseActivity<ActivityDevicesBinding, Toolba
     }
 
     @Override
-    public void openCameraActivity() {
-
-    }
-
-    @Override
     public void openSnapshotActivity() {
 
     }
@@ -103,6 +99,11 @@ public class DevicesActivity extends BaseActivity<ActivityDevicesBinding, Toolba
 
     @Override
     public void openFileListActivity() {
+
+    }
+
+    @Override
+    public void openCameraActivity(List<AreaEntity> areas, int[] selectedCameras) {
 
     }
 
