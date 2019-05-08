@@ -15,7 +15,7 @@ import android.widget.ExpandableListView.OnGroupClickListener;
 /**
  * Created by Jong Lim on 4/5/19.
  */
-public class MyExpandableListView extends ExpandableListView implements OnScrollListener, OnGroupClickListener {
+public class StickyExpandableListView extends ExpandableListView implements OnScrollListener, OnGroupClickListener {
     private static final int MAX_ALPHA = 255;
 
     // 用于在列表头显示的 View
@@ -39,30 +39,31 @@ public class MyExpandableListView extends ExpandableListView implements OnScroll
     /**
      * Constructor
      */
-    public MyExpandableListView(Context context) {
+    public StickyExpandableListView(Context context) {
         super(context);
     }
 
-    public MyExpandableListView(Context context, AttributeSet attrs) {
+    public StickyExpandableListView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public MyExpandableListView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public StickyExpandableListView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
-    public void setHeaderView(View view, AbsListView.LayoutParams mListItemLP) {
+    public void setHeaderView(View view) {
         mHeaderView = view;
-        view.setLayoutParams(mListItemLP);
         if (mHeaderView != null) {
-            setFadingEdgeLength(0);
+            setFadingEdgeLength(0); // Verify
         }
+        // Log.v("MyEXPListView", "setHeaderView()");
         requestLayout();
     }
 
     @Override
     public void setAdapter(ExpandableListAdapter adapter) {
         super.setAdapter(adapter);
+        // Log.v("MyEXPListView", "setAdapter()");
         mHeaderAdapter = (HeaderAdapter) adapter;
         setOnScrollListener(this);
         setOnGroupClickListener(this);
@@ -71,6 +72,7 @@ public class MyExpandableListView extends ExpandableListView implements OnScroll
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        // Log.v("MyEXPListView", "onMeasure()");
         if (mHeaderView != null) {
             measureChild(mHeaderView, widthMeasureSpec, heightMeasureSpec);
             mHeaderViewWidth = mHeaderView.getMeasuredWidth();
@@ -84,7 +86,7 @@ public class MyExpandableListView extends ExpandableListView implements OnScroll
     @Override
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
-        Log.v("MyEXPListView", "dispatchDraw()");
+        // Log.v("MyEXPListView", "dispatchDraw()");
         if (mHeaderViewVisible) {
             //分组栏是直接绘制到界面中，而不是加入到ViewGroup中
             drawChild(canvas, mHeaderView, getDrawingTime());
@@ -94,9 +96,9 @@ public class MyExpandableListView extends ExpandableListView implements OnScroll
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        final long flatPostion = getExpandableListPosition(getFirstVisiblePosition());
-        final int groupPos = ExpandableListView.getPackedPositionGroup(flatPostion);
-        final int childPos = ExpandableListView.getPackedPositionChild(flatPostion);
+        final long flatPos = getExpandableListPosition(getFirstVisiblePosition());
+        final int groupPos = ExpandableListView.getPackedPositionGroup(flatPos);
+        final int childPos = ExpandableListView.getPackedPositionChild(flatPos);
         if (mHeaderAdapter != null) {
             int status = mHeaderAdapter.getHeaderStatus(groupPos, childPos);
             if (mHeaderView != null && status != mOldStatus) {
@@ -104,22 +106,26 @@ public class MyExpandableListView extends ExpandableListView implements OnScroll
                 mHeaderView.layout(0, 0, mHeaderViewWidth, mHeaderViewHeight);
             }
         }
-        Log.v("MyEXPListView", "onLayout()");
+        // Log.v("MyEXPListView", "onLayout()");
         configureHeaderView(groupPos, childPos);
     }
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         final long flatPos = getExpandableListPosition(firstVisibleItem);
-        int groupPosition = ExpandableListView.getPackedPositionGroup(flatPos);
-        int childPosition = ExpandableListView.getPackedPositionChild(flatPos);
-
-        configureHeaderView(groupPosition, childPosition);
+        final int groupPos = ExpandableListView.getPackedPositionGroup(flatPos);
+        final int childPos = ExpandableListView.getPackedPositionChild(flatPos);
+        configureHeaderView(groupPos, childPos);
     }
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
+        // Log.v("MyEXPListView", "onScrollStateChanged()");
+    }
 
+    @Override
+    public boolean performClick(){
+        return super.performClick();
     }
 
     /**
@@ -128,10 +134,11 @@ public class MyExpandableListView extends ExpandableListView implements OnScroll
      */
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        //Log.v("MyEXPListView", "onTouchEvent()");
+        // Log.v("MyEXPListView", "onTouchEvent()");
         if (mHeaderViewVisible) {
             switch (ev.getAction()) {
                 case MotionEvent.ACTION_DOWN:
+                    performClick();
                     mTouchDownX = ev.getX();
                     mTouchDownY = ev.getY();
                     if (mTouchDownX <= mHeaderViewWidth - 60 && mTouchDownY <= mHeaderViewHeight) {
@@ -162,13 +169,13 @@ public class MyExpandableListView extends ExpandableListView implements OnScroll
     @Override
     public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
         Log.v("MyEXPListView", "onGroupClick(" + groupPosition + ")");
-        if (mHeaderAdapter.getGroupClickStatus(groupPosition) == 0) {
-            mHeaderAdapter.setGroupClickStatus(groupPosition, 1);
+        if (mHeaderAdapter.getGroupStatus(groupPosition) == 0) {
+            mHeaderAdapter.setGroupStatus(groupPosition, 1);
             parent.expandGroup(groupPosition);
             //Header自动置顶
             //parent.setSelectedGroup(groupPosition);
-        } else if (mHeaderAdapter.getGroupClickStatus(groupPosition) == 1) {
-            mHeaderAdapter.setGroupClickStatus(groupPosition, 0);
+        } else if (mHeaderAdapter.getGroupStatus(groupPosition) == 1) {
+            mHeaderAdapter.setGroupStatus(groupPosition, 0);
             parent.collapseGroup(groupPosition);
         }
         // 返回 true 才可以弹回第一行 , 不知道为什么
@@ -183,19 +190,18 @@ public class MyExpandableListView extends ExpandableListView implements OnScroll
         long packedPosition = getExpandableListPosition(this.getFirstVisiblePosition());
         int groupPosition = ExpandableListView.getPackedPositionGroup(packedPosition);
 
-        if (mHeaderAdapter.getGroupClickStatus(groupPosition) == 1) {
+        if (mHeaderAdapter.getGroupStatus(groupPosition) == 1) {
             this.collapseGroup(groupPosition);
-            mHeaderAdapter.setGroupClickStatus(groupPosition, 0);
+            mHeaderAdapter.setGroupStatus(groupPosition, 0);
         } else {
             this.expandGroup(groupPosition);
-            mHeaderAdapter.setGroupClickStatus(groupPosition, 1);
+            mHeaderAdapter.setGroupStatus(groupPosition, 1);
         }
 
         this.setSelectedGroup(groupPosition);
     }
 
     public void configureHeaderView(int groupPosition, int childPosition) {
-        Log.v("MyEXPListView", "configureHeaderView()");
         if (mHeaderView == null || mHeaderAdapter == null || ((ExpandableListAdapter) mHeaderAdapter).getGroupCount() == 0) {
             return;
         }
@@ -262,14 +268,14 @@ public class MyExpandableListView extends ExpandableListView implements OnScroll
         void configureHeader(View view, int groupPosition, int childPosition, int alpha);
 
         /**
-         * 设置组按下的状态
+         * 设置组展开的状态
          */
-        void setGroupClickStatus(int groupPosition, int status);
+        void setGroupStatus(int groupPosition, int status);
 
         /**
-         * 获取组按下的状态
+         * 获取组展开的状态
          */
-        int getGroupClickStatus(int groupPosition);
+        int getGroupStatus(int groupPosition);
     }
 
 }

@@ -1,5 +1,7 @@
 package com.example.allinone.entity;
 
+import com.example.allinone.R;
+
 import java.util.List;
 
 /**
@@ -9,18 +11,20 @@ public class AreaEntity {
     private String id;
     private String name;
     private boolean expanded;
-    private Checked checkedAll;
+    private Checked checked;
+    private int checkIcon;
     private List<CameraEntity> cameras;
 
     public AreaEntity(String id, String name, List<CameraEntity> cameras) {
         this.id = id;
         this.name = name;
         this.cameras = cameras;
-        this.checkedAll = Checked.none;
         this.expanded = false;
+        this.checked = Checked.none;
+        this.checkIcon = R.drawable.ic_check_na;
     }
 
-    public int getCameraLen() {
+    public int childSize() {
         return this.cameras.size();
     }
 
@@ -44,10 +48,6 @@ public class AreaEntity {
         return cameras;
     }
 
-    public void setCameras(List<CameraEntity> cameras) {
-        this.cameras = cameras;
-    }
-
     public boolean isExpanded() {
         return expanded;
     }
@@ -56,12 +56,22 @@ public class AreaEntity {
         this.expanded = expanded;
     }
 
-    public Checked getCheckedAll() {
-        return checkedAll;
+    public int getCheckIcon() {
+        switch (checked) {
+            case some:
+                checkIcon = R.drawable.ic_check_bg;
+                break;
+            case all:
+                checkIcon = R.drawable.ic_check_all;
+                break;
+            default:
+                checkIcon = R.drawable.ic_check_na;
+        }
+        return checkIcon;
     }
 
-    public void setCheckedAll(Checked checkedAll) {
-        this.checkedAll = checkedAll;
+    public void setChecked(Checked checked) {
+        this.checked = checked;
     }
 
     public enum Checked {
