@@ -8,16 +8,14 @@ import com.example.allinone.R;
 public class CameraEntity {
     private String id;
     private String name;
-    private boolean online; // off/on line
+    private boolean online;
     private boolean checked;
-    private int checkIcon;
 
     public CameraEntity(String id, String name, boolean online) {
         this.id = id;
         this.name = name;
         this.online = online;
         this.checked = false;
-        this.checkIcon = R.drawable.ic_check_na;
     }
 
     public boolean isChecked() {
@@ -53,6 +51,7 @@ public class CameraEntity {
     }
 
     public int getCheckIcon() {
-        return checked ? R.drawable.ic_check_all : R.drawable.ic_check_na;
+        return checked ? R.drawable.ic_check : R.drawable.ic_check_na;
     }
+
 }

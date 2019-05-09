@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -42,11 +43,14 @@
                 android:layout_height="46dp"
                 android:layout_marginRight="@dimen/view_padding"
                 android:background="@drawable/sel_btn_background"
-                android:text="Play Now"
+                android:paddingLeft="@dimen/view_padding"
+                android:paddingRight="@dimen/view_padding"
+                android:text="@{viewModel.playNow}"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="16sp"
-                app:onClickCommand="@{viewModel.onStartPlay}" />
+                app:onClickCommand="@{viewModel.onStartPlay}"
+                tools:text="Play Now (0)" />
         </LinearLayout>
 
         <com.example.allinone.base.StickyExpandableListView
@@ -58,7 +62,8 @@
             android:drawSelectorOnTop="false"
             android:groupIndicator="@null"
             android:scrollbars="vertical"
-            android:scrollingCache="true"/>
+            android:scrollingCache="true"
+            tools:listitem="@layout/item_camera_area" />
 
     </LinearLayout>
 

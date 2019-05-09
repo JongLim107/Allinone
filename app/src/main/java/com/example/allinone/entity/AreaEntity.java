@@ -11,7 +11,6 @@ public class AreaEntity {
     private String id;
     private String name;
     private boolean expanded;
-    private Checked checked;
     private int checkIcon;
     private List<CameraEntity> cameras;
 
@@ -20,8 +19,21 @@ public class AreaEntity {
         this.name = name;
         this.cameras = cameras;
         this.expanded = false;
-        this.checked = Checked.none;
         this.checkIcon = R.drawable.ic_check_na;
+    }
+
+    private Checked getCheckedStatus() {
+        int checkedChildren = 0;
+        for (CameraEntity c : cameras) {
+            checkedChildren += c.isChecked() ? 1 : 0;
+        }
+        if (checkedChildren == cameras.size()) {
+            return AreaEntity.Checked.all;
+        } else if (checkedChildren > 0) {
+            return AreaEntity.Checked.some;
+        } else {
+            return AreaEntity.Checked.none;
+        }
     }
 
     public int childSize() {
@@ -57,7 +69,7 @@ public class AreaEntity {
     }
 
     public int getCheckIcon() {
-        switch (checked) {
+        switch (getCheckedStatus()) {
             case some:
                 checkIcon = R.drawable.ic_check_bg;
                 break;
@@ -65,13 +77,9 @@ public class AreaEntity {
                 checkIcon = R.drawable.ic_check_all;
                 break;
             default:
-                checkIcon = R.drawable.ic_check_na;
+                checkIcon = R.drawable.ic_check_tr;
         }
         return checkIcon;
-    }
-
-    public void setChecked(Checked checked) {
-        this.checked = checked;
     }
 
     public enum Checked {

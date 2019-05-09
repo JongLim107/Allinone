@@ -17,6 +17,7 @@ import java.util.List;
 import androidx.fragment.app.Fragment;
 import me.goldze.mvvmhabit.base.BaseActivity;
 import me.goldze.mvvmhabit.base.IToolbarNavigator;
+import me.goldze.mvvmhabit.utils.ToastUtils;
 
 /**
  * Created by Jong Lim on 30/4/19.
@@ -103,8 +104,8 @@ public class DevicesActivity extends BaseActivity<ActivityDevicesBinding, Toolba
     }
 
     @Override
-    public void openCameraActivity(List<AreaEntity> areas, int[] selectedCameras) {
-
+    public void openCameraActivity(List<AreaEntity> areas, List selectedCameras) {
+        ToastUtils.showLong("Sorry, haven't implement this part for now.");
     }
 
 }

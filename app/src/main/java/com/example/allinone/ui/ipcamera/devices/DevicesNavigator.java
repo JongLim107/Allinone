@@ -15,5 +15,5 @@ public interface DevicesNavigator {
 
     void openFileListActivity();
 
-    void openCameraActivity(List<AreaEntity> areas, int[] selectedCameras);
+    void openCameraActivity(List<AreaEntity> areas, List selectedCameras);
 }

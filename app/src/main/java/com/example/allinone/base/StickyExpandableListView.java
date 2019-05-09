@@ -3,7 +3,6 @@ package com.example.allinone.base;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AbsListView;
@@ -168,7 +167,7 @@ public class StickyExpandableListView extends ExpandableListView implements OnSc
      */
     @Override
     public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-        Log.v("MyEXPListView", "onGroupClick(" + groupPosition + ")");
+        // Log.v("MyEXPListView", "onGroupClick(" + groupPosition + ")");
         if (mHeaderAdapter.getGroupStatus(groupPosition) == 0) {
             mHeaderAdapter.setGroupStatus(groupPosition, 1);
             parent.expandGroup(groupPosition);
@@ -186,7 +185,7 @@ public class StickyExpandableListView extends ExpandableListView implements OnSc
      * 点击 HeaderView 触发的事件
      */
     private void headerViewClick() {
-        Log.v("MyEXPListView", "headerViewClick()");
+        // Log.v("MyEXPListView", "headerViewClick()");
         long packedPosition = getExpandableListPosition(this.getFirstVisiblePosition());
         int groupPosition = ExpandableListView.getPackedPositionGroup(packedPosition);
 

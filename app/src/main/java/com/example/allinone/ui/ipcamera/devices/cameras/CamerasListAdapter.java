@@ -59,17 +59,25 @@ public class CamerasListAdapter extends BaseExpandableListAdapter implements Sti
 
     @Override
     public AreaEntity getGroup(int groupPosition) {
+        if (mAreas.size() < groupPosition || groupPosition < 0){
+            return null;
+        }
         return mAreas.get(groupPosition);
     }
 
     @Override
     public CameraEntity getChild(int groupPosition, int childPosition) {
         AreaEntity area = getGroup(groupPosition);
-        if (area != null) {
-            return area.getCameras()
-                    .get(childPosition);
+        if (area == null) {
+            return null;
         }
-        return null;
+
+        List<CameraEntity> cs = area.getCameras();
+        if (cs.size() < childPosition || childPosition < 0){
+            return null;
+        }
+
+        return cs.get(childPosition);
     }
 
     @Override
