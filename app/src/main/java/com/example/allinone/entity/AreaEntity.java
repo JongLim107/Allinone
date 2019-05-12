@@ -10,8 +10,8 @@ import java.util.List;
 public class AreaEntity {
     private String id;
     private String name;
-    private boolean expanded;
     private int checkIcon;
+    private boolean expanded;
     private List<CameraEntity> cameras;
 
     public AreaEntity(String id, String name, List<CameraEntity> cameras) {

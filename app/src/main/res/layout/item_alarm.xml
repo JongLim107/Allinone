@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="androidx.core.content.ContextCompat" />
+
+        <variable
+            name="model"
+            type="com.example.allinone.entity.AlarmEntity" />
+    </data>
+
+    <TableRow
+        android:id="@+id/alarm_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@{ContextCompat.getColor(context, model.color)}"
+        android:divider="@color/colorPrimary"
+        android:paddingLeft="@dimen/side_padding"
+        android:paddingTop="@dimen/item_margin"
+        android:paddingRight="@dimen/side_padding"
+        android:paddingBottom="@dimen/item_margin">
+
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:text="@{model.num}"
+            android:textSize="14sp"
+            tools:text="01" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/item_margin"
+            android:text="@{model.time}"
+            android:textSize="14sp"
+            tools:text="19:00:00" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/item_margin"
+            android:text="@{model.devId}"
+            android:textSize="14sp"
+            tools:text="1001001" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/item_margin"
+            android:text="@{model.value}"
+            android:textSize="14sp"
+            tools:text="35℃" />
+    </TableRow>
+</layout>
