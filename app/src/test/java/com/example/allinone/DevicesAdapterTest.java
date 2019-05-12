@@ -4,9 +4,9 @@ import android.app.Application;
 import android.content.Context;
 
 import com.example.allinone.entity.AreaEntity;
-import com.example.allinone.entity.CameraEntity;
+import com.example.allinone.entity.DeviceEntity;
 import com.example.allinone.ui.ipcamera.devices.cameras.CameraListViewModel;
-import com.example.allinone.ui.ipcamera.devices.cameras.CamerasListAdapter;
+import com.example.allinone.ui.ipcamera.devices.DevicesAdapter;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Created by Jong Lim on 8/5/19.
  */
-public class CamerasListAdapterTest {
+public class DevicesAdapterTest {
     @Mock
     private Context mContext;
 
@@ -29,7 +29,7 @@ public class CamerasListAdapterTest {
 
     private CameraListViewModel mViewModel;
 
-    private CamerasListAdapter mAdapter;
+    private DevicesAdapter mAdapter;
 
 
     @Before
@@ -40,7 +40,7 @@ public class CamerasListAdapterTest {
         mViewModel = new CameraListViewModel(mApp);
         mViewModel.initList();
         System.out.println("Areas Size = " + mViewModel.areas.size());
-        mAdapter = new CamerasListAdapter(mContext, mViewModel.areas);
+        mAdapter = new DevicesAdapter(mContext, mViewModel.areas);
 
 
         StringBuilder countStr = new StringBuilder();
@@ -64,7 +64,7 @@ public class CamerasListAdapterTest {
         StringBuilder csName = new StringBuilder();
         for (AreaEntity a : as) {
             asName.append(a.getName()).append(", ");
-            for (CameraEntity c : a.getCameras()){
+            for (DeviceEntity c : a.getCameras()){
                 csName.append(c.getName()).append(", ");
             }
         }

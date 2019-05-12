@@ -1,4 +1,4 @@
-package com.example.allinone.ui.ipcamera.devices.cameras;
+package com.example.allinone.ui.ipcamera.devices;
 
 import android.content.Context;
 import android.util.SparseIntArray;
@@ -11,20 +11,20 @@ import com.example.allinone.base.StickyExpandableListView;
 import com.example.allinone.databinding.ItemCameraAreaBinding;
 import com.example.allinone.databinding.ItemCameraDevBinding;
 import com.example.allinone.entity.AreaEntity;
-import com.example.allinone.entity.CameraEntity;
+import com.example.allinone.entity.DeviceEntity;
 
 import java.util.List;
 
 /**
  * Created by Jong Lim on 4/5/19.
  */
-public class CamerasListAdapter extends BaseExpandableListAdapter implements StickyExpandableListView.HeaderAdapter {
+public class DevicesAdapter extends BaseExpandableListAdapter implements StickyExpandableListView.HeaderAdapter {
 
     private final Context mContext;
     private List<AreaEntity> mAreas;
     private SparseIntArray groupStatusMap;
 
-    public CamerasListAdapter(Context context, List<AreaEntity> groupArray) {
+    public DevicesAdapter(Context context, List<AreaEntity> groupArray) {
         this.mContext = context;
         setList(groupArray);
     }
@@ -66,13 +66,13 @@ public class CamerasListAdapter extends BaseExpandableListAdapter implements Sti
     }
 
     @Override
-    public CameraEntity getChild(int groupPosition, int childPosition) {
+    public DeviceEntity getChild(int groupPosition, int childPosition) {
         AreaEntity area = getGroup(groupPosition);
         if (area == null) {
             return null;
         }
 
-        List<CameraEntity> cs = area.getCameras();
+        List<DeviceEntity> cs = area.getCameras();
         if (cs.size() < childPosition || childPosition < 0){
             return null;
         }
@@ -129,6 +129,7 @@ public class CamerasListAdapter extends BaseExpandableListAdapter implements Sti
 
     @Override
     public View getChildView(int groupPos, int childPos, boolean isLastChild, View convertView, ViewGroup parent) {
+        //TODO ADD SUPPORT FOR MAKE GROUP EXPANDED BY DEFAULT
         ItemCameraDevBinding binding;
         if (convertView == null || convertView.getTag() == null) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -140,8 +141,9 @@ public class CamerasListAdapter extends BaseExpandableListAdapter implements Sti
             binding = (ItemCameraDevBinding) convertView.getTag();
         }
 
-        CameraEntity camera = getChild(groupPos, childPos);
-        binding.setModel(camera);
+        DeviceEntity device = getChild(groupPos, childPos);
+        device.setLastChild(isLastChild);
+        binding.setModel(device);
         return convertView;
     }
 

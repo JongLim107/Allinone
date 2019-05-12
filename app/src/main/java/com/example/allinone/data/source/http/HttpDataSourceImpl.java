@@ -2,7 +2,7 @@ package com.example.allinone.data.source.http;
 
 import com.example.allinone.data.source.IHttpDataSource;
 import com.example.allinone.entity.AreaEntity;
-import com.example.allinone.entity.CameraEntity;
+import com.example.allinone.entity.DeviceEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,9 +59,9 @@ public class HttpDataSourceImpl implements IHttpDataSource {
         for (int i = 0; i < 20; i++) {
 
             int unit = i % 4;
-            List<CameraEntity> cameras = new ArrayList<>();
+            List<DeviceEntity> cameras = new ArrayList<>();
             for (int j = 0; j < unit * unit; j++) {
-                cameras.add(new CameraEntity("CAMERA_ID_" + j, "CAMERA_NAME " + j, unit > 1));
+                cameras.add(new DeviceEntity("CAMERA_ID_" + j, "CAMERA_NAME " + j, unit > 1));
             }
 
             areas.add(new AreaEntity("AREA_ID_" + i, "AREA_NAME " + i, cameras));

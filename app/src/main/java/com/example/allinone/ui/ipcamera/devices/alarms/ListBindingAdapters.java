@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.allinone.BR;
-import com.example.allinone.R;
 
 import java.util.List;
 
@@ -17,7 +16,6 @@ import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ObservableList;
 import androidx.databinding.ViewDataBinding;
-import androidx.databinding.adapters.ListenerUtil;
 import androidx.transition.TransitionManager;
 
 /**
@@ -58,6 +56,7 @@ public class ListBindingAdapters {
     @BindingAdapter(value = {"app:entries", "app:layout"}, requireAll = false)
     public static <T> void setEntries(ViewGroup viewGroup, ObservableList<T> oldEntries, int oldLayoutId,
             ObservableList<T> newEntries, int newLayoutId) {
+        //TODO UPDATE LIST VIEW WITH NEW ROW BUT DON'T RESET WHOLE LIST
 //        if (oldEntries == newEntries && oldLayoutId == newLayoutId) {
 //            return; // nothing has changed
 //        }

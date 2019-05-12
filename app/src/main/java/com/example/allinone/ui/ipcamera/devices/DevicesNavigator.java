@@ -1,6 +1,7 @@
 package com.example.allinone.ui.ipcamera.devices;
 
 import com.example.allinone.entity.AreaEntity;
+import com.example.allinone.entity.DeviceEntity;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface DevicesNavigator {
 
     void openVideoPlayActivity();
 
-    void openFileListActivity();
-
+    void openFileListActivity(List<AreaEntity> areas, DeviceEntity camera);
     void openCameraActivity(List<AreaEntity> areas, List selectedCameras);
+
 }

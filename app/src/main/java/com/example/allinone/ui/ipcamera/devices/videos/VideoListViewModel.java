@@ -1,4 +1,4 @@
-package com.example.allinone.ui.ipcamera.devices.snapshots;
+package com.example.allinone.ui.ipcamera.devices.videos;
 
 import android.app.Application;
 import android.content.Context;
@@ -19,12 +19,12 @@ import me.goldze.mvvmhabit.base.BaseViewModel;
 /**
  * Created by Jong Lim on 4/5/19.
  */
-public class SnapshotViewModel extends BaseViewModel<BaseModel, DevicesNavigator> {
+public class VideoListViewModel extends BaseViewModel<BaseModel, DevicesNavigator> {
     public final ObservableList<AreaEntity> areas = new ObservableArrayList<>();
 
     private final Context mContext;
 
-    public SnapshotViewModel(@NonNull Application application) {
+    public VideoListViewModel(@NonNull Application application) {
         super(application);
         this.mContext = application.getApplicationContext();
 
@@ -38,12 +38,11 @@ public class SnapshotViewModel extends BaseViewModel<BaseModel, DevicesNavigator
             for (int childId = 0; childId <= groupId; childId++) {
                 boolean online = childId < 2;
                 cameras.add(new DeviceEntity("" + childId, "Camera Title " + groupId + "-" + childId, online,
-                        DeviceEntity.DevTypes.PICTURE));
+                        DeviceEntity.DevTypes.VIDEO));
             }
             areas.add(new AreaEntity(groupId + "", "Area Title [" + groupId + "]", cameras));
         }
     }
-
 
     public List<AreaEntity> onFilterCamera(String newText) {
         if (newText == null || newText.length() < 1) {

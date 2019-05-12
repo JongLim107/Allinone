@@ -12,8 +12,9 @@ import com.example.allinone.databinding.FragmentCamerasBinding;
 import com.example.allinone.databinding.ItemCameraAreaBinding;
 import com.example.allinone.databinding.ItemCameraDevBinding;
 import com.example.allinone.entity.AreaEntity;
-import com.example.allinone.entity.CameraEntity;
+import com.example.allinone.entity.DeviceEntity;
 import com.example.allinone.ui.ipcamera.devices.DevicesNavigator;
+import com.example.allinone.ui.ipcamera.devices.DevicesAdapter;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ import me.goldze.mvvmhabit.utils.ToastUtils;
 public class CameraListFragment extends BaseFragment<FragmentCamerasBinding, CameraListViewModel> {
 
     private final int MAX_OPEN_COUNT = 16;
-    private CamerasListAdapter adapter;
+    private DevicesAdapter adapter;
 
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -44,7 +45,7 @@ public class CameraListFragment extends BaseFragment<FragmentCamerasBinding, Cam
     @Override
     public void initData() {
         viewModel.setNavigator((DevicesNavigator) getActivity());
-        adapter = new CamerasListAdapter(getContext(), viewModel.areas);
+        adapter = new DevicesAdapter(getContext(), viewModel.areas);
         binding.areasList.setAdapter(adapter);
 
         ItemCameraAreaBinding ibinding = ItemCameraAreaBinding.inflate(getLayoutInflater(), binding.areasList, false);
@@ -74,7 +75,7 @@ public class CameraListFragment extends BaseFragment<FragmentCamerasBinding, Cam
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition,
                     long id) {
-                CameraEntity camera = adapter.getChild(groupPosition, childPosition);
+                DeviceEntity camera = adapter.getChild(groupPosition, childPosition);
                 if (camera.isOnline()) {
                     if (!camera.isChecked() && viewModel.selectedCameras.size() == MAX_OPEN_COUNT) {
                         ToastUtils.showShort("Only can play maximum 16 camera in the one time.");

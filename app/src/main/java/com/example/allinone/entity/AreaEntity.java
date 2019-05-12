@@ -12,9 +12,9 @@ public class AreaEntity {
     private String name;
     private int checkIcon;
     private boolean expanded;
-    private List<CameraEntity> cameras;
+    private List<DeviceEntity> cameras;
 
-    public AreaEntity(String id, String name, List<CameraEntity> cameras) {
+    public AreaEntity(String id, String name, List<DeviceEntity> cameras) {
         this.id = id;
         this.name = name;
         this.cameras = cameras;
@@ -24,7 +24,7 @@ public class AreaEntity {
 
     private Checked getCheckedStatus() {
         int checkedChildren = 0;
-        for (CameraEntity c : cameras) {
+        for (DeviceEntity c : cameras) {
             checkedChildren += c.isChecked() ? 1 : 0;
         }
         if (checkedChildren == cameras.size()) {
@@ -56,7 +56,7 @@ public class AreaEntity {
         this.name = name;
     }
 
-    public List<CameraEntity> getCameras() {
+    public List<DeviceEntity> getCameras() {
         return cameras;
     }
 
