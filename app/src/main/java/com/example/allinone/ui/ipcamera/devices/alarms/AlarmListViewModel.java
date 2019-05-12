@@ -66,7 +66,7 @@ public class AlarmListViewModel extends BaseViewModel {
     private void initRowData() {
         Date date = new Date(System.currentTimeMillis());
         for (int i = 0; i < MAX_DEV_ROW; i++) {
-            String time = (i % 2 == 0) ? mSDDate.format(date) : mSDTime.format(date);
+            String time = (i % 2 == 0) ? mSDTime.format(date) : mSDDate.format(date);
             String devId = "100100" + (alarms.size() - 1) / MAX_DEV_ROW;
             String str = getAlarmItem(i);
             AlarmEntity alarm = new AlarmEntity("" + alarms.size(), time, devId, str);
