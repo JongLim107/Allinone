@@ -22,11 +22,9 @@ import me.goldze.mvvmhabit.base.BaseViewModel;
 public class VideoListViewModel extends BaseViewModel<BaseModel, DevicesNavigator> {
     public final ObservableList<AreaEntity> areas = new ObservableArrayList<>();
 
-    private final Context mContext;
-
     public VideoListViewModel(@NonNull Application application) {
         super(application);
-        this.mContext = application.getApplicationContext();
+        Context mContext = application.getApplicationContext();
 
         initList();
     }

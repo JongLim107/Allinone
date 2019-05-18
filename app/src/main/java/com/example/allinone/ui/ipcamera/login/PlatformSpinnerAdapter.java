@@ -59,15 +59,15 @@ public class PlatformSpinnerAdapter extends ArrayAdapter<PlatformEntity> {
             binding = DataBindingUtil.getBinding(view);
         }
 
-        binding.setPlatform(mPlatforms.get(position));
+        binding.setModel(mPlatforms.get(position));
         binding.setLifecycleOwner(mLifecycleOwner);
 
         binding.executePendingBindings();
         return binding.getRoot();
     }
 
-    private void setList(List<PlatformEntity> tasks) {
-        mPlatforms = tasks;
+    private void setList(List<PlatformEntity> platforms) {
+        mPlatforms = platforms;
         notifyDataSetChanged();
     }
 }

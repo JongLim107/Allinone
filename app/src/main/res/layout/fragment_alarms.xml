@@ -22,8 +22,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:stretchColumns="*"
-            app:entries="@{viewModel.alarms}"
-            app:layout="@{viewModel.layout}" />
+            app:dataList="@{viewModel.alarms}"
+            app:itemLayout="@{viewModel.layout}" />
 
     </ScrollView>
 

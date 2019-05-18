@@ -1,56 +1,80 @@
 package com.example.allinone.entity;
 
+import io.objectbox.annotation.Entity;
+import io.objectbox.annotation.Id;
+
 /**
  * Created by Jong Lim on 21/4/19.
  */
+@Entity
 public class PlatformEntity {
-    private String mAccount;
-    private String mPassword;
-    private String mAddress;
-    private String mTitle;
-    private int mPort;
 
-    public PlatformEntity(String account, String pwd, String title, String address ) {
-        this(account, pwd, title, address, 9100);
+    @Id
+    public long id;
+    private String title;
+    private String userName;
+    private String password;
+    private String address;
+    private int port;
+
+    public PlatformEntity(String title, String userName, String password, String address) {
+        this(title, userName, password, address, 9100);
     }
 
-   public PlatformEntity(String account, String pwd, String title, String address, int mPort) {
-        this.mAccount = account;
-        this.mPassword = pwd;
-        this.mTitle = title;
-        this.mAddress = address;
-        this.mPort = mPort;
+    public PlatformEntity(String title, String userName, String password, String address, int port) {
+        this.title = title;
+        this.userName = userName;
+        this.password = password;
+        this.address = address;
+        this.port = port;
     }
 
-    public String getAccount() {
-        return mAccount;
+    public long getId() {
+        return id;
     }
 
-    public void setAccount(String mAccount) {
-        this.mAccount = mAccount;
-    }
-
-    public String getPassword() {
-        return mPassword;
-    }
-
-    public void setPassword(String mPassword) {
-        this.mPassword = mPassword;
-    }
-
-    public String getAddress() {
-        return mAddress;
-    }
-
-    public void setAddress(String mAddress) {
-        this.mAddress = mAddress;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getTitle() {
-        return mTitle;
+        return title;
     }
 
-    public void setTitle(String mTitle) {
-        this.mTitle = mTitle;
+    public void setTitle(String title) {
+        this.title = title;
     }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
 }

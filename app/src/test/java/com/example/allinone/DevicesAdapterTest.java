@@ -25,8 +25,6 @@ public class DevicesAdapterTest {
     @Mock
     private Application mApp;
 
-    private List<AreaEntity> mAreas;
-
     private CameraListViewModel mViewModel;
 
     private DevicesAdapter mAdapter;

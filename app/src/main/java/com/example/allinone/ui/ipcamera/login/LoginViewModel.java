@@ -39,6 +39,13 @@ public class LoginViewModel extends BaseViewModel<LoginRepository, LoginNavigato
         }
     });
 
+    public BindingCommand onAddPlatformClick = new BindingCommand(new BindingAction() {
+        @Override
+        public void call() {
+            getNavigator().openPlatformsActivity();
+        }
+    });
+
     public BindingCommand onShowPwdSwitchOn = new BindingCommand<>(new BindingConsumer<Boolean>() {
         @Override
         public void call(Boolean on) {
@@ -106,7 +113,7 @@ public class LoginViewModel extends BaseViewModel<LoginRepository, LoginNavigato
 
     public void onSelectPlatform(@NonNull PlatformEntity plat) {
         title.set(plat.getTitle());
-        account.set(plat.getAccount());
+        account.set(plat.getUserName());
         password.set(plat.getPassword());
     }
 

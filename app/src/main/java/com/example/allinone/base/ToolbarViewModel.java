@@ -15,7 +15,7 @@ import me.goldze.mvvmhabit.binding.command.BindingCommand;
 /**
  * Created by JongLim on 1/5/2019.
  */
-public class ToolbarViewModel extends BaseViewModel<BaseModel, IToolbarNavigator> {
+public class ToolbarViewModel<T extends IToolbarNavigator> extends BaseViewModel<BaseModel, T> {
 
     /**
      * 返回按钮的点击事件
@@ -37,19 +37,19 @@ public class ToolbarViewModel extends BaseViewModel<BaseModel, IToolbarNavigator
     public BindingCommand rightTextOnClick = new BindingCommand(new BindingAction() {
         @Override
         public void call() {
-            getNavigator().onRightTextClick();
+            getNavigator().onRightClick(null);
         }
     });
     public BindingCommand rightIconOnClick = new BindingCommand(new BindingAction() {
         @Override
         public void call() {
-            getNavigator().onRightIconClick();
+            getNavigator().onRightClick(rightText.get());
         }
     });
     public BindingCommand titleOnClick = new BindingCommand(new BindingAction() {
         @Override
         public void call() {
-            getNavigator().onTitleClick();
+            getNavigator().onTitleClick(titleText.get());
         }
     });
 

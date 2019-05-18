@@ -1,4 +1,4 @@
-package com.example.allinone.ui.ipcamera.devices.alarms;
+package com.example.allinone.binding;
 
 import android.content.Context;
 import android.os.Build;
@@ -8,14 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.allinone.BR;
+import com.example.allinone.R;
 
 import java.util.List;
 
-import androidx.annotation.UiThread;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ObservableList;
 import androidx.databinding.ViewDataBinding;
+import androidx.databinding.adapters.ListenerUtil;
 import androidx.transition.TransitionManager;
 
 /**
@@ -23,13 +24,13 @@ import androidx.transition.TransitionManager;
  * <p>
  * Contains a BindingAdapter for assigning a list of items to a ViewGroup.
  */
-public class ListBindingAdapters {
+public class LinearBindingAdapters {
     private static final String TAG = "ListBindingAdapters";
 
     /**
      * Prevent instantiation
      */
-    private ListBindingAdapters() {
+    private LinearBindingAdapters() {
 
     }
 
@@ -53,32 +54,32 @@ public class ListBindingAdapters {
      * The layout, &commat;layout/item for example, must have a single variable named
      * {@code data}.
      */
-    @BindingAdapter(value = {"app:entries", "app:layout"}, requireAll = false)
+    @BindingAdapter(value = {"entries", "layout"}, requireAll = false)
     public static <T> void setEntries(ViewGroup viewGroup, ObservableList<T> oldEntries, int oldLayoutId,
             ObservableList<T> newEntries, int newLayoutId) {
         //TODO UPDATE LIST VIEW WITH NEW ROW BUT DON'T RESET WHOLE LIST
-//        if (oldEntries == newEntries && oldLayoutId == newLayoutId) {
-//            return; // nothing has changed
-//        }
-//
-//        EntryChangeListener listener = ListenerUtil.getListener(viewGroup, R.id.entryListener);
-//        if (oldEntries != newEntries && listener != null && oldEntries != null) {
-//            oldEntries.removeOnListChangedCallback(listener);
-//        }
+        if (oldEntries == newEntries && oldLayoutId == newLayoutId) {
+            return; // nothing has changed
+        }
+
+        EntryChangeListener listener = ListenerUtil.getListener(viewGroup, R.id.entryListener);
+        if (oldEntries != newEntries && listener != null && oldEntries != null) {
+            oldEntries.removeOnListChangedCallback(listener);
+        }
 
         if (newEntries == null) {
             viewGroup.removeAllViews();
 
         } else {
-//            if (listener == null) {
-//                listener = new EntryChangeListener(viewGroup, newLayoutId);
-//                ListenerUtil.trackListener(viewGroup, listener, R.id.entryListener);
-//            } else {
-//                listener.setLayoutId(newLayoutId);
-//            }
-//            if (newEntries != oldEntries) {
-//                newEntries.addOnListChangedCallback(listener);
-//            }
+            if (listener == null) {
+                listener = new EntryChangeListener(viewGroup, newLayoutId);
+                ListenerUtil.trackListener(viewGroup, listener, R.id.entryListener);
+            } else {
+                listener.setLayoutId(newLayoutId);
+            }
+            if (newEntries != oldEntries) {
+                newEntries.addOnListChangedCallback(listener);
+            }
             resetViews(viewGroup, newLayoutId, newEntries);
         }
     }
@@ -159,7 +160,6 @@ public class ListBindingAdapters {
             resetViews(mTarget, mLayoutId, observableList);
         }
 
-        @UiThread
         @Override
         public void onItemRangeChanged(ObservableList observableList, int start, int count) {
             if (mLayoutId == 0) {
@@ -176,7 +176,6 @@ public class ListBindingAdapters {
             }
         }
 
-        @UiThread
         @Override
         public void onItemRangeInserted(ObservableList observableList, int start, int count) {
             if (mLayoutId == 0) {

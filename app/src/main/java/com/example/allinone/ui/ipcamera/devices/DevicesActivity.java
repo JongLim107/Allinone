@@ -25,8 +25,8 @@ import me.goldze.mvvmhabit.utils.ToastUtils;
 /**
  * Created by Jong Lim on 30/4/19.
  */
-public class DevicesActivity extends BaseActivity<ActivityDevicesBinding, ToolbarViewModel> implements
-        IToolbarNavigator, DevicesNavigator {
+public class DevicesActivity extends BaseActivity<ActivityDevicesBinding, ToolbarViewModel> implements DevicesNavigator,
+        IToolbarNavigator {
 
     protected List<Fragment> pagerFragment() {
         List<Fragment> list = new ArrayList<>();
@@ -71,25 +71,6 @@ public class DevicesActivity extends BaseActivity<ActivityDevicesBinding, Toolba
         viewModel.setTitleText("Devices List");
     }
 
-    @Override
-    public void onLeftClick() {
-        onBackPressed();
-    }
-
-    @Override
-    public void onRightIconClick() {
-
-    }
-
-    @Override
-    public void onRightTextClick() {
-
-    }
-
-    @Override
-    public void onTitleClick() {
-
-    }
 
     @Override
     public void openSnapshotActivity() {
@@ -113,6 +94,19 @@ public class DevicesActivity extends BaseActivity<ActivityDevicesBinding, Toolba
     @Override
     public void openCameraActivity(List<AreaEntity> areas, List selectedCameras) {
         ToastUtils.showLong("Sorry, haven't implement this part for now.");
+    }
+
+    @Override
+    public void onLeftClick() {
+        onBackPressed();
+    }
+
+    @Override
+    public void onRightClick(String right) {
+    }
+
+    @Override
+    public void onTitleClick(String title) {
     }
 
 }

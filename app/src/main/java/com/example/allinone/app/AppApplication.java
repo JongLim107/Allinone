@@ -21,6 +21,9 @@ public class AppApplication extends BaseApplication {
         if (!LeakCanary.isInAnalyzerProcess(this)) {
             LeakCanary.install(this);
         }
+
+        //Initial the ORM model
+        ObjectBox.init(this);
     }
 
     private void initCrash() {
