@@ -1,6 +1,7 @@
 package com.example.allinone.ui.ipcamera.login;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -16,6 +17,10 @@ import com.example.allinone.entity.PlatformEntity;
 import com.example.allinone.ui.ipcamera.devices.DevicesActivity;
 import com.example.allinone.ui.ipcamera.platforms.PlatformsActivity;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
+
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -24,8 +29,10 @@ import me.goldze.mvvmhabit.base.BaseActivity;
 
 public final class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewModel> implements LoginNavigator {
     public static final int REQUEST_CODE = 1;
+    public static final String SELECTED_INDEX = "INDEX_OF_PLATFORM";
 
-    Box<PlatformEntity> platformBox;
+    private final List<PlatformEntity> platforms = new ArrayList<>();
+    private QueryPlatformsTask queryTask;
 
     @Override
     public int initContentView(Bundle savedInstanceState) {
@@ -46,23 +53,16 @@ public final class LoginActivity extends BaseActivity<ActivityLoginBinding, Logi
     @Override
     public void initData() {
         super.initData();
+        queryTask = new QueryPlatformsTask(this, binding, viewModel, platforms);
+        queryTask.execute();
+    }
 
-        platformBox = ObjectBox.get().boxFor(PlatformEntity.class);
-        if (platformBox.isEmpty()) {
-            platformBox.put(new PlatformEntity("衢州联通", "qzlt", "qzlt1234", "221.12.141.170", 9910));
-            platformBox.put(new PlatformEntity("Nanning Longgang", "Lin Zhong", "2010LinZhong", "221.12.141.170"));
-            platformBox.put(new PlatformEntity("Ex Company 2nd Level", "Shenzhen University", "2010LinZhong",
-                    "221.12.141.170"));
-        }
-
-        PlatformSpinnerAdapter dataAdapter = new PlatformSpinnerAdapter(this, viewModel, platformBox.getAll());
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        binding.platSpinner.setAdapter(dataAdapter);
+    @Override
+    public void initViewObservable() {
         binding.platSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                PlatformEntity platform = (PlatformEntity) parent.getItemAtPosition(position);
-                viewModel.onSelectPlatform(platform);
+                viewModel.onSelectPlatform(platforms.get(position));
             }
 
             @Override
@@ -70,15 +70,12 @@ public final class LoginActivity extends BaseActivity<ActivityLoginBinding, Logi
 
             }
         });
-    }
 
-    @Override
-    public void initViewObservable() {
         viewModel.setNavigator(this);
-        viewModel.uc.pwdSwitchEvent.observe(this, new Observer<Boolean>() {
+        viewModel.uiObs.pwdSwitchEvent.observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
-                if (viewModel.uc.pwdSwitchEvent.getValue()) {
+                if (viewModel.uiObs.pwdSwitchEvent.getValue()) {
                     binding.password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 } else {
                     binding.password.setTransformationMethod(PasswordTransformationMethod.getInstance());
@@ -90,13 +87,24 @@ public final class LoginActivity extends BaseActivity<ActivityLoginBinding, Logi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
-            long id = data.getLongExtra("SELECTED_ITEM_ID", -1);
-            int pos = data.getIntExtra("SELECTED_ITEM_POS", 0);
-            if (id != -1) {
+            int pos = data.getIntExtra(SELECTED_INDEX, -1);
+            if (pos != -1) {
+                Box<PlatformEntity> platformBox = ObjectBox.get().boxFor(PlatformEntity.class);
+                platforms.clear();
+                platforms.addAll(platformBox.getAll());
+
+                PlatformSpinnerAdapter spinnerAdapter = new PlatformSpinnerAdapter(this, platforms, viewModel);
+                binding.platSpinner.setAdapter(spinnerAdapter);
                 binding.platSpinner.setSelection(pos);
-                viewModel.onSelectPlatform(platformBox.get(id));
+                viewModel.onSelectPlatform(platforms.get(pos));
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        queryTask.cancel(true);
+        super.onDestroy();
     }
 
     @Override
@@ -109,5 +117,49 @@ public final class LoginActivity extends BaseActivity<ActivityLoginBinding, Logi
     public void openPlatformsActivity() {
         Intent i = new Intent(this, PlatformsActivity.class);
         startActivityForResult(i, REQUEST_CODE);
+    }
+
+    private static class QueryPlatformsTask extends AsyncTask<Void, Void, Void> {
+        WeakReference<LoginActivity> weakContext;
+        ActivityLoginBinding binding;
+        LoginViewModel viewModel;
+        List<PlatformEntity> entities;
+
+        QueryPlatformsTask(LoginActivity loginActivity, ActivityLoginBinding binding, LoginViewModel viewModel,
+                List<PlatformEntity> entities) {
+            this.weakContext = new WeakReference<>(loginActivity);
+            this.binding = binding;
+            this.viewModel = viewModel;
+            this.entities = entities;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            Box<PlatformEntity> platformBox = ObjectBox.get().boxFor(PlatformEntity.class);
+            if (platformBox.getAll().size() < 5) {
+                viewModel.showDialog("Loading Data...");
+                for (int i = 0; i < 5; i++) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    platformBox.put(new PlatformEntity("衢州联通" + i, "qzlt", "qzlt1234", "221.12.141.170", "9910"));
+                }
+            }
+
+            entities.addAll(platformBox.getAll());
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void o) {
+            super.onPostExecute(o);
+            viewModel.dismissDialog();
+            PlatformSpinnerAdapter spinnerAdapter = new PlatformSpinnerAdapter(this.weakContext.get(), entities,
+                    viewModel);
+            binding.platSpinner.setAdapter(spinnerAdapter);
+        }
+
     }
 }

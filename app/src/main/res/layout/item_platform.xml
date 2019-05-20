@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:binding="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -13,7 +12,7 @@
 
         <variable
             name="handler"
-            type="com.example.allinone.ui.ipcamera.platforms.PlatformsViewModel" />
+            type="com.example.allinone.ui.ipcamera.platforms.PlatformItemListener" />
     </data>
 
     <RelativeLayout
@@ -72,11 +71,11 @@
             android:layout_height="42dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:onClick="@{()->handler.onEditIconClick(model)}"
             android:padding="@dimen/side_padding"
             android:src="@mipmap/ic_edit"
             android:tint="@color/colorAccent"
-            android:visibility="@{handler == null ? View.GONE : View.VISIBLE}"
-            binding:onClickCommand="@{handler.onEditIconClick}" />
+            android:visibility="@{handler == null ? View.GONE : View.VISIBLE}" />
 
         <View
             style="@style/ViewLineStyle"

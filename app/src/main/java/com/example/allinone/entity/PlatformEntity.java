@@ -15,18 +15,24 @@ public class PlatformEntity {
     private String userName;
     private String password;
     private String address;
-    private int port;
+    private String port;
+    private boolean saveInner;
 
-    public PlatformEntity(String title, String userName, String password, String address) {
-        this(title, userName, password, address, 9100);
+    public PlatformEntity() {
+        this("", "", "", "", "9100");
     }
 
-    public PlatformEntity(String title, String userName, String password, String address, int port) {
+    public PlatformEntity(String title, String userName, String password, String address) {
+        this(title, userName, password, address, "9100");
+    }
+
+    public PlatformEntity(String title, String userName, String password, String address, String port) {
         this.title = title;
         this.userName = userName;
         this.password = password;
         this.address = address;
         this.port = port;
+        this.saveInner = true;
     }
 
     public long getId() {
@@ -69,12 +75,19 @@ public class PlatformEntity {
         this.address = address;
     }
 
-    public int getPort() {
+    public String getPort() {
         return port;
     }
 
-    public void setPort(int port) {
+    public void setPort(String port) {
         this.port = port;
     }
 
+    public boolean isSaveInner() {
+        return saveInner;
+    }
+
+    public void setSaveInner(boolean saveInner) {
+        this.saveInner = saveInner;
+    }
 }

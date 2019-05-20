@@ -1,5 +1,7 @@
 package com.example.allinone.ui.ipcamera.platforms;
 
+import com.example.allinone.entity.PlatformEntity;
+
 import me.goldze.mvvmhabit.base.IToolbarNavigator;
 
 /**
@@ -8,5 +10,5 @@ import me.goldze.mvvmhabit.base.IToolbarNavigator;
 public interface PlatformsNavigator extends IToolbarNavigator {
     void onSelectItem(Integer pos);
 
-    void openEditPlatformActivity(int position);
+    void openEditPlatformActivity(PlatformEntity item);
 }

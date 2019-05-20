@@ -26,9 +26,14 @@ public class PlatformsAdapter extends ArrayAdapter<PlatformEntity> {
         this.viewModel = vm;
     }
 
+    @Override
+    public void remove(@Nullable PlatformEntity object) {
+        super.remove(object);
+    }
+
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         ItemPlatformBinding binding;
         if (convertView == null || convertView.getTag() == null) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());

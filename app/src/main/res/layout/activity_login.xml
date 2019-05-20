@@ -151,7 +151,6 @@
                         tools:text="qzlt2015" />
 
                     <Switch
-                        android:id="@+id/tgb_show_pwd"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"

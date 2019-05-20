@@ -22,41 +22,26 @@ import androidx.lifecycle.LifecycleOwner;
  */
 public class PlatformSpinnerAdapter extends ArrayAdapter<PlatformEntity> {
 
-    private List<PlatformEntity> mPlatforms;
+    private final List<PlatformEntity> mPlatforms;
+    private final LoginViewModel viewModel;
 
     private LifecycleOwner mLifecycleOwner;
 
-    public PlatformSpinnerAdapter(@NonNull Context context, LoginViewModel viewModel, @NonNull List<PlatformEntity> platforms) {
+    PlatformSpinnerAdapter(@NonNull Context context, List<PlatformEntity> platforms, LoginViewModel viewModel) {
         super(context, 0, platforms);
         mLifecycleOwner = (LifecycleOwner) context;
-        setList(platforms);
+        mPlatforms = platforms;
+        this.viewModel = viewModel;
     }
 
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        return initView(position, convertView, parent);
-    }
-
-    @NonNull
-    @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        return initDropDownView(position, convertView, parent);
-    }
-
-    public View initDropDownView(int position, View view, ViewGroup viewGroup) {
-        TextView tv = new TextView(viewGroup.getContext());
-        PlatformEntity platform = mPlatforms.get(position);
-        tv.setText(platform.getTitle());
-        return tv;
-    }
-
-    public View initView(int position, View view, ViewGroup viewGroup) {
         ItemPlatformBinding binding;
-        if (view == null) {
-            LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-            binding = ItemPlatformBinding.inflate(inflater, viewGroup, false);
+        if (convertView == null) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            binding = ItemPlatformBinding.inflate(inflater, parent, false);
         } else {
-            binding = DataBindingUtil.getBinding(view);
+            binding = DataBindingUtil.getBinding(convertView);
         }
 
         binding.setModel(mPlatforms.get(position));
@@ -66,8 +51,14 @@ public class PlatformSpinnerAdapter extends ArrayAdapter<PlatformEntity> {
         return binding.getRoot();
     }
 
-    private void setList(List<PlatformEntity> platforms) {
-        mPlatforms = platforms;
-        notifyDataSetChanged();
+    @NonNull
+    @Override
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        // get SpinnerBar layout view
+        TextView tv = new TextView(parent.getContext());
+        PlatformEntity platform = mPlatforms.get(position);
+        tv.setText(platform.getTitle());
+        return tv;
     }
+
 }
