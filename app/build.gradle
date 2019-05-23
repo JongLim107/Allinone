@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.objectbox' // apply last
 
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
@@ -8,6 +9,7 @@ android {
         targetSdkVersion rootProject.ext.android.targetSdkVersion
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -43,6 +45,7 @@ dependencies {
     implementation('me.majiajie:pager-bottom-tab-strip:2.2.5') {
         exclude group: 'com.android.support'
     }
+    implementation 'com.android.support:multidex:1.0.3'
     //MVVMHabit
     implementation project(':mvvmhabit')
     //implementation 'com.github.goldze:MVVMHabit:3.1.1'

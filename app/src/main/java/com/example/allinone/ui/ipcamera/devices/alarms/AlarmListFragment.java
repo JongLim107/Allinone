@@ -10,12 +10,14 @@ import com.example.allinone.databinding.FragmentAlarmsBinding;
 import com.example.allinone.entity.AlarmEntity;
 
 import androidx.annotation.Nullable;
+import androidx.databinding.ObservableArrayList;
 import me.goldze.mvvmhabit.base.BaseFragment;
 
 /**
  * Created by Jong Lim on 30/4/19.
  */
 public class AlarmListFragment extends BaseFragment<FragmentAlarmsBinding, AlarmListViewModel> {
+
 
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -31,6 +33,5 @@ public class AlarmListFragment extends BaseFragment<FragmentAlarmsBinding, Alarm
     @Override
     public void initData() {
         super.initData();
-        viewModel.setEntity(new AlarmEntity("01", "19:23:00", "1001001", "30℃"));
     }
 }

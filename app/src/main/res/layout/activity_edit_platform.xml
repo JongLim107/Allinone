@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:binding="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.example.allinone.base.ToolbarViewModel" />
+
+        <import type="com.example.allinone.ui.ipcamera.editplatform.PlatformSaveType" />
+
+        <variable
+            name="model"
+            type="com.example.allinone.entity.PlatformEntity" />
+
+        <variable
+            name="viewModel"
+            type="com.example.allinone.ui.ipcamera.editplatform.EditPlatformsViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/include"
+            layout="@layout/layout_toolbar"
+            binding:toolbarViewModel="@{(ToolbarViewModel)viewModel}" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="64dp"
+            android:orientation="vertical"
+            android:padding="42dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="42dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="标  题" />
+
+                <EditText
+                    android:id="@+id/title"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:hint="仅用于本地"
+                    android:imeOptions="actionNext"
+                    android:text="@={model.title}"
+                    android:textColor="@color/textColor"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="false"
+                    android:gravity="center"
+                    android:text="用  户" />
+
+                <EditText
+                    android:id="@+id/account"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:hint="登陆账户名"
+                    android:imeOptions="actionNext"
+                    android:text="@={model.userName}"
+                    android:textColor="@color/textColor"
+                    android:textSize="16sp"
+                    tools:text="18520860072" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="false"
+                    android:gravity="center"
+                    android:text="密  码" />
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="4">
+
+                    <EditText
+                        android:id="@+id/etPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="登陆密码"
+                        android:imeOptions="actionNext"
+                        android:inputType="textPassword|textWebPassword"
+                        android:maxLength="16"
+                        android:selectAllOnFocus="true"
+                        android:text="@={model.password}"
+                        android:textColor="@color/textColor"
+                        android:textSize="16sp"
+                        tools:text="qzlt2015" />
+
+                    <Switch
+                        android:id="@+id/tgb_show_pwd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginBottom="5dp"
+                        binding:onCheckedChangeCommand="@{viewModel.onShowPwdSwitchOn}" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="false"
+                    android:gravity="center"
+                    android:text="地  址" />
+
+                <EditText
+                    android:id="@+id/etAddress"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:hint="设备IP地址"
+                    android:imeOptions="actionNext"
+                    android:text="@={model.address}"
+                    android:textColor="@color/textColor"
+                    android:textSize="16sp"
+                    tools:text="221.12.141.170" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="false"
+                    android:gravity="center"
+                    android:text="端  口" />
+
+                <EditText
+                    android:id="@+id/etPort"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:hint="设备端口"
+                    android:imeOptions="actionDone"
+                    android:text="@={model.port}"
+                    android:textColor="@color/textColor"
+                    android:textSize="16sp"
+                    tools:text="9910" />
+            </LinearLayout>
+
+            <!--other button-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/side_padding"
+                android:background="@drawable/bg_corners"
+                android:orientation="vertical"
+                android:padding="@dimen/side_padding">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="录像和快照存储位置："
+                    android:textAlignment="center"
+                    android:textColor="@color/textColorHint" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/view_padding"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:id="@+id/ckSaveInner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="@{model.saveInner}"
+                        android:onClick="@{()->viewModel.onSaveInnerClick(PlatformSaveType.INNER_CARD)}"
+                        android:text="手机内存"
+                        android:textColor="@color/textColor"
+                        android:textSize="14sp"
+                        android:textStyle="italic" />
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:layout_weight="1" />
+
+                    <CheckBox
+                        android:id="@+id/ckExtraCard"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="@{!model.saveInner}"
+                        android:onClick="@{()->viewModel.onSaveInnerClick(PlatformSaveType.EXTRA_CARD)}"
+                        android:text="外部存储卡"
+                        android:textColor="@color/textColor"
+                        android:textSize="14sp"
+                        android:textStyle="italic" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

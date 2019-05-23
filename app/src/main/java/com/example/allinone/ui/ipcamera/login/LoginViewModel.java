@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.example.allinone.data.login.LoginRepository;
 import com.example.allinone.entity.PlatformEntity;
+import com.example.allinone.ui.ipcamera.platforms.PlatformItemListener;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
@@ -24,7 +25,7 @@ public class LoginViewModel extends BaseViewModel<LoginRepository, LoginNavigato
     public final ObservableField<String> title = new ObservableField<>();
     public final ObservableField<String> account = new ObservableField<>();
     public final ObservableField<String> password = new ObservableField<>();
-    public final UIChangeObservable uc = new UIChangeObservable();
+    public final UIChangeObservable uiObs = new UIChangeObservable();
 
     private final ObservableInt clearBtnVisibility = new ObservableInt();
 
@@ -39,10 +40,17 @@ public class LoginViewModel extends BaseViewModel<LoginRepository, LoginNavigato
         }
     });
 
+    public BindingCommand onAddPlatformClick = new BindingCommand(new BindingAction() {
+        @Override
+        public void call() {
+            getNavigator().openPlatformsActivity();
+        }
+    });
+
     public BindingCommand onShowPwdSwitchOn = new BindingCommand<>(new BindingConsumer<Boolean>() {
         @Override
         public void call(Boolean on) {
-            uc.pwdSwitchEvent.setValue(on);
+            uiObs.pwdSwitchEvent.setValue(on);
         }
     });
 
@@ -83,15 +91,13 @@ public class LoginViewModel extends BaseViewModel<LoginRepository, LoginNavigato
         }
 
         //RaJava模拟登录
-        addSubscribe(model.login()
-                .compose(RxUtils.schedulersTransformer()) //线程调度
+        addSubscribe(model.login().compose(RxUtils.schedulersTransformer()) //线程调度
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(Disposable disposable) {
                         showDialog("正在登陆，请稍后...");
                     }
-                })
-                .subscribe(new Consumer<Object>() {
+                }).subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
                         dismissDialog();
@@ -106,7 +112,7 @@ public class LoginViewModel extends BaseViewModel<LoginRepository, LoginNavigato
 
     public void onSelectPlatform(@NonNull PlatformEntity plat) {
         title.set(plat.getTitle());
-        account.set(plat.getAccount());
+        account.set(plat.getUserName());
         password.set(plat.getPassword());
     }
 

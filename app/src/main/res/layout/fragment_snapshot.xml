@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.allinone.ui.ipcamera.devices.snapshots.SnapshotViewModel" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/search_bar"
+                android:layout_width="0dp"
+                android:layout_height="42dp"
+                android:layout_weight="1"
+                android:background="@drawable/under_line"
+                android:closeIcon="@mipmap/ic_close_w"
+                android:focusable="false"
+                android:imeOptions="actionSearch"
+                android:inputType="textCapWords"
+                android:queryHint="Search Camera"
+                android:searchHintIcon="@mipmap/ic_search"
+                android:searchIcon="@mipmap/ic_search"
+                app:iconifiedByDefault="true" />
+        </LinearLayout>
+
+        <com.example.allinone.base.StickyExpandableListView
+            android:id="@+id/areas_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:divider="@null"
+            android:drawSelectorOnTop="false"
+            android:groupIndicator="@null"
+            android:scrollbars="vertical"
+            android:scrollingCache="true"
+            tools:listitem="@layout/item_camera_area" />
+
+    </LinearLayout>
+
+</layout>

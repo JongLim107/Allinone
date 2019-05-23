@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.example.allinone.ui.ipcamera.login.LoginViewModel" />
@@ -45,7 +46,7 @@
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="4">
+                    android:layout_weight="2.8">
 
                     <Spinner
                         android:id="@+id/platSpinner"
@@ -75,8 +76,18 @@
                         android:layout_marginRight="5dp"
                         android:layout_marginBottom="5dp"
                         android:background="@color/blackAlpha" />
+
+
                 </RelativeLayout>
 
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.2"
+                    android:background="@drawable/sel_btn_background"
+                    android:text="Edit"
+                    android:textColor="@color/white"
+                    binding:onClickCommand="@{viewModel.onAddPlatformClick}" />
             </LinearLayout>
 
             <!-- Get telephone number automatic -->
@@ -99,8 +110,6 @@
                     android:layout_height="match_parent"
                     android:layout_weight="4"
                     android:imeOptions="actionNext"
-                    android:inputType="phone"
-                    android:maxLength="11"
                     android:text="@={viewModel.account}"
                     android:textColor="@color/textColor"
                     android:textSize="16sp"
@@ -142,7 +151,6 @@
                         tools:text="qzlt2015" />
 
                     <Switch
-                        android:id="@+id/tgb_show_pwd"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -155,7 +163,6 @@
 
             <!--ic_ipcamera action-->
             <Button
-                android:id="@+id/btn_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"

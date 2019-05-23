@@ -8,8 +8,11 @@ import com.example.allinone.base.BaseFragmentPagerAdapter;
 import com.example.allinone.base.ToolbarViewModel;
 import com.example.allinone.databinding.ActivityDevicesBinding;
 import com.example.allinone.entity.AreaEntity;
+import com.example.allinone.entity.DeviceEntity;
 import com.example.allinone.ui.ipcamera.devices.alarms.AlarmListFragment;
 import com.example.allinone.ui.ipcamera.devices.cameras.CameraListFragment;
+import com.example.allinone.ui.ipcamera.devices.snapshots.SnapshotFragment;
+import com.example.allinone.ui.ipcamera.devices.videos.VideoListFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +25,14 @@ import me.goldze.mvvmhabit.utils.ToastUtils;
 /**
  * Created by Jong Lim on 30/4/19.
  */
-public class DevicesActivity extends BaseActivity<ActivityDevicesBinding, ToolbarViewModel> implements
-        IToolbarNavigator, DevicesNavigator {
+public class DevicesActivity extends BaseActivity<ActivityDevicesBinding, ToolbarViewModel> implements DevicesNavigator,
+        IToolbarNavigator {
 
     protected List<Fragment> pagerFragment() {
         List<Fragment> list = new ArrayList<>();
         list.add(new CameraListFragment());
-        list.add(new Fragment());
-        list.add(new Fragment());
+        list.add(new VideoListFragment());
+        list.add(new SnapshotFragment());
         list.add(new AlarmListFragment());
         list.add(new Fragment());
         return list;
@@ -39,8 +42,8 @@ public class DevicesActivity extends BaseActivity<ActivityDevicesBinding, Toolba
         List<String> list = new ArrayList<>();
         String[] TITLES = {"Switch In", "Switch Out"};
         list.add("Camera");
-        list.add("Snapshot Record");
         list.add("Video Record");
+        list.add("Snapshot Record");
         list.add("Remote Alarm");
         list.add("Switch In");
         return list;
@@ -68,25 +71,6 @@ public class DevicesActivity extends BaseActivity<ActivityDevicesBinding, Toolba
         viewModel.setTitleText("Devices List");
     }
 
-    @Override
-    public void onLeftClick() {
-        onBackPressed();
-    }
-
-    @Override
-    public void onRightIconClick() {
-
-    }
-
-    @Override
-    public void onRightTextClick() {
-
-    }
-
-    @Override
-    public void onTitleClick() {
-
-    }
 
     @Override
     public void openSnapshotActivity() {
@@ -99,13 +83,30 @@ public class DevicesActivity extends BaseActivity<ActivityDevicesBinding, Toolba
     }
 
     @Override
-    public void openFileListActivity() {
-
+    public void openFileListActivity(List<AreaEntity> areas, DeviceEntity camera) {
+        if (camera.isOnline()) {
+            ToastUtils.showShort("Later will add activity for browsing file under this folder");
+        } else {
+            ToastUtils.showShort("Camera is offline, please retry later.");
+        }
     }
 
     @Override
     public void openCameraActivity(List<AreaEntity> areas, List selectedCameras) {
         ToastUtils.showLong("Sorry, haven't implement this part for now.");
+    }
+
+    @Override
+    public void onLeftClick() {
+        onBackPressed();
+    }
+
+    @Override
+    public void onRightClick(String right) {
+    }
+
+    @Override
+    public void onTitleClick(String title) {
     }
 
 }

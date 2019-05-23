@@ -6,9 +6,7 @@ package me.goldze.mvvmhabit.base;
 public interface IToolbarNavigator {
     void onLeftClick();
 
-    void onRightIconClick();
+    void onRightClick(String right);
 
-    void onRightTextClick();
-
-    void onTitleClick();
+    void onTitleClick(String title);
 }

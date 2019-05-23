@@ -10,36 +10,41 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import me.goldze.mvvmhabit.bus.event.SingleLiveEvent;
 
 /**
  * Created by goldze on 2017/6/15.
  * Modify: JongLim
- *      移除不必要的事件监听，并且添加 INavigator,
- *      然后把Navigate操作移到（同层级的）Activity和Fragment里面去实现.
+ * 移除不必要的事件监听，并且添加 INavigator,
+ * 然后把Navigate操作移到（同层级的）Activity和Fragment里面去实现.
  */
-public class BaseViewModel<M extends BaseModel, N> extends AndroidViewModel implements IBaseViewModel {
+public class BaseViewModel<M extends BaseModel, N> extends AndroidViewModel implements IBaseViewModel,
+        Consumer<Disposable> {
     protected M model;
     private WeakReference<LifecycleProvider> lifecycle;
+    //管理RxJava，主要针对RxJava异步操作造成的内存泄漏
+    private CompositeDisposable mCompositeDisposable;
     private WeakReference<N> mNavigator;
     private UIChangeLiveData uc;
 
     public BaseViewModel(@NonNull Application application) {
-        super(application);
-        model = null;
+        this(application, null);
     }
 
     public BaseViewModel(@NonNull Application application, M model) {
         super(application);
         this.model = model;
+        mCompositeDisposable = new CompositeDisposable();
     }
 
     protected void addSubscribe(Disposable disposable) {
-        if (model == null) {
-            throw new NullPointerException("Create ViewModel with ViewModelFactory with Model");
+        if (mCompositeDisposable == null) {
+            mCompositeDisposable = new CompositeDisposable();
         }
-        model.addSubscribe(disposable);
+        mCompositeDisposable.add(disposable);
     }
 
     /**
@@ -113,6 +118,15 @@ public class BaseViewModel<M extends BaseModel, N> extends AndroidViewModel impl
         if (model != null) {
             model.onCleared();
         }
+        //ViewModel销毁时会执行，同时取消所有异步任务
+        if (mCompositeDisposable != null) {
+            mCompositeDisposable.clear();
+        }
+    }
+
+    @Override
+    public void accept(Disposable disposable) throws Exception {
+        addSubscribe(disposable);
     }
 
     public void showDialog() {

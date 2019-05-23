@@ -80,8 +80,6 @@
                 android:visibility="@{toolbarViewModel.rightIconVisibleObservable}"
                 binding:onClickCommand="@{toolbarViewModel.rightIconOnClick}" />
 
-            <View style="@style/ViewLineStyle"
-                android:layout_alignParentBottom="true"/>
         </RelativeLayout>
 
     </androidx.appcompat.widget.Toolbar>

@@ -3,23 +3,30 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.view.View.OnClickListener" />
+
+        <import type="android.view.View" />
 
         <variable
-            name="platform"
+            name="model"
             type="com.example.allinone.entity.PlatformEntity" />
+
+        <variable
+            name="handler"
+            type="com.example.allinone.ui.ipcamera.platforms.PlatformItemListener" />
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:gravity="center_vertical">
 
         <LinearLayout
+            android:id="@+id/llPlatform"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/side_padding"
-            android:layout_marginTop="@dimen/item_margin">
+            android:layout_marginTop="@dimen/item_margin"
+            android:layout_toLeftOf="@+id/btnEdit">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -30,16 +37,19 @@
                 android:id="@+id/tvUser"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@{model.title}"
                 android:textColor="@color/textColor"
-                android:text="@{platform.title}"
                 tools:text="qzlt" />
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/llAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/llPlatform"
             android:layout_marginLeft="@dimen/side_padding"
-            android:layout_marginBottom="@dimen/item_margin">
+            android:layout_marginBottom="@dimen/item_margin"
+            android:layout_toLeftOf="@+id/btnEdit">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -50,15 +60,27 @@
                 android:id="@+id/tvIp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@{model.address}"
                 android:textColor="@color/textColor"
-                android:text="@{platform.address}"
                 tools:text="221.12.141.170" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/viewLineColor" />
+        <ImageView
+            android:id="@+id/btnEdit"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:onClick="@{()->handler.onEditIconClick(model)}"
+            android:padding="@dimen/side_padding"
+            android:src="@mipmap/ic_edit"
+            android:tint="@color/colorAccent"
+            android:visibility="@{handler == null ? View.GONE : View.VISIBLE}" />
 
-    </LinearLayout>
+        <View
+            style="@style/ViewLineStyle"
+            android:layout_alignParentBottom="true"
+            android:visibility="@{handler != null ? View.GONE : View.VISIBLE}" />
+
+    </RelativeLayout>
 </layout>

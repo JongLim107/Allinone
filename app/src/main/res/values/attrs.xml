@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="TableLayout">
+        <attr name="dataList" format="reference" />
+        <attr name="itemLayout" format="reference" />
+
+    </declare-styleable>
+
+</resources>

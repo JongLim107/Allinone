@@ -5,7 +5,7 @@ import android.content.Context;
 
 import com.example.allinone.R;
 import com.example.allinone.entity.AreaEntity;
-import com.example.allinone.entity.CameraEntity;
+import com.example.allinone.entity.DeviceEntity;
 import com.example.allinone.ui.ipcamera.devices.DevicesNavigator;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ import me.goldze.mvvmhabit.utils.ToastUtils;
 public class CameraListViewModel extends BaseViewModel<BaseModel, DevicesNavigator> {
     public final ObservableList<AreaEntity> areas = new ObservableArrayList<>();
     public final ObservableField<String> playNow = new ObservableField<>("Play Now");
-    public final ObservableList<CameraEntity> selectedCameras = new ObservableArrayList<>();
+    public final ObservableList<DeviceEntity> selectedCameras = new ObservableArrayList<>();
 
     private final Context mContext;
 
@@ -46,32 +46,32 @@ public class CameraListViewModel extends BaseViewModel<BaseModel, DevicesNavigat
         super(application);
         this.mContext = application.getApplicationContext();
         this.selectedCameras
-                .addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<CameraEntity>>() {
+                .addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<DeviceEntity>>() {
                     @Override
-                    public void onChanged(ObservableList<CameraEntity> sender) {
+                    public void onChanged(ObservableList<DeviceEntity> sender) {
 
                     }
 
                     @Override
-                    public void onItemRangeChanged(ObservableList<CameraEntity> sender, int positionStart,
+                    public void onItemRangeChanged(ObservableList<DeviceEntity> sender, int positionStart,
                             int itemCount) {
 
                     }
 
                     @Override
-                    public void onItemRangeInserted(ObservableList<CameraEntity> sender, int positionStart,
+                    public void onItemRangeInserted(ObservableList<DeviceEntity> sender, int positionStart,
                             int itemCount) {
                         onSelectedChanged();
                     }
 
                     @Override
-                    public void onItemRangeMoved(ObservableList<CameraEntity> sender, int fromPosition, int toPosition,
+                    public void onItemRangeMoved(ObservableList<DeviceEntity> sender, int fromPosition, int toPosition,
                             int itemCount) {
 
                     }
 
                     @Override
-                    public void onItemRangeRemoved(ObservableList<CameraEntity> sender, int positionStart,
+                    public void onItemRangeRemoved(ObservableList<DeviceEntity> sender, int positionStart,
                             int itemCount) {
                         onSelectedChanged();
                     }
@@ -82,10 +82,10 @@ public class CameraListViewModel extends BaseViewModel<BaseModel, DevicesNavigat
     // mock data
     public void initList() {
         for (int groupId = 0; groupId < 20; groupId++) {
-            List<CameraEntity> cameras = new ArrayList<>();
+            List<DeviceEntity> cameras = new ArrayList<>();
             for (int childId = 0; childId <= groupId; childId++) {
                 boolean online = childId < 3;
-                cameras.add(new CameraEntity("" + childId, "Camera Title " + groupId + "-" + childId, online));
+                cameras.add(new DeviceEntity("" + childId, "Camera Title " + groupId + "-" + childId, online));
             }
             areas.add(new AreaEntity(groupId + "", "Area Title [" + groupId + "]", cameras));
         }
@@ -108,8 +108,8 @@ public class CameraListViewModel extends BaseViewModel<BaseModel, DevicesNavigat
 
         List<AreaEntity> nas = new ArrayList<>();
         for (AreaEntity a : areas) {
-            List<CameraEntity> ncs = new ArrayList<>();
-            for (CameraEntity c : a.getCameras()) {
+            List<DeviceEntity> ncs = new ArrayList<>();
+            for (DeviceEntity c : a.getCameras()) {
                 if (c.getName().contains(newText)) {
                     ncs.add(c);
                 }
@@ -120,6 +120,5 @@ public class CameraListViewModel extends BaseViewModel<BaseModel, DevicesNavigat
         }
         return nas;
     }
-
 
 }

@@ -1,48 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="model"
-            type="com.example.allinone.entity.CameraEntity" />
+            type="com.example.allinone.entity.DeviceEntity" />
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:background="@drawable/under_line"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingRight="@dimen/side_padding">
+        android:layout_height="43dp">
 
-        <ImageView
-            android:id="@+id/iv_left"
-            android:layout_width="42dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="42dp"
-            android:padding="@dimen/view_padding"
-            app:imageResource="@{model.icon}"
-            tools:src="@mipmap/ic_camera" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingRight="@dimen/side_padding">
 
-        <TextView
-            android:id="@+id/tvCamera"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:maxLines="2"
-            android:text="@{model.name}"
-            android:textColor="@color/textColor"
-            android:textSize="14sp"
-            tools:text="Camera title" />
+            <ImageView
+                android:id="@+id/iv_left"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_marginLeft="@dimen/view_padding"
+                android:padding="@dimen/view_padding"
+                app:imageResource="@{model.icon}"
+                tools:src="@mipmap/ic_camera" />
 
-        <ImageView
-            android:id="@+id/iv_right"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            app:imageResource="@{model.checkIcon}"
-            tools:src="@drawable/ic_check" />
+            <TextView
+                android:id="@+id/tvCamera"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:maxLines="2"
+                android:text="@{model.name}"
+                android:textColor="@color/textColor"
+                android:textSize="14sp"
+                tools:text="Camera title" />
 
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/iv_right"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginRight="@dimen/view_padding"
+                app:imageResource="@{model.checkIcon}"
+                tools:src="@drawable/ic_check" />
+
+        </LinearLayout>
+
+        <View
+            style="@style/ViewLineStyle"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/view_padding"
+            android:layout_marginRight="@dimen/view_padding"
+            android:visibility="@{model.lastChild ? View.INVISIBLE : View.VISIBLE}" />
+
+    </RelativeLayout>
 </layout>
