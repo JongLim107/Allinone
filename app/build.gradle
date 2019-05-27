@@ -39,6 +39,10 @@ dependencies {
     implementation rootProject.ext.support["support-v4"]
     implementation rootProject.ext.support["test-runner"]
     implementation rootProject.ext.support["test-espresso"]
+
+    //swipelayout
+    implementation "com.daimajia.swipelayout:library:1.2.0@aar"
+
     //下拉刷新,上拉加载
     implementation 'com.lcodecorex:tkrefreshlayout:1.0.7'
     //底部tabBar

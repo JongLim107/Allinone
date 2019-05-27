@@ -2,6 +2,7 @@ package com.example.allinone.ui.ipcamera.devices.alarms;
 
 import android.app.Application;
 
+import com.example.allinone.BR;
 import com.example.allinone.R;
 import com.example.allinone.entity.AlarmEntity;
 
@@ -15,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.databinding.ObservableArrayList;
 import androidx.databinding.ObservableInt;
 import androidx.databinding.ObservableList;
-import me.goldze.mvvmhabit.BR;
 import me.goldze.mvvmhabit.base.BaseViewModel;
 
 /**

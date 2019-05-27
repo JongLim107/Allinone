@@ -2,7 +2,11 @@ package com.example.allinone.app;
 
 import com.example.allinone.ui.MainActivity;
 import com.example.allinone.R;
+import com.example.allinone.utils.ACache;
+import com.example.allinone.utils.FileUtils;
 import com.squareup.leakcanary.LeakCanary;
+
+import java.io.File;
 
 import me.goldze.mvvmhabit.BuildConfig;
 import me.goldze.mvvmhabit.base.BaseApplication;
@@ -10,6 +14,21 @@ import me.goldze.mvvmhabit.crash.CaocConfig;
 import me.goldze.mvvmhabit.utils.KLog;
 
 public class AppApplication extends BaseApplication {
+
+
+    /**
+     * 程序缓存，存储背景图片、数据库等
+     */
+    private static ACache gACache;
+    private static String gACacheDir;
+
+    public static ACache getACache() {
+        return gACache;
+    }
+    public static String getACacheDir() {
+        return gACacheDir;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -24,6 +43,18 @@ public class AppApplication extends BaseApplication {
 
         //Initial the ORM model
         ObjectBox.init(this);
+
+
+        String path[] = FileUtils.getStoragePath(this);
+        if (path != null)
+            gACacheDir = path[0] + "/Allinone";
+        else
+            gACacheDir = FileUtils.getStoragePath();
+
+        assert gACacheDir != null;
+
+        File file = new File(gACacheDir);
+        gACache = ACache.get(file);
     }
 
     private void initCrash() {

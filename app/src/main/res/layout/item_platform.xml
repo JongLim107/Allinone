@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -15,72 +16,103 @@
             type="com.example.allinone.ui.ipcamera.platforms.PlatformItemListener" />
     </data>
 
-    <RelativeLayout
+    <com.daimajia.swipe.SwipeLayout
+        android:id="@+id/slPlatform"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical">
-
+        app:clickToClose="true">
+        
+        <!-- Bottom View Start-->
         <LinearLayout
-            android:id="@+id/llPlatform"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:gravity="right"
+            android:orientation="horizontal"
+            android:visibility="@{handler == null ? View.GONE : View.VISIBLE}"
+            android:weightSum="1">
+
+            <ImageView
+                android:id="@+id/btnEdit"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:onClick="@{()->handler.onEditClick(model)}"
+                android:padding="@dimen/side_padding"
+                android:src="@mipmap/ic_edit"
+                android:tint="@color/colorAccent" />
+
+            <ImageView
+                android:id="@+id/btnDelete"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:onClick="@{()->handler.onDeleteClick(model)}"
+                android:padding="@dimen/side_padding"
+                android:src="@mipmap/ic_delete"
+                android:tint="@color/colorAccent" />
+
+            <!--What you want to show-->
+        </LinearLayout>
+        <!-- Bottom View End-->
+
+        <!-- Surface View Start -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/side_padding"
-            android:layout_marginTop="@dimen/item_margin"
-            android:layout_toLeftOf="@+id/btnEdit">
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="平台名：" />
-
-            <TextView
-                android:id="@+id/tvUser"
+            <LinearLayout
+                android:id="@+id/llPlatform"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{model.title}"
-                android:textColor="@color/textColor"
-                tools:text="qzlt" />
-        </LinearLayout>
+                android:layout_marginLeft="@dimen/side_padding"
+                android:layout_marginTop="@dimen/item_margin">
 
-        <LinearLayout
-            android:id="@+id/llAddress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/llPlatform"
-            android:layout_marginLeft="@dimen/side_padding"
-            android:layout_marginBottom="@dimen/item_margin"
-            android:layout_toLeftOf="@+id/btnEdit">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="平台名："
+                    android:visibility="@{handler == null ? View.GONE : View.VISIBLE}" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="IP地址：" />
+                <TextView
+                    android:id="@+id/tvUser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{model.title}"
+                    android:textColor="@color/textColor"
+                    tools:text="qzlt" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/tvIp"
+            <LinearLayout
+                android:id="@+id/llAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{model.address}"
-                android:textColor="@color/textColor"
-                tools:text="221.12.141.170" />
+                android:layout_marginLeft="@dimen/side_padding"
+                android:layout_marginBottom="@dimen/item_margin">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="IP地址："
+                    android:visibility="@{handler == null ? View.GONE : View.VISIBLE}" />
+
+                <TextView
+                    android:id="@+id/tvIp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLength="15"
+                    android:text="@{model.address}"
+                    android:textColor="@color/textColor"
+                    tools:text="221.12.141.170" />
+            </LinearLayout>
+
+            <View
+                style="@style/ViewLineStyle"
+                android:visibility="@{handler != null ? View.GONE : View.VISIBLE}" />
+
         </LinearLayout>
+        <!-- Surface View End -->
+    </com.daimajia.swipe.SwipeLayout>
 
-        <ImageView
-            android:id="@+id/btnEdit"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:onClick="@{()->handler.onEditIconClick(model)}"
-            android:padding="@dimen/side_padding"
-            android:src="@mipmap/ic_edit"
-            android:tint="@color/colorAccent"
-            android:visibility="@{handler == null ? View.GONE : View.VISIBLE}" />
-
-        <View
-            style="@style/ViewLineStyle"
-            android:layout_alignParentBottom="true"
-            android:visibility="@{handler != null ? View.GONE : View.VISIBLE}" />
-
-    </RelativeLayout>
 </layout>

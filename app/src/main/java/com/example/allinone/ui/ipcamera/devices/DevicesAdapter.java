@@ -59,7 +59,7 @@ public class DevicesAdapter extends BaseExpandableListAdapter implements StickyE
 
     @Override
     public AreaEntity getGroup(int groupPosition) {
-        if (mAreas.size() < groupPosition || groupPosition < 0){
+        if (mAreas.size() < groupPosition || groupPosition < 0) {
             return null;
         }
         return mAreas.get(groupPosition);
@@ -73,7 +73,7 @@ public class DevicesAdapter extends BaseExpandableListAdapter implements StickyE
         }
 
         List<DeviceEntity> cs = area.getCameras();
-        if (cs.size() < childPosition || childPosition < 0){
+        if (cs.size() < childPosition || childPosition < 0) {
             return null;
         }
 

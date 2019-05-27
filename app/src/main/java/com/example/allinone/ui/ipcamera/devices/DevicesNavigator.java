@@ -5,8 +5,6 @@ import com.example.allinone.entity.DeviceEntity;
 
 import java.util.List;
 
-import me.goldze.mvvmhabit.base.IToolbarNavigator;
-
 /**
  * Created by JongLim on 1/5/2019.
  */
@@ -17,6 +15,7 @@ public interface DevicesNavigator {
     void openVideoPlayActivity();
 
     void openFileListActivity(List<AreaEntity> areas, DeviceEntity camera);
+
     void openCameraActivity(List<AreaEntity> areas, List selectedCameras);
 
 }

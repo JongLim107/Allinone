@@ -23,7 +23,7 @@ import androidx.lifecycle.LifecycleOwner;
 public class PlatformSpinnerAdapter extends ArrayAdapter<PlatformEntity> {
 
     private final List<PlatformEntity> mPlatforms;
-    private final LoginViewModel viewModel;
+    private final LoginViewModel mViewModel;
 
     private LifecycleOwner mLifecycleOwner;
 
@@ -31,7 +31,7 @@ public class PlatformSpinnerAdapter extends ArrayAdapter<PlatformEntity> {
         super(context, 0, platforms);
         mLifecycleOwner = (LifecycleOwner) context;
         mPlatforms = platforms;
-        this.viewModel = viewModel;
+        mViewModel = viewModel;
     }
 
     @Override
@@ -46,7 +46,7 @@ public class PlatformSpinnerAdapter extends ArrayAdapter<PlatformEntity> {
 
         binding.setModel(mPlatforms.get(position));
         binding.setLifecycleOwner(mLifecycleOwner);
-
+        binding.slPlatform.setSwipeEnabled(false);
         binding.executePendingBindings();
         return binding.getRoot();
     }

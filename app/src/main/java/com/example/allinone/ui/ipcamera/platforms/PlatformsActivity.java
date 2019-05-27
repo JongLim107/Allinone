@@ -45,6 +45,8 @@ public class PlatformsActivity extends BaseActivity<ActivityPlatformsBinding, Pl
         adapter = new PlatformsAdapter(this, viewModel, platforms.getAll());
         binding.lvPlatform.setAdapter(adapter);
         viewModel.setNavigator(this);
+        viewModel.setPlatforms(platforms);
+        viewModel.setAdapter(adapter);
     }
 
     @Override
