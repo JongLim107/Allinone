@@ -43,6 +43,22 @@ public class FileUtils {
         return dir.exists();
     }
 
+    private static boolean isExternalStorageReadOnly() {
+        String extStorageState = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(extStorageState)) {
+            return true;
+        }
+        return false;
+    }
+
+    private static boolean isExternalStorageAvailable() {
+        String extStorageState = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(extStorageState)) {
+            return true;
+        }
+        return false;
+    }
+
     public static String[] getStoragePath(Context context) {
         StorageManager storageManager = (StorageManager) context.getSystemService(Context.STORAGE_SERVICE);
 
@@ -63,8 +79,8 @@ public class FileUtils {
     }
 
     public static String getStoragePath() {
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            return Environment.getExternalStorageDirectory().getAbsolutePath() + "/Allinone";
+        if (isExternalStorageAvailable()) {
+            return Environment.getExternalStorageDirectory().getAbsolutePath();
         } else
             return null;
     }
@@ -102,9 +118,8 @@ public class FileUtils {
                         null, // 条件的对应的参数
                         MediaStore.Audio.AudioColumns.TITLE);// 排序方式
         assert cursor != null;
-        /**
-         *  找到歌曲列索引,然后获取歌曲信息
-         */
+
+        //找到歌曲列索引,然后获取歌曲信息
         while (cursor.moveToNext()) {
             String path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));//文件的路径
 
@@ -114,10 +129,8 @@ public class FileUtils {
             String album = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
             long size = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.SIZE));//文件大小
             int duration = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION));//文件总时长
-            /**
-             * 转换成网络链接
-             */
-            int index = path.lastIndexOf("/");
+            //转换成网络链接
+            //            int index = path.lastIndexOf("/");
             //            String url = mapFileToNetAddr() + path.substring(0, index) + Uri.encode(path.substring(index));
             trackList.add(new TrackMeta("", artist, album, String.valueOf(id), title, cursor.getPosition() + 1,
                     TrackSource.SOURCE_LOCAL));
@@ -248,6 +261,13 @@ public class FileUtils {
                 KLog.d("TestFile", e.getMessage());
             }
         }
+    }
+
+    public void createFolder(String fname) {
+        String myfolder = Environment.getExternalStorageDirectory() + "/" + fname;
+        File f = new File(myfolder);
+        if (!f.exists())
+            f.mkdir();
     }
 
 }

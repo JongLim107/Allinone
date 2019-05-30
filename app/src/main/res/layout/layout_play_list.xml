@@ -1,36 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:id="@+id/lyPlayActList"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:gravity="center_horizontal"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/tvListTitle"
+    <LinearLayout
+        android:id="@+id/lyPlayActList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/view_padding"
-        android:text="本地歌曲列表："
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/text_font_normal"/>
+        android:background="@color/white"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
-    <View style="@style/ViewLineStyle"/>
+        <TextView
+            android:id="@+id/tvListTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/view_padding"
+            android:text="本地歌曲列表："
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_font_normal" />
 
-    <ListView
-        android:id="@+id/tracksView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:cacheColorHint="@color/greyLightAlpha"
-        android:dividerHeight="1dp"
-        android:fadingEdge="none"
-        android:fastScrollEnabled="false"
-        android:footerDividersEnabled="false"
-        android:headerDividersEnabled="false"
-        android:smoothScrollbar="true"
-        tools:listitem="@layout/item_music"/>
+        <View style="@style/ViewLineStyle" />
 
-</LinearLayout>
+        <ListView
+            android:id="@+id/tracksView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cacheColorHint="@color/greyLightAlpha"
+            android:dividerHeight="1dp"
+            android:fadingEdge="none"
+            android:fastScrollEnabled="false"
+            android:footerDividersEnabled="false"
+            android:headerDividersEnabled="false"
+            android:smoothScrollbar="true"
+            tools:listitem="@layout/item_music" />
+
+    </LinearLayout>
+
+</layout>

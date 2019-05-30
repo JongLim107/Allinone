@@ -59,8 +59,15 @@ public class ACache {
     public static final int TIME_DAY = TIME_HOUR * 24;
     private static final int MAX_SIZE = 1000 * 1000 * 50; // 50 mb
     private static final int MAX_COUNT = Integer.MAX_VALUE; // 不限制存放数据的数量
-    private static Map<String, ACache> mInstanceMap = new HashMap<String, ACache>();
+    private static Map<String, ACache> mInstanceMap = new HashMap<>();
     private ACacheManager mCache;
+
+    private ACache(File cacheDir, long max_size, int max_count) {
+        if (!cacheDir.exists() && !cacheDir.mkdirs()) {
+            throw new RuntimeException("can't make dirs in " + cacheDir.getAbsolutePath());
+        }
+        mCache = new ACacheManager(cacheDir, max_size, max_count);
+    }
 
     public static ACache get(Context ctx) {
         return get(ctx, "ACache");
@@ -69,15 +76,6 @@ public class ACache {
     private static ACache get(Context ctx, String cacheName) {
         File f = new File(ctx.getCacheDir(), cacheName);
         return get(f, MAX_SIZE, MAX_COUNT);
-    }
-
-    public static ACache get(File cacheDir) {
-        return get(cacheDir, MAX_SIZE, MAX_COUNT);
-    }
-
-    public static ACache get(Context ctx, long max_zise, int max_count) {
-        File f = new File(ctx.getCacheDir(), "ACache");
-        return get(f, max_zise, max_count);
     }
 
     private static ACache get(File cacheDir, long max_zise, int max_count) {
@@ -93,40 +91,41 @@ public class ACache {
         return "_" + android.os.Process.myPid();
     }
 
-    private ACache(File cacheDir, long max_size, int max_count) {
-        if (!cacheDir.exists() && !cacheDir.mkdirs()) {
-            throw new RuntimeException("can't make dirs in " + cacheDir.getAbsolutePath());
-        }
-        mCache = new ACacheManager(cacheDir, max_size, max_count);
+    public static ACache get(File cacheDir) {
+        return get(cacheDir, MAX_SIZE, MAX_COUNT);
+    }
+
+    public static ACache get(Context ctx, long max_zise, int max_count) {
+        File f = new File(ctx.getCacheDir(), "/ACache");
+        return get(f, max_zise, max_count);
     }
 
     /**
-     * Provides a means to save a cached file before the data are available.
-     * Since writing about the file is complete, and its close method is called,
-     * its contents will be registered in the cache. Example of use:
-     * <p>
-     * ACache cache = new ACache(this) try { OutputStream stream =
-     * cache.put("myFileName") stream.write("some bytes".getBytes()); // now
-     * update cache! stream.close(); } catch(FileNotFoundException e){
-     * e.printStackTrace() }
+     * imageloader 的内存缓存的 key 以_ 结尾  截取key比较的时候如果没有加_ 会报错崩溃,所以自己自定义
+     *
+     * @param filePath 文件地址
+     * @return
      */
-    class xFileOutputStream extends FileOutputStream {
-        File file;
-
-        xFileOutputStream(File file) throws FileNotFoundException {
-            super(file);
-            this.file = file;
-        }
-
-        public void close() throws IOException {
-            super.close();
-            mCache.put(file);
-        }
+    public static String getMemoryKey(String filePath) {
+        String key;
+        int index = filePath.lastIndexOf("/");
+        key = filePath.substring(index + 1, filePath.length()) + "_";
+        return key;
     }
 
     // =======================================
     // ============ String数据 读写 ==============
     // =======================================
+
+    /**
+     * 保存 JSONObject数据 到 缓存中
+     *
+     * @param key   保存的key
+     * @param value 保存的JSON数据
+     */
+    public void put(String key, JSONObject value) {
+        put(key, value.toString());
+    }
 
     /**
      * 保存 String数据 到 缓存中
@@ -156,6 +155,21 @@ public class ACache {
     }
 
     /**
+     * 保存 JSONObject数据 到 缓存中
+     *
+     * @param key      保存的key
+     * @param value    保存的JSONObject数据
+     * @param saveTime 保存的时间，单位：秒
+     */
+    public void put(String key, JSONObject value, int saveTime) {
+        put(key, value.toString(), saveTime);
+    }
+
+    // =======================================
+    // ============= JSONObject 数据 读写 ==============
+    // =======================================
+
+    /**
      * 保存 String数据 到 缓存中
      *
      * @param key      保存的key
@@ -164,6 +178,23 @@ public class ACache {
      */
     public void put(String key, String value, int saveTime) {
         put(key, Utils.newStringWithDateInfo(saveTime, value));
+    }
+
+    /**
+     * 读取JSONObject数据
+     *
+     * @param key
+     * @return JSONObject数据
+     */
+    public JSONObject getAsJSONObject(String key) {
+        String JSONString = getAsString(key);
+        try {
+            JSONObject obj = new JSONObject(JSONString);
+            return obj;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
@@ -208,50 +239,18 @@ public class ACache {
     }
 
     // =======================================
-    // ============= JSONObject 数据 读写 ==============
-    // =======================================
-
-    /**
-     * 保存 JSONObject数据 到 缓存中
-     *
-     * @param key   保存的key
-     * @param value 保存的JSON数据
-     */
-    public void put(String key, JSONObject value) {
-        put(key, value.toString());
-    }
-
-    /**
-     * 保存 JSONObject数据 到 缓存中
-     *
-     * @param key      保存的key
-     * @param value    保存的JSONObject数据
-     * @param saveTime 保存的时间，单位：秒
-     */
-    public void put(String key, JSONObject value, int saveTime) {
-        put(key, value.toString(), saveTime);
-    }
-
-    /**
-     * 读取JSONObject数据
-     *
-     * @param key
-     * @return JSONObject数据
-     */
-    public JSONObject getAsJSONObject(String key) {
-        String JSONString = getAsString(key);
-        try {
-            JSONObject obj = new JSONObject(JSONString);
-            return obj;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    // =======================================
     // ============ JSONArray 数据 读写 =============
     // =======================================
+
+    /**
+     * 移除某个key
+     *
+     * @param key
+     * @return 是否移除成功
+     */
+    public boolean remove(String key) {
+        return mCache.remove(key);
+    }
 
     /**
      * 保存 JSONArray数据 到 缓存中
@@ -274,6 +273,10 @@ public class ACache {
         put(key, value.toString(), saveTime);
     }
 
+    // =======================================
+    // ============== byte 数据 读写 =============
+    // =======================================
+
     /**
      * 读取JSONArray数据
      *
@@ -288,37 +291,6 @@ public class ACache {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
-        }
-    }
-
-    // =======================================
-    // ============== byte 数据 读写 =============
-    // =======================================
-
-    /**
-     * 保存 byte数据 到 缓存中
-     *
-     * @param key   保存的key
-     * @param value 保存的数据
-     */
-    public void put(String key, byte[] value) {
-        File file = mCache.newFile(key);
-        FileOutputStream out = null;
-        try {
-            out = new FileOutputStream(file);
-            out.write(value);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (out != null) {
-                try {
-                    out.flush();
-                    out.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            mCache.put(file);
         }
     }
 
@@ -344,59 +316,6 @@ public class ACache {
             return null;
         return new FileInputStream(file);
     }
-
-    /**
-     * 保存 byte数据 到 缓存中
-     *
-     * @param key      保存的key
-     * @param value    保存的数据
-     * @param saveTime 保存的时间，单位：秒
-     */
-    public void put(String key, byte[] value, int saveTime) {
-        put(key, Utils.newByteArrayWithDateInfo(saveTime, value));
-    }
-
-    /**
-     * 获取 byte 数据
-     *
-     * @param key
-     * @return byte 数据
-     */
-    public byte[] getAsBinary(String key) {
-        RandomAccessFile RAFile = null;
-        boolean removeFile = false;
-        try {
-            File file = mCache.get(key);
-            if (!file.exists())
-                return null;
-            RAFile = new RandomAccessFile(file, "r");
-            byte[] byteArray = new byte[(int) RAFile.length()];
-            RAFile.read(byteArray);
-            if (!Utils.isDue(byteArray)) {
-                return Utils.clearDateInfo(byteArray);
-            } else {
-                removeFile = true;
-                return null;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        } finally {
-            if (RAFile != null) {
-                try {
-                    RAFile.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (removeFile)
-                remove(key);
-        }
-    }
-
-    // =======================================
-    // ============= 序列化 数据 读写 ===============
-    // =======================================
 
     /**
      * 保存 Serializable数据 到 缓存中
@@ -435,6 +354,48 @@ public class ACache {
                 oos.close();
             } catch (IOException e) {
             }
+        }
+    }
+
+    // =======================================
+    // ============= 序列化 数据 读写 ===============
+    // =======================================
+
+    /**
+     * 保存 byte数据 到 缓存中
+     *
+     * @param key      保存的key
+     * @param value    保存的数据
+     * @param saveTime 保存的时间，单位：秒
+     */
+    public void put(String key, byte[] value, int saveTime) {
+        put(key, Utils.newByteArrayWithDateInfo(saveTime, value));
+    }
+
+    /**
+     * 保存 byte数据 到 缓存中
+     *
+     * @param key   保存的key
+     * @param value 保存的数据
+     */
+    public void put(String key, byte[] value) {
+        File file = mCache.newFile(key);
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(file);
+            out.write(value);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (out != null) {
+                try {
+                    out.flush();
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            mCache.put(file);
         }
     }
 
@@ -481,24 +442,41 @@ public class ACache {
     // =======================================
 
     /**
-     * 保存 bitmap 到 缓存中
+     * 获取 byte 数据
      *
-     * @param key   保存的key
-     * @param value 保存的bitmap数据
+     * @param key
+     * @return byte 数据
      */
-    public void put(String key, Bitmap value) {
-        put(key, Utils.Bitmap2Bytes(value));
-    }
-
-    /**
-     * 保存 bitmap 到 缓存中
-     *
-     * @param key      保存的key
-     * @param value    保存的 bitmap 数据
-     * @param saveTime 保存的时间，单位：秒
-     */
-    public void put(String key, Bitmap value, int saveTime) {
-        put(key, Utils.Bitmap2Bytes(value), saveTime);
+    public byte[] getAsBinary(String key) {
+        RandomAccessFile RAFile = null;
+        boolean removeFile = false;
+        try {
+            File file = mCache.get(key);
+            if (!file.exists())
+                return null;
+            RAFile = new RandomAccessFile(file, "r");
+            byte[] byteArray = new byte[(int) RAFile.length()];
+            RAFile.read(byteArray);
+            if (!Utils.isDue(byteArray)) {
+                return Utils.clearDateInfo(byteArray);
+            } else {
+                removeFile = true;
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            if (RAFile != null) {
+                try {
+                    RAFile.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (removeFile)
+                remove(key);
+        }
     }
 
     /**
@@ -514,10 +492,6 @@ public class ACache {
         return Utils.Bytes2Bimap(getAsBinary(key));
     }
 
-    // =======================================
-    // ============= drawable 数据 读写 =============
-    // =======================================
-
     /**
      * 保存 drawable 到 缓存中
      *
@@ -526,6 +500,20 @@ public class ACache {
      */
     public void put(String key, Drawable value) {
         put(key, Utils.drawable2Bitmap(value));
+    }
+
+    // =======================================
+    // ============= drawable 数据 读写 =============
+    // =======================================
+
+    /**
+     * 保存 bitmap 到 缓存中
+     *
+     * @param key   保存的key
+     * @param value 保存的bitmap数据
+     */
+    public void put(String key, Bitmap value) {
+        put(key, Utils.Bitmap2Bytes(value));
     }
 
     /**
@@ -537,6 +525,17 @@ public class ACache {
      */
     public void put(String key, Drawable value, int saveTime) {
         put(key, Utils.drawable2Bitmap(value), saveTime);
+    }
+
+    /**
+     * 保存 bitmap 到 缓存中
+     *
+     * @param key      保存的key
+     * @param value    保存的 bitmap 数据
+     * @param saveTime 保存的时间，单位：秒
+     */
+    public void put(String key, Bitmap value, int saveTime) {
+        put(key, Utils.Bitmap2Bytes(value), saveTime);
     }
 
     /**
@@ -566,16 +565,6 @@ public class ACache {
     }
 
     /**
-     * 移除某个key
-     *
-     * @param key
-     * @return 是否移除成功
-     */
-    public boolean remove(String key) {
-        return mCache.remove(key);
-    }
-
-    /**
      * 清除所有数据
      */
     public void clear() {
@@ -585,146 +574,11 @@ public class ACache {
     /**
      * @author 杨福海（michael） www.yangfuhai.com
      * @version 1.0
-     * @title 缓存管理器
-     */
-    public class ACacheManager {
-        private final AtomicLong cacheSize;
-        private final AtomicInteger cacheCount;
-        private final long sizeLimit;
-        private final int countLimit;
-        private final Map<File, Long> lastUsageDates = Collections.synchronizedMap(new HashMap<File, Long>());
-        protected File cacheDir;
-
-        private ACacheManager(File cacheDir, long sizeLimit, int countLimit) {
-            this.cacheDir = cacheDir;
-            this.sizeLimit = sizeLimit;
-            this.countLimit = countLimit;
-            cacheSize = new AtomicLong();
-            cacheCount = new AtomicInteger();
-            calculateCacheSizeAndCacheCount();
-        }
-
-        /**
-         * 计算 cacheSize和cacheCount
-         */
-        private void calculateCacheSizeAndCacheCount() {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    int size = 0;
-                    int count = 0;
-                    File[] cachedFiles = cacheDir.listFiles();
-                    if (cachedFiles != null) {
-                        for (File cachedFile : cachedFiles) {
-                            size += calculateSize(cachedFile);
-                            count += 1;
-                            lastUsageDates.put(cachedFile, cachedFile.lastModified());
-                        }
-                        cacheSize.set(size);
-                        cacheCount.set(count);
-                    }
-                }
-            }).start();
-        }
-
-        private void put(File file) {
-            int curCacheCount = cacheCount.get();
-            while (curCacheCount + 1 > countLimit) {
-                long freedSize = removeNext();
-                cacheSize.addAndGet(-freedSize);
-
-                curCacheCount = cacheCount.addAndGet(-1);
-            }
-            cacheCount.addAndGet(1);
-
-            long valueSize = calculateSize(file);
-            long curCacheSize = cacheSize.get();
-            while (curCacheSize + valueSize > sizeLimit) {
-                long freedSize = removeNext();
-                curCacheSize = cacheSize.addAndGet(-freedSize);
-            }
-            cacheSize.addAndGet(valueSize);
-
-            Long currentTime = System.currentTimeMillis();
-            file.setLastModified(currentTime);
-            lastUsageDates.put(file, currentTime);
-        }
-
-        private File get(String key) {
-            File file = newFile(key);
-            Long currentTime = System.currentTimeMillis();
-            file.setLastModified(currentTime);
-            lastUsageDates.put(file, currentTime);
-
-            return file;
-        }
-
-        private File newFile(String key) {
-            return new File(cacheDir, key.hashCode() + "");
-        }
-
-        private boolean remove(String key) {
-            File image = get(key);
-            return image.delete();
-        }
-
-        private void clear() {
-            lastUsageDates.clear();
-            cacheSize.set(0);
-            File[] files = cacheDir.listFiles();
-            if (files != null) {
-                for (File f : files) {
-                    f.delete();
-                }
-            }
-        }
-
-        /**
-         * 移除旧的文件
-         *
-         * @return
-         */
-        private long removeNext() {
-            if (lastUsageDates.isEmpty()) {
-                return 0;
-            }
-
-            Long oldestUsage = null;
-            File mostLongUsedFile = null;
-            Set<Entry<File, Long>> entries = lastUsageDates.entrySet();
-            synchronized (lastUsageDates) {
-                for (Entry<File, Long> entry : entries) {
-                    if (mostLongUsedFile == null) {
-                        mostLongUsedFile = entry.getKey();
-                        oldestUsage = entry.getValue();
-                    } else {
-                        Long lastValueUsage = entry.getValue();
-                        if (lastValueUsage < oldestUsage) {
-                            oldestUsage = lastValueUsage;
-                            mostLongUsedFile = entry.getKey();
-                        }
-                    }
-                }
-            }
-
-            long fileSize = calculateSize(mostLongUsedFile);
-            if (mostLongUsedFile.delete()) {
-                lastUsageDates.remove(mostLongUsedFile);
-            }
-            return fileSize;
-        }
-
-        private long calculateSize(File file) {
-            return file.length();
-        }
-    }
-
-    /**
-     * @author 杨福海（michael） www.yangfuhai.com
-     * @version 1.0
      * @title 时间计算工具类
      */
     private static class Utils {
+
+        private static final char mSeparator = ' ';
 
         /**
          * 判断缓存的String数据是否到期
@@ -758,8 +612,47 @@ public class ACache {
             return false;
         }
 
+        private static String[] getDateInfoFromDate(byte[] data) {
+            if (hasDateInfo(data)) {
+                String saveDate = new String(copyOfRange(data, 0, 13));
+                String deleteAfter = new String(copyOfRange(data, 14, indexOf(data, mSeparator)));
+                return new String[]{saveDate, deleteAfter};
+            }
+            return null;
+        }
+
+        private static boolean hasDateInfo(byte[] data) {
+            return data != null && data.length > 15 && data[13] == '-' && indexOf(data, mSeparator) > 14;
+        }
+
+        private static byte[] copyOfRange(byte[] original, int from, int to) {
+            int newLength = to - from;
+            if (newLength < 0)
+                throw new IllegalArgumentException(from + " > " + to);
+            byte[] copy = new byte[newLength];
+            System.arraycopy(original, from, copy, 0, Math.min(original.length - from, newLength));
+            return copy;
+        }
+
+        private static int indexOf(byte[] data, char c) {
+            for (int i = 0; i < data.length; i++) {
+                if (data[i] == c) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
         private static String newStringWithDateInfo(int second, String strInfo) {
             return createDateInfo(second) + strInfo;
+        }
+
+        private static String createDateInfo(int second) {
+            String currentTime = System.currentTimeMillis() + "";
+            while (currentTime.length() < 13) {
+                currentTime = "0" + currentTime;
+            }
+            return currentTime + "-" + second + mSeparator;
         }
 
         private static byte[] newByteArrayWithDateInfo(int second, byte[] data2) {
@@ -782,47 +675,6 @@ public class ACache {
                 return copyOfRange(data, indexOf(data, mSeparator) + 1, data.length);
             }
             return data;
-        }
-
-        private static boolean hasDateInfo(byte[] data) {
-            return data != null && data.length > 15 && data[13] == '-' && indexOf(data, mSeparator) > 14;
-        }
-
-        private static String[] getDateInfoFromDate(byte[] data) {
-            if (hasDateInfo(data)) {
-                String saveDate = new String(copyOfRange(data, 0, 13));
-                String deleteAfter = new String(copyOfRange(data, 14, indexOf(data, mSeparator)));
-                return new String[]{saveDate, deleteAfter};
-            }
-            return null;
-        }
-
-        private static int indexOf(byte[] data, char c) {
-            for (int i = 0; i < data.length; i++) {
-                if (data[i] == c) {
-                    return i;
-                }
-            }
-            return -1;
-        }
-
-        private static byte[] copyOfRange(byte[] original, int from, int to) {
-            int newLength = to - from;
-            if (newLength < 0)
-                throw new IllegalArgumentException(from + " > " + to);
-            byte[] copy = new byte[newLength];
-            System.arraycopy(original, from, copy, 0, Math.min(original.length - from, newLength));
-            return copy;
-        }
-
-        private static final char mSeparator = ' ';
-
-        private static String createDateInfo(int second) {
-            String currentTime = System.currentTimeMillis() + "";
-            while (currentTime.length() < 13) {
-                currentTime = "0" + currentTime;
-            }
-            return currentTime + "-" + second + mSeparator;
         }
 
         /*
@@ -884,16 +736,164 @@ public class ACache {
     }
 
     /**
-     * imageloader 的内存缓存的 key 以_ 结尾  截取key比较的时候如果没有加_ 会报错崩溃,所以自己自定义
-     *
-     * @param filePath 文件地址
-     * @return
+     * Provides a means to save a cached file before the data are available.
+     * Since writing about the file is complete, and its close method is called,
+     * its contents will be registered in the cache. Example of use:
+     * <p>
+     * ACache cache = new ACache(this) try { OutputStream stream =
+     * cache.put("myFileName") stream.write("some bytes".getBytes()); // now
+     * update cache! stream.close(); } catch(FileNotFoundException e){
+     * e.printStackTrace() }
      */
-    public static String getMemoryKey(String filePath) {
-        String key;
-        int index = filePath.lastIndexOf("/");
-        key = filePath.substring(index + 1, filePath.length()) + "_";
-        return key;
+    class xFileOutputStream extends FileOutputStream {
+        File file;
+
+        xFileOutputStream(File file) throws FileNotFoundException {
+            super(file);
+            this.file = file;
+        }
+
+        public void close() throws IOException {
+            super.close();
+            mCache.put(file);
+        }
+    }
+
+    /**
+     * @author 杨福海（michael） www.yangfuhai.com
+     * @version 1.0
+     * @title 缓存管理器
+     */
+    public class ACacheManager {
+        private final AtomicLong cacheSize;
+        private final AtomicInteger cacheCount;
+        private final long sizeLimit;
+        private final int countLimit;
+        private final Map<File, Long> lastUsageDates = Collections.synchronizedMap(new HashMap<File, Long>());
+        protected File cacheDir;
+
+        private ACacheManager(File cacheDir, long sizeLimit, int countLimit) {
+            this.cacheDir = cacheDir;
+            this.sizeLimit = sizeLimit;
+            this.countLimit = countLimit;
+            cacheSize = new AtomicLong();
+            cacheCount = new AtomicInteger();
+            calculateCacheSizeAndCacheCount();
+        }
+
+        /**
+         * 计算 cacheSize和cacheCount
+         */
+        private void calculateCacheSizeAndCacheCount() {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    int size = 0;
+                    int count = 0;
+                    File[] cachedFiles = cacheDir.listFiles();
+                    if (cachedFiles != null) {
+                        for (File cachedFile : cachedFiles) {
+                            size += calculateSize(cachedFile);
+                            count += 1;
+                            lastUsageDates.put(cachedFile, cachedFile.lastModified());
+                        }
+                        cacheSize.set(size);
+                        cacheCount.set(count);
+                    }
+                }
+            }).start();
+        }
+
+        private long calculateSize(File file) {
+            return file.length();
+        }
+
+        private void put(File file) {
+            int curCacheCount = cacheCount.get();
+            while (curCacheCount + 1 > countLimit) {
+                long freedSize = removeNext();
+                cacheSize.addAndGet(-freedSize);
+
+                curCacheCount = cacheCount.addAndGet(-1);
+            }
+            cacheCount.addAndGet(1);
+
+            long valueSize = calculateSize(file);
+            long curCacheSize = cacheSize.get();
+            while (curCacheSize + valueSize > sizeLimit) {
+                long freedSize = removeNext();
+                curCacheSize = cacheSize.addAndGet(-freedSize);
+            }
+            cacheSize.addAndGet(valueSize);
+
+            Long currentTime = System.currentTimeMillis();
+            file.setLastModified(currentTime);
+            lastUsageDates.put(file, currentTime);
+        }
+
+        /**
+         * 移除旧的文件
+         *
+         * @return
+         */
+        private long removeNext() {
+            if (lastUsageDates.isEmpty()) {
+                return 0;
+            }
+
+            Long oldestUsage = null;
+            File mostLongUsedFile = null;
+            Set<Entry<File, Long>> entries = lastUsageDates.entrySet();
+            synchronized (lastUsageDates) {
+                for (Entry<File, Long> entry : entries) {
+                    if (mostLongUsedFile == null) {
+                        mostLongUsedFile = entry.getKey();
+                        oldestUsage = entry.getValue();
+                    } else {
+                        Long lastValueUsage = entry.getValue();
+                        if (lastValueUsage < oldestUsage) {
+                            oldestUsage = lastValueUsage;
+                            mostLongUsedFile = entry.getKey();
+                        }
+                    }
+                }
+            }
+
+            long fileSize = calculateSize(mostLongUsedFile);
+            if (mostLongUsedFile.delete()) {
+                lastUsageDates.remove(mostLongUsedFile);
+            }
+            return fileSize;
+        }
+
+        private boolean remove(String key) {
+            File image = get(key);
+            return image.delete();
+        }
+
+        private File get(String key) {
+            File file = newFile(key);
+            Long currentTime = System.currentTimeMillis();
+            file.setLastModified(currentTime);
+            lastUsageDates.put(file, currentTime);
+
+            return file;
+        }
+
+        private File newFile(String key) {
+            return new File(cacheDir, key.hashCode() + "");
+        }
+
+        private void clear() {
+            lastUsageDates.clear();
+            cacheSize.set(0);
+            File[] files = cacheDir.listFiles();
+            if (files != null) {
+                for (File f : files) {
+                    f.delete();
+                }
+            }
+        }
     }
 
 }

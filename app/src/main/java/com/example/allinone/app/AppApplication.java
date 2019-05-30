@@ -1,12 +1,9 @@
 package com.example.allinone.app;
 
-import com.example.allinone.ui.MainActivity;
 import com.example.allinone.R;
+import com.example.allinone.ui.MainActivity;
 import com.example.allinone.utils.ACache;
-import com.example.allinone.utils.FileUtils;
 import com.squareup.leakcanary.LeakCanary;
-
-import java.io.File;
 
 import me.goldze.mvvmhabit.BuildConfig;
 import me.goldze.mvvmhabit.base.BaseApplication;
@@ -25,8 +22,17 @@ public class AppApplication extends BaseApplication {
     public static ACache getACache() {
         return gACache;
     }
+
+    public static void setACache(ACache gACache) {
+        AppApplication.gACache = gACache;
+    }
+
     public static String getACacheDir() {
         return gACacheDir;
+    }
+
+    public static void setACacheDir(String gACacheDir) {
+        AppApplication.gACacheDir = gACacheDir;
     }
 
     @Override
@@ -43,23 +49,10 @@ public class AppApplication extends BaseApplication {
 
         //Initial the ORM model
         ObjectBox.init(this);
-
-
-        String path[] = FileUtils.getStoragePath(this);
-        if (path != null)
-            gACacheDir = path[0] + "/Allinone";
-        else
-            gACacheDir = FileUtils.getStoragePath();
-
-        assert gACacheDir != null;
-
-        File file = new File(gACacheDir);
-        gACache = ACache.get(file);
     }
 
     private void initCrash() {
-        CaocConfig.Builder.create()
-                .backgroundMode(CaocConfig.BACKGROUND_MODE_SILENT) //背景模式,开启沉浸式
+        CaocConfig.Builder.create().backgroundMode(CaocConfig.BACKGROUND_MODE_SILENT) //背景模式,开启沉浸式
                 .enabled(true) //是否启动全局异常捕获
                 .showErrorDetails(true) //是否显示错误详细信息
                 .showRestartButton(true) //是否显示重启按钮

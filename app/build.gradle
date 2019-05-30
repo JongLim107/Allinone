@@ -3,6 +3,7 @@ apply plugin: 'io.objectbox' // apply last
 
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
     defaultConfig {
         applicationId rootProject.ext.android.applicationId
         minSdkVersion rootProject.ext.android.minSdkVersion
@@ -28,6 +29,10 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -39,10 +44,12 @@ dependencies {
     implementation rootProject.ext.support["support-v4"]
     implementation rootProject.ext.support["test-runner"]
     implementation rootProject.ext.support["test-espresso"]
-
+    // permission
+    implementation 'com.yanzhenjie.permission:x:2.0.1'
+//    implementation 'org.permissionsdispatcher:permissionsdispatcher:4.3.1'
+//    annotationProcessor "org.permissionsdispatcher:permissionsdispatcher-processor:4.3.1"
     //swipelayout
-    implementation "com.daimajia.swipelayout:library:1.2.0@aar"
-
+    implementation 'com.daimajia.swipelayout:library:1.2.0@aar'
     //下拉刷新,上拉加载
     implementation 'com.lcodecorex:tkrefreshlayout:1.0.7'
     //底部tabBar

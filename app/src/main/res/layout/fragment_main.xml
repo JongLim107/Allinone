@@ -3,16 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
-            type="com.example.allinone.ui.MainViewModel"/>
+            type="com.example.allinone.ui.MainViewModel" />
     </data>
 
     <RelativeLayout
-        android:id="@+id/content_main"
-        android:layout_marginTop="?attr/actionBarSize"
+        android:id="@+id/rlMainContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
         android:orientation="vertical"
         tools:context=".ui.MainActivity">
 
@@ -45,7 +46,8 @@
                     android:layout_height="wrap_content"
                     android:text="@{viewModel.foundSongs}"
                     android:textColor="@color/whi_press_bro_alp"
-                    android:textSize="@dimen/text_font_small" />
+                    android:textSize="@dimen/text_font_small"
+                    tools:text="We Found 488 Songs on your Mobile" />
             </LinearLayout>
 
             <ImageView
@@ -163,7 +165,7 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/controlBar"
             android:layout_below="@id/lyActionList"
-            tools:listitem="@layout/item_play_list"/>
+            tools:listitem="@layout/item_play_list" />
 
         <include
             android:id="@+id/controlBar"

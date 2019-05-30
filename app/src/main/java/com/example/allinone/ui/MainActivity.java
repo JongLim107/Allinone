@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.example.allinone.BR;
 import com.example.allinone.R;
@@ -43,16 +42,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         binding.drawer.addDrawerListener(toggle);
         binding.nav.setNavigationItemSelectedListener(this);
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-            }
-        });
+        binding.fab.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), LoginActivity.class)));
         toggle.syncState();
     }
 
-    public void initMainFragment() {
+    protected void initMainFragment() {
         MainFragment mainFragment = new MainFragment();
 
         // First get FragmentManager object.
