@@ -6,11 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
-import com.daimajia.swipe.SwipeLayout;
 import com.example.allinone.R;
 import com.example.allinone.databinding.ItemMusicBinding;
 import com.example.allinone.entity.TrackMeta;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -21,8 +21,9 @@ import androidx.annotation.Nullable;
  */
 public class PlayListAdapter extends ArrayAdapter<TrackMeta> {
 
-    public PlayListAdapter(@NonNull Context context, MainViewModel viewModel, @NonNull List<TrackMeta> objects) {
-        super(context, R.layout.item_music, objects);
+    PlayListAdapter(@NonNull Context context, MainViewModel viewModel, @NonNull List<TrackMeta> objects) {
+        super(context, R.layout.item_music, new ArrayList<>());
+        addAll(objects);
     }
 
     @Override
@@ -30,16 +31,11 @@ public class PlayListAdapter extends ArrayAdapter<TrackMeta> {
         super.remove(object);
     }
 
-    public void setDataList(List objects){
-        clear();
-        addAll(objects);
-    }
-
     @NonNull
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         ItemMusicBinding binding;
-        if (convertView == null || convertView.getTag() == null) {
+        if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             binding = ItemMusicBinding.inflate(inflater);
             convertView = binding.getRoot();
@@ -54,5 +50,10 @@ public class PlayListAdapter extends ArrayAdapter<TrackMeta> {
 //        binding.setHandler(viewModel);
 //        binding.slPlatform.setShowMode(SwipeLayout.ShowMode.PullOut);
         return convertView;
+    }
+
+    void setDataList(ArrayList<TrackMeta> objects) {
+        clear();
+        addAll(objects);
     }
 }

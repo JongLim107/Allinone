@@ -69,7 +69,7 @@ public class FileUtils {
             Object[] params = {};
             Object invoke = getVolumePathsMethod.invoke(storageManager, params);
             for (int i = 0; i < ((String[]) invoke).length; i++) {
-                KLog.v(TAG, "App StorgePath : " + ((String[]) invoke)[i]);
+                KLog.v(TAG, "App StoragePath : " + ((String[]) invoke)[i]);
             }
             return (String[]) invoke;
         } catch (NoSuchMethodException | IllegalArgumentException | InvocationTargetException | IllegalAccessException e) {
@@ -130,11 +130,11 @@ public class FileUtils {
             long size = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.SIZE));//文件大小
             int duration = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION));//文件总时长
             //转换成网络链接
-            //            int index = path.lastIndexOf("/");
-            //            String url = mapFileToNetAddr() + path.substring(0, index) + Uri.encode(path.substring(index));
+//            int index = path.lastIndexOf("/");
+//            String url = mapFileToNetAddr() + path.substring(0, index) + Uri.encode(path.substring(index));
             trackList.add(new TrackMeta("", artist, album, String.valueOf(id), title, cursor.getPosition() + 1,
                     TrackSource.SOURCE_LOCAL));
-            //                TrackMeta(url, artist, coverUrl, String id, String name, int position, int source)
+//                TrackMeta(url, artist, coverUrl, String id, String name, int position, int source)
         }
         cursor.close();
     }
@@ -176,7 +176,7 @@ public class FileUtils {
         return string.substring(0, string.length() - 1) + "]}]}";
     }
 
-    public static String getListFromJSON(ArrayList<TrackMeta> list, JSONObject jobj) {
+    private static void getListFromJSON(ArrayList<TrackMeta> list, JSONObject jobj) {
         try {
             JSONArray items = JSONUtils.getJSONArray(jobj, "classItems");
             String listId = JSONUtils.getString(items.getJSONObject(0), "id");
@@ -189,44 +189,38 @@ public class FileUtils {
                 TrackMeta meta = new TrackMeta(music);
                 String url = JSONUtils.getString(music, "url");
                 if (url.contains(LOCAL_FILE_INDICATE)) {
-                    //                    meta.setUrl(mapFileToNetAddr() + FileUtils.getLocalSongPath(url));
+//                    meta.setUrl(mapFileToNetAddr() + FileUtils.getLocalSongPath(url));
                 }
 
                 list.add(meta);
             }
-            return listId;
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return "";
     }
 
     /**
      * 将播放列表存到本地JSON中
      */
     public static void writeTracksToJSONFile(final List<TrackMeta> list, final String fileName, final int begin) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                synchronized (fileName) {
-                    //将 list 转换成 String
-                    String string = getJSONFromList(list, begin);
-                    try {
-                        File saveFile = new File(fileName);
-                        File dir = new File(saveFile.getParent());
-                        if (!dir.exists()) {
-                            dir.mkdirs();
-                        } else if (saveFile.exists()) {
-                            saveFile.delete();
-                        }
-                        saveFile.createNewFile();
-                        FileOutputStream outStream = new FileOutputStream(saveFile);
-                        if (string != null)
-                            outStream.write(string.getBytes());
-                        outStream.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+        new Thread(() -> {
+            synchronized (fileName) {
+                //将 list 转换成 String
+                String string = getJSONFromList(list, begin);
+                try {
+                    File saveFile = new File(fileName);
+                    File dir = new File(saveFile.getParent());
+                    if (!dir.exists()) {
+                        dir.mkdirs();
+                    } else if (saveFile.exists()) {
+                        saveFile.delete();
                     }
+                    saveFile.createNewFile();
+                    FileOutputStream outStream = new FileOutputStream(saveFile);
+                    outStream.write(string.getBytes());
+                    outStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();
