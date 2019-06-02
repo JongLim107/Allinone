@@ -1,26 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#30C0B0</color>
-    <color name="colorPrimaryLess">#50D5C7</color>
-    <color name="colorPrimaryDark">#10A7A0</color>
-    <color name="colorAccent">#E07040</color>
-    <color name="textColor">#404040</color>
-    <color name="textColorHint">#A0A0A0</color>
-    <color name="textColorVice">#6C6C6C</color>
-    <color name="viewLineColor">#E0E0E0</color>
-
     <color name="transparent">#00000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="whiteAlpha">#88FFFFFF</color>
     <color name="black">#000000</color>
-    <color name="blackAlpha">#70202020</color>
+    <color name="blackAlpha">#88000000</color>
+    <color name="blackLightAlpha">#98000000</color>
     <color name="background">#F7F7F7</color>
+    <color name="half_trans">#70F7F7F7</color>
 
     <color name="grey">#808080</color>
     <color name="greyAlpha">#60808080</color>
     <color name="greyDeep">#666666</color>
+    <color name="greyDeepAlpha">#80666666</color>
+    <color name="greyDeeperAlpha">#50666666</color>
     <color name="greyLight">#C0C0C0</color>
     <color name="greyLightAlpha">#60C0C0C0</color>
+    <color name="greyLighter">#E8E8E8</color>
+    <color name="greyLighterAlpha">#30E0E0E0</color>
+
+    <color name="blue">#345DA4</color>
+    <color name="blueLight">#80B9EF</color>
+    <color name="blueLightAlpha">#5580B9EF</color>
+    <color name="blueDeep">#262739</color>
+    <color name="blueDeepAlpha">#E0262739</color>
 
     <color name="brown">#3EC3C8</color>
+    <color name="brownAlpha">#993EC3C8</color>
+    <color name="brownLight">#5ED3D8</color>
+    <color name="brownLightAlpha">#885ED3D8</color>
+
+    <color name="commonRed">#FFFD712C</color>
+    <color name="commonRedAlpha">#88F05F4C</color>
+
+    <color name="greenDeep">#4CC38B</color>
+    <color name="greenDeepAlpha">#AA4CC38B</color>
+
+    <color name="colorPrimary">#30C0B0</color>
+    <color name="colorPrimaryLess">#50D5C7</color>
+    <color name="colorPrimaryDark">#10A7A0</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="appStyle">#30C0B0</color>
+    <color name="view">#F6F6F6</color>
+    <color name="item_bg">@color/white</color>
+    <color name="list_bg">@color/greyAlpha</color>
+    <color name="lineDivider">@color/greyLighter</color>
+    <color name="viewLineColor">#E0E0E0</color>
+
+    <color name="tabSelected">#C4E1E1</color>
+
+    <color name="textBrown">@color/brown</color>
+    <color name="textBlue">@color/blue</color>
+    <color name="textGrey">@color/grey</color>
+    <color name="textGreyLight">@color/greyLight</color>
+    <color name="textBlack">#101010</color>
+    <color name="textColor">#404040</color>
+    <color name="textColorHint">#A0A0A0</color>
+    <color name="textColorVice">#6C6C6C</color>
+
     <color name="orange">#F05F4C</color>
 </resources>

@@ -1,7 +1,8 @@
 package com.example.allinone.app;
 
-import com.example.allinone.ui.MainActivity;
 import com.example.allinone.R;
+import com.example.allinone.ui.MainActivity;
+import com.example.allinone.utils.ACache;
 import com.squareup.leakcanary.LeakCanary;
 
 import me.goldze.mvvmhabit.BuildConfig;
@@ -10,6 +11,30 @@ import me.goldze.mvvmhabit.crash.CaocConfig;
 import me.goldze.mvvmhabit.utils.KLog;
 
 public class AppApplication extends BaseApplication {
+
+
+    /**
+     * 程序缓存，存储背景图片、数据库等
+     */
+    private static ACache gACache;
+    private static String gACacheDir;
+
+    public static ACache getACache() {
+        return gACache;
+    }
+
+    public static void setACache(ACache gACache) {
+        AppApplication.gACache = gACache;
+    }
+
+    public static String getACacheDir() {
+        return gACacheDir;
+    }
+
+    public static void setACacheDir(String gACacheDir) {
+        AppApplication.gACacheDir = gACacheDir;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -27,8 +52,7 @@ public class AppApplication extends BaseApplication {
     }
 
     private void initCrash() {
-        CaocConfig.Builder.create()
-                .backgroundMode(CaocConfig.BACKGROUND_MODE_SILENT) //背景模式,开启沉浸式
+        CaocConfig.Builder.create().backgroundMode(CaocConfig.BACKGROUND_MODE_SILENT) //背景模式,开启沉浸式
                 .enabled(true) //是否启动全局异常捕获
                 .showErrorDetails(true) //是否显示错误详细信息
                 .showRestartButton(true) //是否显示重启按钮

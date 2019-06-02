@@ -1,0 +1,72 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.example.allinone.entity.TrackMeta" />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/btnDelete"
+            android:layout_width="32dp"
+            android:layout_height="38dp"
+            android:layout_alignParentEnd="true"
+            android:padding="@dimen/view_padding"
+            android:src="@mipmap/ic_close_w"
+            android:tint="@color/greyLightAlpha" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:layout_toStartOf="@+id/btnDelete"
+            android:orientation="horizontal"
+            android:padding="@dimen/view_padding">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:singleLine="true"
+                android:text="@{String.valueOf(model.position)}"
+                android:textColor="@color/textColorHint"
+                tools:text="001" />
+
+            <Space
+                android:layout_width="@dimen/view_padding"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:ellipsize="marquee"
+                android:fadingEdge="horizontal"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:text="@{model.name}"
+                android:textColor="@color/textColor"
+                tools:text="对木偶唱歌发发324727777777777777777424324" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text=" - " />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:singleLine="true"
+                android:text="@{model.artist}"
+                android:textColor="@color/textColorHint"
+                tools:text="杨千嬅" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</layout>

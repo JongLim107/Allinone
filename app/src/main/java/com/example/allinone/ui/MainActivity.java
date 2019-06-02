@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.example.allinone.BR;
 import com.example.allinone.R;
@@ -12,14 +11,16 @@ import com.example.allinone.databinding.ActivityMainBinding;
 import com.example.allinone.ui.ipcamera.devices.DevicesActivity;
 import com.example.allinone.ui.ipcamera.login.LoginActivity;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import me.goldze.mvvmhabit.base.BaseActivity;
 import me.goldze.mvvmhabit.base.BaseViewModel;
 
-public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewModel> implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewModel> implements
+        NavigationView.OnNavigationItemSelectedListener {
 
     @Override
     public int initContentView(Bundle savedInstanceState) {
@@ -34,28 +35,31 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
     @Override
     public void initData() {
         super.initData();
+        initMainFragment();
 
         setSupportActionBar(binding.toolbar);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, binding.drawer,
-                binding.toolbar, R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, binding.drawer, binding.toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         binding.drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
         binding.nav.setNavigationItemSelectedListener(this);
+        binding.fab.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), LoginActivity.class)));
+        toggle.syncState();
+    }
 
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                //        .setAction("Action", null)
-                //        .show();
+    protected void initMainFragment() {
+        MainFragment mainFragment = new MainFragment();
 
-                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-            }
-        });
+        // First get FragmentManager object.
+        FragmentManager fragmentManager = this.getSupportFragmentManager();
 
+        // Begin Fragment transaction.
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        // Replace the layout holder with the required Fragment object.
+        fragmentTransaction.replace(R.id.flContent, mainFragment);
+
+        // Commit the Fragment replace action.
+        fragmentTransaction.commit();
     }
 
     @Override

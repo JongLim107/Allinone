@@ -8,7 +8,12 @@
     <dimen name="nav_header_vertical_spacing">8dp</dimen>
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <!--button height-->
     <dimen name="button_height">44dp</dimen>
+    <dimen name="button_height_large">52dp</dimen>
+    <dimen name="button_height_normal">42dp</dimen>
+    <dimen name="button_height_small">32dp</dimen>
 
     <!-- 登陆界面的 dimension -->
 
@@ -22,5 +27,10 @@
     <dimen name="spacing_medium">8dp</dimen>
     <dimen name="line_width">2px</dimen>
 
+    <dimen name="text_font_large_ex">32sp</dimen>
+    <dimen name="text_font_large">18sp</dimen>
+    <dimen name="text_font_normal">14sp</dimen>
+    <dimen name="text_font_small">12sp</dimen>
+    <dimen name="text_font_small_ex">10sp</dimen>
 
 </resources>

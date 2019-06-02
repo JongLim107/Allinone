@@ -86,13 +86,14 @@ public final class LoginActivity extends BaseActivity<ActivityLoginBinding, Logi
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        Box<PlatformEntity> platformBox = ObjectBox.get().boxFor(PlatformEntity.class);
+        platforms.clear();
+        platforms.addAll(platformBox.getAll());
+
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             int pos = data.getIntExtra(SELECTED_INDEX, -1);
             if (pos != -1) {
-                Box<PlatformEntity> platformBox = ObjectBox.get().boxFor(PlatformEntity.class);
-                platforms.clear();
-                platforms.addAll(platformBox.getAll());
-
                 PlatformSpinnerAdapter spinnerAdapter = new PlatformSpinnerAdapter(this, platforms, viewModel);
                 binding.platSpinner.setAdapter(spinnerAdapter);
                 binding.platSpinner.setSelection(pos);

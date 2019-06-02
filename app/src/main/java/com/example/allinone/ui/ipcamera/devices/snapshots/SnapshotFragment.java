@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 
+import com.example.allinone.BR;
 import com.example.allinone.R;
 import com.example.allinone.databinding.FragmentSnapshotBinding;
 import com.example.allinone.databinding.ItemCameraAreaBinding;
@@ -18,7 +19,6 @@ import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
-import me.goldze.mvvmhabit.BR;
 import me.goldze.mvvmhabit.base.BaseFragment;
 
 /**

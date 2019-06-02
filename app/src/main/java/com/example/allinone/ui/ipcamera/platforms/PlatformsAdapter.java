@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
+import com.daimajia.swipe.SwipeLayout;
 import com.example.allinone.R;
 import com.example.allinone.databinding.ItemPlatformBinding;
 import com.example.allinone.entity.PlatformEntity;
@@ -48,6 +49,7 @@ public class PlatformsAdapter extends ArrayAdapter<PlatformEntity> {
         PlatformEntity plat = getItem(position);
         binding.setModel(plat);
         binding.setHandler(viewModel);
+        binding.slPlatform.setShowMode(SwipeLayout.ShowMode.PullOut);
         return convertView;
     }
 }

@@ -2,7 +2,7 @@ ext {
     //android开发版本配置
     android = [
             compileSdkVersion: 28,
-            buildToolsVersion: "28.0.0",
+            buildToolsVersion: "28.0.3",
             applicationId    : "com.example.allinone",
             minSdkVersion    : 19,
             targetSdkVersion : 28,

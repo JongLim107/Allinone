@@ -12,5 +12,7 @@ public interface PlatformItemListener {
     void onItemClick(PlatformEntity platformEntity);
 
     
-    void onEditIconClick(PlatformEntity platformEntity);
+    void onEditClick(PlatformEntity platformEntity);
+
+    void onDeleteClick(PlatformEntity platformEntity);
 }

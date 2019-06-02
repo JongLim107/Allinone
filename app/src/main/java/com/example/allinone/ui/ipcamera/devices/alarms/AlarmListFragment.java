@@ -7,10 +7,8 @@ import android.view.ViewGroup;
 import com.example.allinone.BR;
 import com.example.allinone.R;
 import com.example.allinone.databinding.FragmentAlarmsBinding;
-import com.example.allinone.entity.AlarmEntity;
 
 import androidx.annotation.Nullable;
-import androidx.databinding.ObservableArrayList;
 import me.goldze.mvvmhabit.base.BaseFragment;
 
 /**
