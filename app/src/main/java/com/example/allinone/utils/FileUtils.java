@@ -1,7 +1,9 @@
 package com.example.allinone.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Environment;
 import android.os.storage.StorageManager;
 import android.provider.MediaStore;
@@ -45,18 +47,12 @@ public class FileUtils {
 
     private static boolean isExternalStorageReadOnly() {
         String extStorageState = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(extStorageState)) {
-            return true;
-        }
-        return false;
+        return Environment.MEDIA_MOUNTED_READ_ONLY.equals(extStorageState);
     }
 
     private static boolean isExternalStorageAvailable() {
         String extStorageState = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(extStorageState)) {
-            return true;
-        }
-        return false;
+        return Environment.MEDIA_MOUNTED.equals(extStorageState);
     }
 
     public static String[] getStoragePath(Context context) {
@@ -81,8 +77,9 @@ public class FileUtils {
     public static String getStoragePath() {
         if (isExternalStorageAvailable()) {
             return Environment.getExternalStorageDirectory().getAbsolutePath();
-        } else
+        } else {
             return null;
+        }
     }
 
     public static String getLocalListPath() {
@@ -112,11 +109,11 @@ public class FileUtils {
 
     public static void querySongs(Context context, ArrayList<TrackMeta> trackList) {
         assert trackList != null;
-        Cursor cursor = context.getContentResolver()
-                .query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null,// 字段　没有字段　就是查询所有信息　相当于SQL语句中的　“ * ”
-                        null, // 查询条件
-                        null, // 条件的对应的参数
-                        MediaStore.Audio.AudioColumns.TITLE);// 排序方式
+        Cursor cursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null,
+                // 字段　没有字段　就是查询所有信息　相当于SQL语句中的　“ * ”
+                null, // 查询条件
+                null, // 条件的对应的参数
+                MediaStore.Audio.AudioColumns.TITLE);// 排序方式
         assert cursor != null;
 
         //找到歌曲列索引,然后获取歌曲信息
@@ -132,19 +129,18 @@ public class FileUtils {
             //转换成网络链接
 //            int index = path.lastIndexOf("/");
 //            String url = mapFileToNetAddr() + path.substring(0, index) + Uri.encode(path.substring(index));
-            trackList.add(new TrackMeta("", artist, album, String.valueOf(id), title, cursor.getPosition() + 1,
+            trackList.add(new TrackMeta(path, artist, album, String.valueOf(id), title, cursor.getPosition() + 1,
                     TrackSource.SOURCE_LOCAL));
-//                TrackMeta(url, artist, coverUrl, String id, String name, int position, int source)
         }
         cursor.close();
     }
 
     public static String querySongAlbum(Context context, int position) {
-        Cursor cursor = context.getContentResolver()
-                .query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null,// 字段　没有字段　就是查询所有信息　相当于SQL语句中的　“ * ”
-                        null, // 查询条件
-                        null, // 条件的对应的参数
-                        MediaStore.Audio.AudioColumns.TITLE);// 排序方式
+        Cursor cursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null,
+                // 字段　没有字段　就是查询所有信息　相当于SQL语句中的　“ * ”
+                null, // 查询条件
+                null, // 条件的对应的参数
+                MediaStore.Audio.AudioColumns.TITLE);// 排序方式
         assert cursor != null;
         while (cursor.moveToNext()) {
             if (cursor.getPosition() == position) {
@@ -157,9 +153,10 @@ public class FileUtils {
     private static String getJSONFromList(List<TrackMeta> list, int begin) {
         StringBuilder string = new StringBuilder();
         string.append("{\"FileType\":\"0\",\"classItems\":[")// init playlist
-                .append("{\"begin\":\"").append(begin)//position that where to begin.
-                .append("\",\"id\":\"").append(String.valueOf(System.currentTimeMillis()))//list id
-                .append("\",\"module\":\"cycle\",\"musics\":[");// default:play in line order why NULL, only can be "cycle".
+              .append("{\"begin\":\"").append(begin)//position that where to begin.
+              .append("\",\"id\":\"").append(String.valueOf(System.currentTimeMillis()))//list id
+              .append("\",\"module\":\"cycle\",\"musics\":[");// default:play in line order why NULL, only can be
+        // "cycle".
 
         if ((list != null) && (!list.isEmpty())) {
             for (TrackMeta trackMeta : list) {
@@ -189,7 +186,7 @@ public class FileUtils {
                 TrackMeta meta = new TrackMeta(music);
                 String url = JSONUtils.getString(music, "url");
                 if (url.contains(LOCAL_FILE_INDICATE)) {
-//                    meta.setUrl(mapFileToNetAddr() + FileUtils.getLocalSongPath(url));
+                    //                    meta.setUrl(mapFileToNetAddr() + FileUtils.getLocalSongPath(url));
                 }
 
                 list.add(meta);
@@ -257,11 +254,36 @@ public class FileUtils {
         }
     }
 
+    public static String getAudioUriFromFile(Activity act, String path) {
+
+        final String where = MediaStore.Audio.Media.DATA + "='" + path + "'";
+        Uri uri;
+        Cursor cursor = act.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null,
+                // 字段　没有字段　就是查询所有信息　相当于SQL语句中的　“ * ”
+                null, // 查询条件
+                null, // 条件的对应?的参数
+                MediaStore.Audio.AudioColumns.TITLE);// 排序方式
+        assert cursor != null;
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            String data = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA));
+            if (path.equals(data)) {
+                int ringtoneID = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.AudioColumns._ID));
+                uri = Uri.withAppendedPath(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, "" + ringtoneID);
+                cursor.close();
+                return uri.toString();
+            }
+            cursor.moveToNext();
+        }
+        return null;
+    }
+
     public void createFolder(String fname) {
         String myfolder = Environment.getExternalStorageDirectory() + "/" + fname;
         File f = new File(myfolder);
-        if (!f.exists())
+        if (!f.exists()) {
             f.mkdir();
+        }
     }
 
 }

@@ -1,4 +1,4 @@
-package com.example.allinone.ui;
+package com.example.allinone.ui.main;
 
 import android.content.Context;
 import android.graphics.Point;
@@ -27,12 +27,12 @@ import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.runtime.Permission;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProviders;
 import me.goldze.mvvmhabit.base.BaseFragment;
 import me.goldze.mvvmhabit.utils.ToastUtils;
 
@@ -48,8 +48,8 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
     private ArrayList<TrackMeta> favoriteTracks;   // 2.最爱歌曲列表数据源
 
     @Override
-    public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
+    public int initContentView(
+            LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return R.layout.fragment_main;
     }
 
@@ -67,20 +67,18 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
         //listType = 1， 从本地favorite.json文件获取歌曲列表
         favoriteTracks = new ArrayList<>();
 
-        AndPermission.with(this)
-                .runtime()
-                .permission(Permission.WRITE_EXTERNAL_STORAGE)
-                .onGranted(permissions -> initialCache())
-                .onDenied(permissions -> {
-                    // Storage permission are not allowed.
-                })
-                .start();
+        AndPermission.with(this).runtime().permission(Permission.WRITE_EXTERNAL_STORAGE).onGranted(
+                permissions -> initialCache()).onDenied(permissions -> {
+            // Storage permission are not allowed.
+        }).start();
     }
 
     @Override
     public void initViewObservable() {
         super.initViewObservable();
-        binding.ivPostLocalList.setOnClickListener((view) -> showPopupWindow(localTracks, "本地歌曲列表："));
+        PlaybarViewModel player = ViewModelProviders.of(this).get(PlaybarViewModel.class);
+        binding.playStatusBar.setPlaybar(player);
+        binding.tvLocalFounded.setOnClickListener((view) -> showPopupWindow(localTracks, "本地歌曲列表："));
         binding.ivPostLocalList.setOnClickListener((view) -> playTracks(localTracks, 0));
         binding.tvFavoriteSongs.setOnClickListener((view) -> showPopupWindow(favoriteTracks, "喜欢歌曲列表："));
     }
@@ -177,24 +175,13 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
     private void playTracks(ArrayList<TrackMeta> list, int position) {
         if (mediaPlayer == null) {
             mediaPlayer = new MediaPlayer();
-        } else if (mediaPlayer.isPlaying()) {
+        } else {
             mediaPlayer.stop();
+            mediaPlayer.reset();
         }
 
-        String MP3_PATH = "/sdcard/Music/Kate Voegele - Sun Will Rise.mp3";
-        if (list != null && position < list.size()) {
-            MP3_PATH = list.get(position).getUrl();
-        }
-
-        try {
-            mediaPlayer.setDataSource(MP3_PATH);
-            mediaPlayer.prepare();
-            mediaPlayer.start();
-            mediaPlayer.getDuration();
-            binding.playStatusBar.setPlayer(mediaPlayer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        PlaybarViewModel player = binding.playStatusBar.getPlaybar();
+        player.setPlayer(mediaPlayer, list, position);
     }
 
     /**
@@ -203,53 +190,55 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
     private void onTracksItemClick(AdapterView<?> parent, View view, int position, long id) {
         // 当 mListView 为 PullToRefreshListView 时，position从1开始，当添加了HeadView时 position从2开始
         initTrackList(popupTracks, position);
+        playTracks(popupTracks, position);
         if (popupTracks.equals(localTracks)) {
-            ToastUtils.showShort(FileUtils.getLocalListPath(), "Send Local Playlist");
+            ToastUtils.showShort(FileUtils.getFavoriteListPath(), "Playing local list");
         } else if (popupTracks.equals(favoriteTracks)) {
-            ToastUtils.showShort(FileUtils.getFavoriteListPath(), "Send Favorite Playlist");
+            ToastUtils.showShort(FileUtils.getFavoriteListPath(), "Playing favorite list");
         }
         showPopupWindow(null, null);
     }
 
-//    public void onOpenNetSong(View view) {
-//        mBoxControler.setSyncing(false);
-//        Intent intent = new Intent(mContext, ProductCartActivity.class);
-//        startActivity(intent);
-//    }
-//
-//    public void onOpenRadio(View view) {
-//        mBoxControler.setSyncing(false);
-//        Intent intent = new Intent(mContext, MainFragmentActivity.class);
-//        startActivity(intent);
-//    }
+    //    public void onOpenNetSong(View view) {
+    //        mBoxControler.setSyncing(false);
+    //        Intent intent = new Intent(mContext, ProductCartActivity.class);
+    //        startActivity(intent);
+    //    }
+    //
+    //    public void onOpenRadio(View view) {
+    //        mBoxControler.setSyncing(false);
+    //        Intent intent = new Intent(mContext, MainFragmentActivity.class);
+    //        startActivity(intent);
+    //    }
 
-//    public void onCreateList(View view) {
-//        View layout = getLayoutInflater().inflate(R.layout.dialog_build_playlist, (ViewGroup) findViewById(R.id.buildPlDialog));
-//        final EditText etName = (EditText) layout.findViewById(R.id.etname);
-//        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-//        builder.setTitle("创建播放列表").setView(layout);
-//        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                String name = etName.getText().toString();
-//                if (!mPlayLists.isEmpty()) {
-//                    for (Map<String, String> tmp : mPlayLists) {
-//                        if (tmp.get("itemTextView").equals(name)) {
-//                            JLLog.showToast(mContext, "改名字已存在，请重新输入！");
-//                            return;
-//                        }
-//                    }
-//                }
-//                HashMap<String, String> map = new HashMap<String, String>();
-//                map.put("itemTextView", name);
-//                mPlayLists.add(map);
-//                FileUtils.writeTracksToJSONFile(null, FileUtils.newJSONFilePath(name), 1);
-//                mPlayListsView.refreshDrawableState();
-//            }
-//        });
-//        builder.setNegativeButton("取消", null);
-//        builder.show();
-//    }
+    //    public void onCreateList(View view) {
+    //        View layout = getLayoutInflater().inflate(R.layout.dialog_build_playlist, (ViewGroup) findViewById(R.id
+    // .buildPlDialog));
+    //        final EditText etName = (EditText) layout.findViewById(R.id.etname);
+    //        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+    //        builder.setTitle("创建播放列表").setView(layout);
+    //        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+    //            @Override
+    //            public void onClick(DialogInterface dialog, int which) {
+    //                String name = etName.getText().toString();
+    //                if (!mPlayLists.isEmpty()) {
+    //                    for (Map<String, String> tmp : mPlayLists) {
+    //                        if (tmp.get("itemTextView").equals(name)) {
+    //                            JLLog.showToast(mContext, "改名字已存在，请重新输入！");
+    //                            return;
+    //                        }
+    //                    }
+    //                }
+    //                HashMap<String, String> map = new HashMap<String, String>();
+    //                map.put("itemTextView", name);
+    //                mPlayLists.add(map);
+    //                FileUtils.writeTracksToJSONFile(null, FileUtils.newJSONFilePath(name), 1);
+    //                mPlayListsView.refreshDrawableState();
+    //            }
+    //        });
+    //        builder.setNegativeButton("取消", null);
+    //        builder.show();
+    //    }
 
 
     private int getPopupWindowHeight() {

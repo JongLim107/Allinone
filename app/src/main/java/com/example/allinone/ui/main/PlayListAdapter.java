@@ -1,4 +1,4 @@
-package com.example.allinone.ui;
+package com.example.allinone.ui.main;
 
 import android.content.Context;
 import android.view.LayoutInflater;

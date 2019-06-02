@@ -1,7 +1,7 @@
 package com.example.allinone.app;
 
 import com.example.allinone.R;
-import com.example.allinone.ui.MainActivity;
+import com.example.allinone.ui.main.MainActivity;
 import com.example.allinone.utils.ACache;
 import com.squareup.leakcanary.LeakCanary;
 
