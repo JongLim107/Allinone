@@ -53,7 +53,7 @@
                 tools:text="Play Now (0)" />
         </LinearLayout>
 
-        <com.example.allinone.base.StickyExpandableListView
+        <com.example.allinone.base.StickyHeaderExpListView
             android:id="@+id/areas_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

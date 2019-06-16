@@ -1,13 +1,14 @@
 package com.example.allinone.entity;
 
 import com.example.allinone.R;
+import com.example.allinone.base.StickyHeaderGroupItem;
 
 import java.util.List;
 
 /**
  * Created by Jong Lim on 30/4/19.
  */
-public class AreaEntity {
+public class AreaEntity extends StickyHeaderGroupItem<DeviceEntity> {
     private String id;
     private String name;
     private int checkIcon;
@@ -15,6 +16,7 @@ public class AreaEntity {
     private List<DeviceEntity> cameras;
 
     public AreaEntity(String id, String name, List<DeviceEntity> cameras) {
+        super(name, false, cameras);
         this.id = id;
         this.name = name;
         this.cameras = cameras;

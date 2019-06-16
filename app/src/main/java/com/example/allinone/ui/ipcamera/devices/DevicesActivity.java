@@ -13,6 +13,7 @@ import com.example.allinone.ui.ipcamera.devices.alarms.AlarmListFragment;
 import com.example.allinone.ui.ipcamera.devices.cameras.CameraListFragment;
 import com.example.allinone.ui.ipcamera.devices.snapshots.SnapshotFragment;
 import com.example.allinone.ui.ipcamera.devices.videos.VideoListFragment;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +26,10 @@ import me.goldze.mvvmhabit.utils.ToastUtils;
 /**
  * Created by Jong Lim on 30/4/19.
  */
-public class DevicesActivity extends BaseActivity<ActivityDevicesBinding, ToolbarViewModel> implements DevicesNavigator,
-        IToolbarNavigator {
+public class DevicesActivity extends BaseActivity<ActivityDevicesBinding, ToolbarViewModel>
+        implements DevicesNavigator, IToolbarNavigator, TabLayout.OnTabSelectedListener {
+
+    private BaseFragmentPagerAdapter pagerAdapter;
 
     protected List<Fragment> pagerFragment() {
         List<Fragment> list = new ArrayList<>();
@@ -38,9 +41,8 @@ public class DevicesActivity extends BaseActivity<ActivityDevicesBinding, Toolba
         return list;
     }
 
-    protected List<String> pagerTitleString() {
+    protected List<String> pagerTitle() {
         List<String> list = new ArrayList<>();
-        String[] TITLES = {"Switch In", "Switch Out"};
         list.add("Camera");
         list.add("Video Record");
         list.add("Snapshot Record");
@@ -62,10 +64,10 @@ public class DevicesActivity extends BaseActivity<ActivityDevicesBinding, Toolba
     @Override
     public void initData() {
         //设置Adapter
-        BaseFragmentPagerAdapter pagerAdapter = new BaseFragmentPagerAdapter(getSupportFragmentManager(),
-                pagerFragment(), pagerTitleString());
+        pagerAdapter = new BaseFragmentPagerAdapter(getSupportFragmentManager(), pagerFragment(), pagerTitle());
         binding.viewPager.setAdapter(pagerAdapter);
         binding.tabs.setupWithViewPager(binding.viewPager);
+        binding.tabs.addOnTabSelectedListener(this);
 
         viewModel.setNavigator(this);
         viewModel.setTitleText("Devices List");
@@ -109,4 +111,25 @@ public class DevicesActivity extends BaseActivity<ActivityDevicesBinding, Toolba
     public void onTitleClick(String title) {
     }
 
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        final int position = tab.getPosition();
+        int count = pagerAdapter.getCount();
+        for (int i = 0; i < count; i++) {
+            Fragment f = pagerAdapter.getItem(i);
+            if (f instanceof AlarmListFragment) {
+                ((AlarmListFragment) f).setShowing(position == i);
+            }
+        }
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+
+    }
 }

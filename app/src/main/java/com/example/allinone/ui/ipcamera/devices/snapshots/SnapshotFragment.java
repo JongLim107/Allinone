@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ExpandableListView;
 
 import com.example.allinone.BR;
 import com.example.allinone.R;
@@ -29,8 +28,8 @@ public class SnapshotFragment extends BaseFragment<FragmentSnapshotBinding, Snap
     private DevicesAdapter adapter;
 
     @Override
-    public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
+    public int initContentView(
+            LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return R.layout.fragment_snapshot;
     }
 
@@ -69,14 +68,10 @@ public class SnapshotFragment extends BaseFragment<FragmentSnapshotBinding, Snap
             }
         });
 
-        binding.areasList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition,
-                    long id) {
-                DeviceEntity camera = adapter.getChild(groupPosition, childPosition);
-                viewModel.getNavigator().openFileListActivity(viewModel.areas, camera);
-                return true;
-            }
+        binding.areasList.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
+            DeviceEntity camera = (DeviceEntity) adapter.getChild(groupPosition, childPosition);
+            viewModel.getNavigator().openFileListActivity(viewModel.areas, camera);
+            return true;
         });
     }
 }

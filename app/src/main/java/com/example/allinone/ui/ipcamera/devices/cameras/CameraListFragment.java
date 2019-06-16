@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ExpandableListView;
 
 import com.example.allinone.BR;
 import com.example.allinone.R;
@@ -13,8 +12,8 @@ import com.example.allinone.databinding.ItemCameraAreaBinding;
 import com.example.allinone.databinding.ItemCameraDevBinding;
 import com.example.allinone.entity.AreaEntity;
 import com.example.allinone.entity.DeviceEntity;
-import com.example.allinone.ui.ipcamera.devices.DevicesNavigator;
 import com.example.allinone.ui.ipcamera.devices.DevicesAdapter;
+import com.example.allinone.ui.ipcamera.devices.DevicesNavigator;
 
 import java.util.List;
 
@@ -32,8 +31,8 @@ public class CameraListFragment extends BaseFragment<FragmentCamerasBinding, Cam
     private DevicesAdapter adapter;
 
     @Override
-    public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
+    public int initContentView(
+            LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return R.layout.fragment_cameras;
     }
 
@@ -71,32 +70,28 @@ public class CameraListFragment extends BaseFragment<FragmentCamerasBinding, Cam
             }
         });
 
-        binding.areasList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition,
-                    long id) {
-                DeviceEntity camera = adapter.getChild(groupPosition, childPosition);
-                if (camera.isOnline()) {
-                    if (!camera.isChecked() && viewModel.selectedCameras.size() == MAX_OPEN_COUNT) {
-                        ToastUtils.showShort("Only can play maximum 16 camera in the one time.");
-                        return false;
-                    }
-
-                    if (!camera.isChecked() && viewModel.selectedCameras.size() < MAX_OPEN_COUNT) {
-                        camera.setChecked(true);
-                        viewModel.selectedCameras.add(camera);
-                    } else {
-                        viewModel.selectedCameras.remove(camera);
-                        camera.setChecked(false);
-                    }
-                    ItemCameraDevBinding binding = (ItemCameraDevBinding) v.getTag();
-                    binding.setModel(camera);
-                    adapter.notifyDataSetChanged();
-                } else {
-                    ToastUtils.showShort("Camera is offline, please retry later.");
+        binding.areasList.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
+            DeviceEntity camera = (DeviceEntity) adapter.getChild(groupPosition, childPosition);
+            if (camera.isOnline()) {
+                if (!camera.isChecked() && viewModel.selectedCameras.size() == MAX_OPEN_COUNT) {
+                    ToastUtils.showShort("Only can play maximum 16 camera in the one time.");
+                    return false;
                 }
-                return true;
+
+                if (!camera.isChecked() && viewModel.selectedCameras.size() < MAX_OPEN_COUNT) {
+                    camera.setChecked(true);
+                    viewModel.selectedCameras.add(camera);
+                } else {
+                    viewModel.selectedCameras.remove(camera);
+                    camera.setChecked(false);
+                }
+                ItemCameraDevBinding binding = (ItemCameraDevBinding) v.getTag();
+                binding.setModel(camera);
+                adapter.notifyDataSetChanged();
+            } else {
+                ToastUtils.showShort("Camera is offline, please retry later.");
             }
+            return true;
         });
     }
 
